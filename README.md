@@ -106,3 +106,15 @@ Administrator user permissions
 ![non-registered_user](/backend/src/main/resources/static/img/prototype1.jpg)
 
 ![registered_administrator_user](/backend/src/main/resources/static/img/prototype.jpg)
+
+## **2.1 Compilation**
+mvn spring-boot:run
+6. Como compilar, empaquetar, …
+
+Ahora mismo, sin haber escrito ni una línea ya podemos hacer todas las tareas habituales (esto con Ant no sería tan fácil ;):
+
+    $ mvn compile – compila el proyecto y deja el resultado en target/classes
+    $ mvn test – compila los test y los ejecuta
+    $ mvn package – empaqueta el proyecto y lo dejará en taget/autentiaNegocio-1.0-SNAPSHOT.jar
+    $ mvn install – guarda el proyecto en el repositorio
+    $ mvn clean – borra el directorio de salida (target)
