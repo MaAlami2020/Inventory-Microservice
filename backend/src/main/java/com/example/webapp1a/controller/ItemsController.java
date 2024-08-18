@@ -11,8 +11,8 @@ public class ItemsController {
     @GetMapping("/items")
     public String getItems(Model model, Pageable page){
 
-        Page<Item> items = itemService.findAll(PageRequest.of(0,10));
-        model.addAttribute("items", items);
+        //Page<Item> items = itemService.findAll(PageRequest.of(0,10));
+        //model.addAttribute("items", items);
         return "index";
     }
     

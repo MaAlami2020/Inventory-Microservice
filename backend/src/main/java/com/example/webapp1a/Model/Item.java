@@ -28,7 +28,7 @@ public class Item {
     @Column(name = "price")
     private Double price;
 
-    private boolean image;
+    //private boolean image;
 
     @Lob
     @Column(name = "image")
@@ -68,13 +68,13 @@ public class Item {
         return id;
     }
 
-    public void setImage(boolean image){
+   /* public void setImage(boolean image){
         this.image = image;
     }
 
     public boolean getImage(){
         return image;
-    }
+    }*/
 
     public void setImageFile(Blob image){
         this.itemImage = image;
