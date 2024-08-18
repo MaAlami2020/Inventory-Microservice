@@ -9,6 +9,6 @@ public class Home {
     
     @GetMapping("/")
     public String home(Model model){
-        return "lookbook";
+        return "index";
     }
 }
