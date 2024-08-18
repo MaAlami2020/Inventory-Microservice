@@ -17,7 +17,7 @@ public class Item {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -60,11 +60,11 @@ public class Item {
         return price;
     }
 
-    public void setId(Long id){
+    public void setId(Integer id){
         this.id = id;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
     }
 
