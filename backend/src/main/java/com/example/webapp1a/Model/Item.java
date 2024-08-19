@@ -28,11 +28,18 @@ public class Item {
     @Column(name = "price")
     private Double price;
 
-    //private boolean image;
-
     @Lob
     @Column(name = "image")
     private Blob itemImage;
+
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "size")
+    private String size;
 
     public Item(){}
 
@@ -68,20 +75,36 @@ public class Item {
         return id;
     }
 
-   /* public void setImage(boolean image){
-        this.image = image;
-    }
-
-    public boolean getImage(){
-        return image;
-    }*/
-
     public void setImageFile(Blob image){
         this.itemImage = image;
     }
 
     public Blob getImageFile(){
         return itemImage;
+    }
+
+    public void setSex(String sex){
+        this.sex = sex;
+    }
+    
+    public String getSex(){
+        return sex;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+    
+    public String getCategory(){
+        return category;
+    }
+
+    public void setSize(String size){
+        this.size = size;
+    }
+    
+    public String getSize(){
+        return size;
     }
 }
 
