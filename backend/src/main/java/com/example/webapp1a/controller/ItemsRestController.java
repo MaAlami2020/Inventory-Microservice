@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.webapp1a.Model.Item;
 import com.example.webapp1a.Service.ItemService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +51,17 @@ public class ItemsRestController {
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
         itemService.add(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/item/{id}")
+    public ResponseEntity<Item> deleteItemById(@PathVariable Integer id){
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            itemService.deleteById(id);
+            return new ResponseEntity<>(item.get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/item/{id}")

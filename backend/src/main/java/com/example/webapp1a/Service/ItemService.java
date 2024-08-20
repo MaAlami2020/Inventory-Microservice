@@ -29,6 +29,10 @@ public class ItemService {
         return itemRepo.findById(id);
     }
 
+    public void deleteById(Integer id){
+        itemRepo.deleteById(id);
+    }
+
     public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
 
@@ -47,6 +51,8 @@ public class ItemService {
             newItem.setSex(item.get().getSex());
         }if(newItem.getSize() == null){
             newItem.setSize(item.get().getSize());
+        }if(newItem.getQuantity() == null){
+            newItem.setQuantity(item.get().getQuantity());
         }
 
         newItem.setId(id);

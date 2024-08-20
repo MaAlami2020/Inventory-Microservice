@@ -41,6 +41,9 @@ public class Item {
     @Column(name = "size")
     private String size;
 
+    @Column(name = "quantity")
+    private Integer quantity;
+
     public Item(){}
 
     public void setName(String name){
@@ -105,6 +108,14 @@ public class Item {
     
     public String getSize(){
         return size;
+    }
+
+    public void setQuantity(Integer quantity){
+        this.quantity = quantity;
+    }
+
+    public Integer getQuantity(){
+        return quantity;
     }
 }
 

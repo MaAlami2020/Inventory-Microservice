@@ -74,11 +74,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-9 col-sm-12 col-xs-12">
-                    <div class="blog-detail-ct">
-                        
-                        <!-- comment items -->
-                        <div id="comments"></div>
-                    </div>
                     <ul class="pagination">               
                         <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
                     </ul>
@@ -101,11 +96,10 @@
     </footer>
     <script src="/js/main.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 </body>
 <script>
-    var tam=1;
+    var tam=10;
 
     let ruta='//localhost:8444/databases/items?size='+tam;
 
@@ -122,21 +116,43 @@
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
             '/image" alt=""></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
-            item.name + '</h4><p class="has-text-centered">' + item.description + 
-            '</p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
         )
     }
 
     $(document).ready(function() {
-
+        //first 10 items
         loadInitItems(function(items, tam) {
-            $('#total-item').append('Found <span>' + items.numberOfElements + 'items</span> in total')
+            $('#total-item').append('Found <span>' + items.totalElements + ' items</span> in total')
             if(items.size != 0){
                 for(var i=0; i<items.size; i++){
                     showItemLoaded(items.content[i]);
                 }
             }
         });
+
+        //pagination
+        $('.pagination').click(function() {
+            tam+=10;
+
+            let ruta='http://localhost:8444/databases/items?size='+tam;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam-10 < item.content.length){
+                    for(var i=tam-10; i<item.content.length-; i++){
+                        showItemLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
+
+        //items founded
+
     });
 
 </script>
