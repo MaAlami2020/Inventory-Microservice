@@ -33,6 +33,10 @@ public class ItemService {
         itemRepo.deleteById(id);
     }
 
+    public Page<Item> getItemsByName(String name, Pageable page){
+        return itemRepo.findByName(name, page);
+    }
+
     public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
 

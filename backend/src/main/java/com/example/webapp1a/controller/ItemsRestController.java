@@ -53,6 +53,12 @@ public class ItemsRestController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @PostMapping("/items/name")
+    public Page<Item> getItemsByName(@RequestParam String name, Pageable page) {
+        return itemService.getItemsByName(name, page);
+    }
+    
+
     @DeleteMapping("/item/{id}")
     public ResponseEntity<Item> deleteItemById(@PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);

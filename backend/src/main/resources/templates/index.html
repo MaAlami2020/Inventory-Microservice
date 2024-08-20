@@ -37,10 +37,11 @@
                 <a class="navbar-mobile-link has-text-white" href="#"><i class="zmdi zmdi-shopping-cart"></i> Vacio</a>
             </header>-->
             <nav class="nav-menu" id="mySidenav">
-                <form class="form-group " action="#">
+                <form action="/databases/items/name" method="post">
                     <div class="form-group-container">
                         <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                        <input type="text" class="form-group-input" placeholder="Search...">
+                        <input name="name" type="text" class="form-group-input" placeholder="Search...">
+                        <input class="submit" type="submit" value="search"/>
                     </div>
                 </form>
 
@@ -61,6 +62,11 @@
 
     <!-- Sección de fotografías -->
     <div class="container">
+        <!--item searching-->
+        <div class="topbar-filter fw">
+			<p id="item founded"></p>
+		</div>
+
         <div class="topbar-filter fw">
 			<p id="total-item"></p>
 		</div>
@@ -144,7 +150,7 @@
             }).done(function(item){
                 $('#spinner-div').hide();
                 if(item.size != 0 && tam-10 < item.content.length){
-                    for(var i=tam-10; i<item.content.length-; i++){
+                    for(var i=tam-10; i<item.content.length; i++){
                         showItemLoaded(item.content[i]);
                     }
                 }
@@ -152,6 +158,23 @@
         })
 
         //items founded
+        $('.submit').click(function(){
+            tam=10;
+
+            let ruta = 'http://localhost:8444/databases/items/name?size='+tam;
+            $('.item-founded').append('Found <span>' + items.totalElements + ' items</span> in total');
+            $('#spinner-div')
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam-10 < item.content.length){
+                    for(var i=tam-10; i<item.content.length; i++){
+                        showItemLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
 
     });
 
