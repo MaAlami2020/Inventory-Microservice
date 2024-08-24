@@ -53,8 +53,8 @@ public class ItemsRestController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    @PostMapping("/items/name")
-    public Page<Item> getItemsByName(@RequestParam String name, Pageable page) {
+    @GetMapping("/items/{name}")
+    public Page<Item> getItemsByName(@PathVariable String name, Pageable page) {
         return itemService.getItemsByName(name, page);
     }
     

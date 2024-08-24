@@ -9,6 +9,7 @@ import com.example.webapp1a.Model.Item;
 
 public interface ItemRepo extends JpaRepository<Item, Integer> {
 
-    @Query("select m from Item m where m.sex like ?1")
+    @Query("select m from Item m where m.sex like %:name%")
     Page<Item> findByName(String name, Pageable page);
 }
+

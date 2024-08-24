@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -28,11 +29,11 @@ public class MySQLConfig {
     
     @Bean(name = "itemDataSource")
     public DataSource itemDataSource(){
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(env.getProperty("mysql.datasource.url"));
-        dataSource.setUsername(env.getProperty("mysql.datasource.username"));
-        dataSource.setPassword(env.getProperty("mysql.datasource.password"));
-        return dataSource;
+        return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver")
+                                                        .url("jdbc:mysql://127.0.0.1:3306/items")
+                                                        .username("root")
+                                                        .password("Mundialmente1")
+                                                        .build();
     }
 
     @Bean(name = "itemEntityManagerFactory")
@@ -45,9 +46,9 @@ public class MySQLConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("mysql.jpa.hibernate.ddl-auto"));
-        properties.put("hibernate.show-sql", env.getProperty("mysql.jpa.show-sql"));
-        properties.put("hibernate.dialect", env.getProperty("mysql.jpa.database-platform"));
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+        properties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
+        //properties.put("hibernate.dialect", env.getProperty("spring.jpa.database-platform"));
 
         em.setJpaPropertyMap(properties);
 

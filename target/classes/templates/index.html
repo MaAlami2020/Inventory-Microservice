@@ -37,19 +37,20 @@
                 <a class="navbar-mobile-link has-text-white" href="#"><i class="zmdi zmdi-shopping-cart"></i> Vacio</a>
             </header>-->
             <nav class="nav-menu" id="mySidenav">
-                <form action="/databases/items/name" method="post">
-                    <div class="form-group-container">
-                        <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                        <input name="name" type="text" class="form-group-input" placeholder="Search...">
-                        <input class="submit" type="submit" value="search"/>
-                    </div>
-                </form>
-
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
                 </ul>
+                <form action="/items/name" method="post">
+                    <div>
+                        <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
+                        <input id="name" type="text" val="" placeholder="Search..."/>
+                        <input class="submit" type="button" value="search"/>
+                    </div>
+                </form>
+                <!--items listing-->
+                
             </nav>
         </nav>
     </header>
@@ -64,8 +65,23 @@
     <div class="container">
         <!--item searching-->
         <div class="topbar-filter fw">
-			<p id="item founded"></p>
+			<p id="total-item-founded"></p>
 		</div>
+        <!--items listing founded-->
+        <div class="columns is-mobile is-multiline" id="itemFoundedListing">
+            <!--items info founded-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="items-founded-pagination">               
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                        </ul>
+                    </div>                  
+                </div>
+            </div>
+        </div>
 
         <div class="topbar-filter fw">
 			<p id="total-item"></p>
@@ -74,20 +90,21 @@
         <div class="columns is-mobile is-multiline" id="itemListing">
             <!--items info-->
         </div>
-    </div>
-<!--pagination-->
-    <div class="page-single">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-9 col-sm-12 col-xs-12">
-                    <ul class="pagination">               
-                        <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
-                    </ul>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="pagination">               
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                        </ul>
+                    </div>
+                    
                 </div>
-                
             </div>
         </div>
     </div>
+<!--pagination-->
+    
 <!--spinner-->    
     <div id="spinner-div" class="pt-5">
         <div class="spinner-border text-primary" role="status">
@@ -106,6 +123,7 @@
 </body>
 <script>
     var tam=10;
+    var tam1=10;
 
     let ruta='//localhost:8444/databases/items?size='+tam;
 
@@ -127,10 +145,20 @@
         )
     }
 
+    function showItemFoundedLoaded(item){
+        $('#itemFoundedListing').append(
+            '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
+            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
+            '/image" alt=""></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+        )
+    }
+
     $(document).ready(function() {
         //first 10 items
         loadInitItems(function(items, tam) {
-            $('#total-item').append('Found <span>' + items.totalElements + ' items</span> in total')
+            $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
             if(items.size != 0){
                 for(var i=0; i<items.size; i++){
                     showItemLoaded(items.content[i]);
@@ -158,22 +186,26 @@
         })
 
         //items founded
-        $('.submit').click(function(){
-            tam=10;
+        $('.submit').click(function() {
+                $('#total-item-founded').empty();
+                $('#itemFoundedListing').empty();
+                var tam1=10;
+                let value = $('#name').val();
+                let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
 
-            let ruta = 'http://localhost:8444/databases/items/name?size='+tam;
-            $('.item-founded').append('Found <span>' + items.totalElements + ' items</span> in total');
-            $('#spinner-div')
-            $.ajax({
-                url:ruta
-            }).done(function(item){
-                $('#spinner-div').hide();
-                if(item.size != 0 && tam-10 < item.content.length){
-                    for(var i=tam-10; i<item.content.length; i++){
-                        showItemLoaded(item.content[i]);
+                $('#spinner-div').show();
+                $.ajax({
+                    url:ruta
+                }).done(function(item){
+                    $('#spinner-div').hide();
+                    $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
+                    if(item.size != 0){
+                        for(var i=0; i<item.size; i++){
+                            showItemFoundedLoaded(item.content[i]);
+                        }
                     }
-                }
-            })
+                    
+                }) 
         })
 
     });
