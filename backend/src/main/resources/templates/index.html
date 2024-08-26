@@ -63,6 +63,7 @@
 
     <!-- Sección de fotografías -->
     <div class="container">
+
         <!--item searching-->
         <div class="topbar-filter fw">
 			<p id="total-item-founded"></p>
@@ -123,7 +124,7 @@
 </body>
 <script>
     var tam=10;
-    var tam1=10;
+    var tam1;
 
     let ruta='//localhost:8444/databases/items?size='+tam;
 
@@ -158,6 +159,7 @@
     $(document).ready(function() {
         //first 10 items
         loadInitItems(function(items, tam) {
+            $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
             if(items.size != 0){
                 for(var i=0; i<items.size; i++){
@@ -187,25 +189,45 @@
 
         //items founded
         $('.submit').click(function() {
-                $('#total-item-founded').empty();
-                $('#itemFoundedListing').empty();
-                var tam1=10;
-                let value = $('#name').val();
-                let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+            $('#total-item-founded').empty();
+            $('#itemFoundedListing').empty();
+            tam1=10;
+            console.log(tam1);
+            let value = $('#name').val();
+            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
 
-                $('#spinner-div').show();
-                $.ajax({
-                    url:ruta
-                }).done(function(item){
-                    $('#spinner-div').hide();
-                    $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
-                    if(item.size != 0){
-                        for(var i=0; i<item.size; i++){
-                            showItemFoundedLoaded(item.content[i]);
-                        }
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
+                if(item.size != 0){
+                    for(var i=0; i<item.size; i++){
+                        showItemFoundedLoaded(item.content[i]);
                     }
-                    
-                }) 
+                }
+                
+            }) 
+        })
+
+        $('.items-founded-pagination').click(function() {
+            tam1+=10;
+            console.log(tam1);
+            let value= $('#name').val();
+            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam1-10 < item.numberOfElements){
+                    for(var i=tam1-10; i<item.numberOfElements; i++){
+                        showItemFoundedLoaded(item.content[i]);
+                    }
+                }
+            })
         })
 
     });
