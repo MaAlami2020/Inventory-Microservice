@@ -24,13 +24,5 @@ public class ItemsController {
     public String getItems(Model model, Pageable page){
         return "index";
     }
-
-    @PostMapping("/items/name")
-    public String postMethodName(Model model, Pageable page, @RequestParam String name) {
-        Page<Item> itemsFounded = itemService.getItemsByName(name, PageRequest.of(0,10));
-        model.addAttribute("items", itemsFounded);        
-        return "index";
-    }
-    
     
 }
