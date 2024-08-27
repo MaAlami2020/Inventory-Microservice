@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.Model.Item;
-import com.example.webapp1a.Repository.ItemRepo;
+import com.example.webapp1a.model.items.Item;
+import com.example.webapp1a.repository.items.ItemRepo;
 
 @Service
 public class ItemService {

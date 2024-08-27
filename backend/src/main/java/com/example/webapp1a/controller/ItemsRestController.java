@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.webapp1a.Model.Item;
+import com.example.webapp1a.model.items.Item;
 import com.example.webapp1a.service.ItemService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;

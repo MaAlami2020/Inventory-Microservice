@@ -17,16 +17,18 @@ public class Home {
 
     @GetMapping("/signup")
     public String signup(Model model){
+        
         return "login";
     }
 
     @GetMapping("/login")
     public String login(Model model){
+
         return "login";
     }
 
-    @GetMapping("/user/{id}/image")
-    public String getUserAvatar(Model model, @PathVariable Long id, MultipartFile imageField){
+    @GetMapping("/user/{username}/image")
+    public String getUserAvatar(Model model, @PathVariable String username, MultipartFile imageField){
         
         
         model.addAttribute("picture");

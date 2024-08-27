@@ -1,11 +1,11 @@
-package com.example.webapp1a.Repository;
+package com.example.webapp1a.repository.items;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.example.webapp1a.Model.Item;
+import com.example.webapp1a.model.items.Item;
 
 public interface ItemRepo extends JpaRepository<Item, Integer> {
 

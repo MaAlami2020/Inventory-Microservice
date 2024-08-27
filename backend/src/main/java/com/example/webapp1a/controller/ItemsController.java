@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.webapp1a.Model.Item;
+import com.example.webapp1a.model.items.Item;
 import com.example.webapp1a.service.ItemService;
 
 
