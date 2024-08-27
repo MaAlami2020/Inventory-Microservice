@@ -1,4 +1,4 @@
-package com.example.webapp1a.Model;
+package com.example.webapp1a.model.items;
 
 import java.sql.Blob;
 
