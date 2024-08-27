@@ -15,4 +15,5 @@ public class Admin {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    
 }
