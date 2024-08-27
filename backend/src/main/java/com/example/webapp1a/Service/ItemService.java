@@ -1,4 +1,4 @@
-package com.example.webapp1a.Service;
+package com.example.webapp1a.service;
 
 import java.sql.Blob;
 import java.util.Optional;

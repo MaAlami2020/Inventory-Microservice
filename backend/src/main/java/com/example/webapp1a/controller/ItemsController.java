@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.webapp1a.Model.Item;
-import com.example.webapp1a.Service.ItemService;
+import com.example.webapp1a.service.ItemService;
 
 
 @Controller
