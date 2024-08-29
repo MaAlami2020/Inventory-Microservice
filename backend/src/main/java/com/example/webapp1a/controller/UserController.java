@@ -32,12 +32,7 @@ public class UserController {
         if(principal != null){
 
         }
-    }*/
-
-    @GetMapping("/items")
-    public String getItems(Model model, Pageable page){
-        return "index";
-    }
+    }*/ 
     
     @PostMapping("/signup")
     public String newUser(Model model, User user, MultipartFile imageField, HttpServletRequest request) throws IOException{

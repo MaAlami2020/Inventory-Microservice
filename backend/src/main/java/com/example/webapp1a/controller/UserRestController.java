@@ -18,6 +18,7 @@ import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/databases")
@@ -55,6 +58,22 @@ public class UserRestController {
         
         if(user.isPresent()) {
             return ResponseEntity.created(location).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @GetMapping("/user/{id}/image")
+    public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
+        
+        Optional<User> user = userService.findById(id);
+
+        if(user.isPresent() && user.get().getAvatar() != null) {
+            Resource file = new InputStreamResource(user.get().getAvatar().getBinaryStream());
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .contentLength(user.get().getAvatar().length())
+                .body(file);
         } else {
             return ResponseEntity.notFound().build();
         }

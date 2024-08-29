@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 import com.example.webapp1a.model.items.User;
 import com.example.webapp1a.repository.items.UserRepository;
 

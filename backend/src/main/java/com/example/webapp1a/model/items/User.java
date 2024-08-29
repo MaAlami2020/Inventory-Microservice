@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+//import org.hibernate.annotations.Type;
+
 import java.sql.Blob;
 
 @Entity
@@ -31,6 +33,7 @@ public class User {
     private String confirmationPassword;
 
     @Lob
+    //@Type(type = "org.hibernate.type.ImageType")
     @Column(name = "image")
     private Blob avatar;
 

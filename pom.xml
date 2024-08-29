@@ -19,6 +19,7 @@
 	<properties>
 		<java.version>19</java.version>
 	</properties>
+	<prop key="hibernate.connection.autocommit">false</prop>
 	<dependencies>
 
 		<dependency>
