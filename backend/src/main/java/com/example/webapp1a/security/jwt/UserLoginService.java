@@ -41,7 +41,7 @@ public class UserLoginService {
 
         if(accessTokenValid && refreshTokenValid){
             newAccessToken = jwtTokenProvider.generateToken(user);
-            newRefreshToken = jwtProviderToken.generateRefreshToken(user);
+            newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
             addAccessTokenCookie(responseHeaders, newAccessToken);
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
         }
