@@ -34,13 +34,13 @@ public class Home {
 
     @GetMapping("/signup")
     public String signup(Model model){
-        
+        model.addAttribute("state","");
         return "login";
     }
 
     @GetMapping("/login")
     public String login(Model model){
-
+        model.addAttribute("state","");
         return "login";
     }
 

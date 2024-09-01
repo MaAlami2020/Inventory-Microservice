@@ -21,12 +21,22 @@
     </header>
     <!-- Banner -->
     <div class="banner banner-second">
-        <div class="banner-container "></div>
+        <div class="banner-container ">
+            {{#logged}}
+            <div class="user-img">
+                <img src="/databases/user/{{username}}/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+            {{^logged}}
+            <div class="user-img">
+                <img src="/databases/user/39/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+        </div>
     </div>
 
     <div class="container">
         <div class="columns">
-
             <div class="column">
                 <h2 class="is-size-4">Login</h2>
                 <form action="/login" class="form-control" method="post">
@@ -36,9 +46,9 @@
                     <input type="password" placeholder="Password" class="form-control-field">
 
                     <button class="btn btn-default btn-primary">Log in</button>
+                    <p>{{state}}</p>
                 </form>
             </div>
-
             <div class="column">
                 <h2 class="is-size-4">Registration</h2>
                 <form action="/signup" class="form-control" method="post" enctype="multipart/form-data">
@@ -48,22 +58,12 @@
 
                     <input type="password" placeholder="Confirm your password" class="form-control-field">
                     <div class="user-img">
-                        <input type='image' name='imageField' accept=".jpg, .jpeg"/>
+                        <input type='file' name='imageField' accept=".jpg, .jpeg"/>
                     </div> 
-                    <input class="btn btn-default btn-primary" type="submit">Create account</input>
-                    {{#isRegistered}}
-                    <script>
-                        alert("user registered");
-                    </script>
-                    {{/isRegistered}}
-                    {{#isNotRegistered}}
-                    <script>
-                        alert("some mandatory fields are incomplete");
-                    </script>
-                    {{/isNotRegistered}}
+                    <button class="btn btn-default btn-primary">Create account</button>
+                    <p>{{state}}</p>
                 </form>
             </div>
-
         </div>
     </div>
 
