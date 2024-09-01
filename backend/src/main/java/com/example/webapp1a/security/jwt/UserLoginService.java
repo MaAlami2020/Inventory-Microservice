@@ -4,8 +4,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.security.jwt.AuthResponse;
-
 @Service
 public class UserLoginService {
 
