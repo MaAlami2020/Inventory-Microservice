@@ -37,5 +37,9 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public Token generateToken(UserDetails user){
+        
+    }
     
 }
