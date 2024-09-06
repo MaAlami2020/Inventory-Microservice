@@ -21,19 +21,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    //@Column(name = "name")
-    //private String name;
-
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
-    private String password;
+    private String encodedPassword;
 
     @Column(name = "rol")
     private String rol;
 
-    private String confirmationPassword;
+    private String passwordConfirmation;
 
     @Lob
     //@Type(type = "org.hibernate.type.ImageType")
@@ -42,6 +39,12 @@ public class User {
 
     public User(){}
 
+    public User(String email, String encodedPassword, String roles){
+        this.email=email;
+        this.encodedPassword=encodedPassword;
+        this.rol=roles;
+    }
+
     public void setId(Integer id){
         this.id = id;
     }
@@ -49,14 +52,6 @@ public class User {
     public Integer getId(){
         return id;
     }
-
-    /*public void setName(String name){
-        this.name = name;
-    }
-
-    public String getName(){
-        return name;
-    }*/
 
     public void setEmail(String email){
         this.email = email;
@@ -67,11 +62,11 @@ public class User {
     }
 
     public void setEncodedPassword(String password){
-        this.password = password;
+        this.encodedPassword = password;
     }
 
     public String getEncodedPassword(){
-        return password;
+        return encodedPassword;
     }
 
     public String getRol(){
@@ -82,19 +77,19 @@ public class User {
         this.rol = rol;
     }
 
-    public void setConfirmationPassword(String confirmationPassword){
-        this.confirmationPassword = confirmationPassword;
+    public void setConfirmationPassword(String passwordConfirmation){
+        this.passwordConfirmation=passwordConfirmation;
     }
 
     public String getConfirmationPassword(){
-        return confirmationPassword;
+        return passwordConfirmation;
     }
 
-    public void setAvatar(Blob image){
+    public void setImageFile(Blob image){
         this.avatar = image;
     }
 
-    public Blob getAvatar(){
+    public Blob getImageFile(){
         return avatar;
     }
 }

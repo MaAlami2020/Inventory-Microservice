@@ -59,19 +59,22 @@ public class Home {
         if(imageField.isEmpty()){
             Optional<User> anonymous = userService.findById(39);
             if(!anonymous.isPresent()) {
-                user.setAvatar(anonymous.get().getAvatar());
+                user.setImageFile(anonymous.get().getImageFile());
             }
         }else{
-            user.setAvatar(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+            user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
         }
+
+        user.setRol("USER");
 
         User userSaved = userService.add(user);
 
         if(userSaved != null){
-            model.addAttribute("state", "user registered");
+            model.addAttribute("state_reg", "user registered");
         }else{
-            model.addAttribute("state", "some mnadatory fields are empty or incorrect");
+            model.addAttribute("state_reg", "some mnadatory fields are empty or incorrect");
         }
+        model.addAttribute("state_log", "");
 
         return "login";
     }

@@ -15,11 +15,14 @@ public class UserService {
     private UserRepository userRepo;
     
     public User add(User user){
-        if(!user.getEmail().equals("") && !user.getEncodedPassword().equals("") && user.getConfirmationPassword().equals(user.getEncodedPassword())){
-            return userRepo.save(user);
+        User newUser = userRepo.save(user);
+        return newUser;
+        /*if(!user.getEmail().equals("") && !user.getEncodedPassword().equals("") && user.getConfirmationPassword().equals(user.getEncodedPassword())){
+            return newUser;
         } else {
+            userRepo.delete(newUser);
             return null;
-        }
+        }*/
     }
 
     public Optional<User> findById(Integer id){

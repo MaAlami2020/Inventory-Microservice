@@ -52,7 +52,7 @@ public class UserRestController {
         
         URI location = fromCurrentRequest().build().toUri();
         
-        user.get().setAvatar(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
+        user.get().setImageFile(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
         
         userService.add(user.get());
         
@@ -63,35 +63,35 @@ public class UserRestController {
         }
     }
     
-    /*@GetMapping("/user/{id}/image")
+    @GetMapping("/user/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
         
         Optional<User> user = userService.findById(id);
 
-        if(user.isPresent() && user.get().getAvatar() != null) {
-            Resource file = new InputStreamResource(user.get().getAvatar().getBinaryStream());
+        if(user.isPresent() && user.get().getImageFile() != null) {
+            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
             return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .contentLength(user.get().getAvatar().length())
+                .contentLength(user.get().getImageFile().length())
                 .body(file);
         } else {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
     
 
 
     @GetMapping("/users/{iD}/image")
-    public ResponseEntity<Object> getUserImage(@PathVariable Integer iD) throws SQLException{
+    public ResponseEntity<Object> getCurrentUserImage(@PathVariable Integer iD) throws SQLException{
         
         Optional<User> user = userService.findById(iD);
 
-        if(user.isPresent() && user.get().getAvatar() != null){
-            Resource file = new InputStreamResource(user.get().getAvatar().getBinaryStream());
+        if(user.isPresent() && user.get().getImageFile() != null){
+            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
 
             return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .contentLength(user.get().getAvatar().length())
+                .contentLength(user.get().getImageFile().length())
                 .body(file);
         }else{
             return ResponseEntity.notFound().build();
