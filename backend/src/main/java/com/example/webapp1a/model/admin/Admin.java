@@ -15,4 +15,57 @@ public class Admin {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "email")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    private String confirmationPassword;
+    
+    @Column(name = "rol")
+    private String rol;
+
+    public Integer getId(){
+        return id;
+    }
+
+    public void setId(Integer id){
+        this.id = id;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public void setUsername(String email){
+        this.username = email;
+    }
+
+    public String getEncodedPassword(){
+        return password;
+    }
+
+    public void setEncodedPassword(String password){
+        this.password = password;
+    }
+
+    public String getConfirmationPassword(){
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPass){
+        this.confirmationPassword = confirmationPass;
+    }
+
+    public String getRol(){
+        return rol;
+    }
+
+    public void setRol(String rol){
+        this.rol = rol;
+    }
+
+    
 }

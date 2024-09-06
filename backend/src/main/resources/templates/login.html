@@ -21,39 +21,49 @@
     </header>
     <!-- Banner -->
     <div class="banner banner-second">
-        <div class="banner-container "></div>
+        <div class="banner-container ">
+            {{#logged}}
+            <div class="user-img">
+                <img src="/databases/user/{{username}}/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+            {{^logged}}
+            <div class="user-img">
+                <img src="/databases/user/39/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+        </div>
     </div>
 
     <div class="container">
         <div class="columns">
-
             <div class="column">
-                <h2 class="is-size-4">Iniciar seción</h2>
-                <form action="#" class="form-control">
+                <h2 class="is-size-4">Login</h2>
+                <form action="/login" class="form-control" method="post">
 
                     <input type="email" placeholder="Email" class="form-control-field error">
 
                     <input type="password" placeholder="Password" class="form-control-field">
 
-                    <button class="btn btn-default btn-primary">Iniciar seción</button>
+                    <button class="btn btn-default btn-primary">Log in</button>
+                    <p>{{state}}</p>
                 </form>
             </div>
-
             <div class="column">
-                <h2 class="is-size-4">Registro</h2>
-                <form action="#" class="form-control">
+                <h2 class="is-size-4">Registration</h2>
+                <form action="/signup" class="form-control" method="post" enctype="multipart/form-data">
                     <input type="email" placeholder="Email" class="form-control-field">
 
                     <input type="password" placeholder="Password" class="form-control-field">
 
-                    <input type="password" placeholder="Confirma tu password" class="form-control-field">
+                    <input type="password" placeholder="Confirm your password" class="form-control-field">
                     <div class="user-img">
                         <input type='file' name='imageField' accept=".jpg, .jpeg"/>
-                    </div>  
-                    <button class="btn btn-default btn-primary">Crear cuenta</button>
+                    </div> 
+                    <button class="btn btn-default btn-primary">Create account</button>
+                    <p>{{state}}</p>
                 </form>
             </div>
-
         </div>
     </div>
 

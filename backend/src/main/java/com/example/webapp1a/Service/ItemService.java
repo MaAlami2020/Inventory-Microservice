@@ -40,6 +40,7 @@ public class ItemService {
     public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
 
+        //do not change
         Blob image = item.get().getImageFile();
         newItem.setImageFile(image);
         
