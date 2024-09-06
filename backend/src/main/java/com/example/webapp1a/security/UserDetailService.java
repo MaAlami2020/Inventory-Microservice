@@ -29,23 +29,30 @@ public class UserDetailService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-       
+        //System.out.println("username" + username);
 
-        Optional<User> user = userRepository.findByUsername(username); 
+        Optional<User> user = userRepository.findByEmail(username); 
 
+        Optional<Admin> admin = adminRepo.findByEmail(username);
 
-        if(!user.isPresent()){ 
+        if(!user.isPresent() && !admin.isPresent()){
             new UsernameNotFoundException("404.html");
         }
 
-
+        if(user.isPresent()){
             List<GrantedAuthority> roles = new ArrayList<>();
             roles.add(new SimpleGrantedAuthority("ROLE_" + user.get().getRol()));
 
-            return new org.springframework.security.core.userdetails.User(user.get().getUsername(),
+            return new org.springframework.security.core.userdetails.User(user.get().getEmail(),
                     user.get().getEncodedPassword(), roles);
+        } else if(admin.isPresent()){
+            List<GrantedAuthority> roles = new ArrayList<>();
+            roles.add(new SimpleGrantedAuthority("ROLE_" + admin.get().getRol()));
 
+            return new org.springframework.security.core.userdetails.User(admin.get().getEmail(),
+                    user.get().getEncodedPassword(), roles);
+        }
 
-
+        return null;
     }
 }
