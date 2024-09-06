@@ -63,7 +63,7 @@ public class UserRestController {
         }
     }
     
-    @GetMapping("/user/{id}/image")
+    /*@GetMapping("/user/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
         
         Optional<User> user = userService.findById(id);
@@ -77,13 +77,24 @@ public class UserRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
     
 
 
-    /*@GetMapping("/users/{username}/image")
-    public String getUserImage(@PathVariable String username) {
+    @GetMapping("/users/{iD}/image")
+    public ResponseEntity<Object> getUserImage(@PathVariable Integer iD) throws SQLException{
         
-        Optional<User> user = userService.findByUsername(username);
-    }*/
+        Optional<User> user = userService.findById(iD);
+
+        if(user.isPresent() && user.get().getAvatar() != null){
+            Resource file = new InputStreamResource(user.get().getAvatar().getBinaryStream());
+
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .contentLength(user.get().getAvatar().length())
+                .body(file);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

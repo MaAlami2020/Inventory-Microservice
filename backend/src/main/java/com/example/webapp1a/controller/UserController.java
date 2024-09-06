@@ -36,32 +36,5 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/login")
-    public String accessUser(Model model, User user) {
-        model.addAttribute("logged",true);
-        return "index";
-    }
-    
-    
-    @PostMapping("/signup")
-    public String newUser(Model model, User user, MultipartFile imageField, HttpServletRequest request) throws IOException{
 
-        Optional<User> oldUser = userService.findById(39);
-
-        if(!imageField.isEmpty()){
-            user.setAvatar(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-        } else {
-            user.setAvatar(oldUser.get().getAvatar());
-        }
-
-        User userSaved = userService.add(user);
-
-
-        if(userSaved != null){
-            model.addAttribute("state", "user registered");
-        } else {
-            model.addAttribute("state", "some fields are empty or incorrect");
-        }
-        return "login";
-    }
 }

@@ -1,19 +1,31 @@
 package com.example.webapp1a.controller;
 
 import java.security.Principal;
-
+import java.util.Optional;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.engine.jdbc.BlobProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.webapp1a.model.items.User;
+import com.example.webapp1a.service.UserService;
+import java.sql.Blob;
 
 
 @Controller
 public class Home {
+
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -21,6 +33,9 @@ public class Home {
         Principal principal = request.getUserPrincipal();
 
         if(principal != null){
+            String email = principal.getName();
+            Optional<User> user = userService.findByEmail(email);
+            model.addAttribute("iD",user.get().getId());
             model.addAttribute("logged",true);
         } else {
             model.addAttribute("logged",false);
@@ -38,7 +53,30 @@ public class Home {
         return "login";
     }
 
-    @GetMapping("/login")
+    @PostMapping("/new")
+    public String newUser(Model model, User user, MultipartFile imageField) throws IOException{
+
+        if(imageField.isEmpty()){
+            Optional<User> anonymous = userService.findById(39);
+            if(!anonymous.isPresent()) {
+                user.setAvatar(anonymous.get().getAvatar());
+            }
+        }else{
+            user.setAvatar(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+        }
+
+        User userSaved = userService.add(user);
+
+        if(userSaved != null){
+            model.addAttribute("state", "user registered");
+        }else{
+            model.addAttribute("state", "some mnadatory fields are empty or incorrect");
+        }
+
+        return "login";
+    }
+
+    @RequestMapping("/login")
     public String login(Model model){
         model.addAttribute("state","");
         return "login";
