@@ -25,10 +25,13 @@ public class User {
     //private String name;
 
     @Column(name = "email")
-    private String email;
+    private String username;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "rol")
+    private String rol;
 
     private String confirmationPassword;
 
@@ -55,20 +58,28 @@ public class User {
         return name;
     }*/
 
-    public void setEmail(String email){
-        this.email = email;
+    public void setUsername(String email){
+        this.username = email;
     }
 
-    public String getEmail(){
-        return email;
+    public String getUsername(){
+        return username;
     }
 
-    public void setPassword(String password){
+    public void setEncodedPassword(String password){
         this.password = password;
     }
 
-    public String getPassword(){
+    public String getEncodedPassword(){
         return password;
+    }
+
+    public String getRol(){
+        return rol;
+    }
+
+    public void setRol(String rol){
+        this.rol = rol;
     }
 
     public void setConfirmationPassword(String confirmationPassword){

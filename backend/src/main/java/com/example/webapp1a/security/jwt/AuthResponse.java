@@ -4,16 +4,23 @@ public class AuthResponse {
 
     private Status status;
     private String message;
+    private String error;
 
     public enum Status{
-        SUCCESS
+        SUCCESS, FAILURE
     }
 
     public AuthResponse(){}
 
-    public AuthResponse(Status status, String msg){
+    public AuthResponse(Status status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+
+    public AuthResponse(Status status, String msg, String error){
         this.status = status;
         this.message = msg;
+        this.error = error;
     }
 
     public Status getStatus(){
@@ -32,8 +39,16 @@ public class AuthResponse {
         this.message = message;
     }
 
+    public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
     @Override
     public String toString() {
-        return "LoginResponse [status=" + status + ", message=" + message + "]";
+        return "LoginResponse [status=" + status + ", message=" + message + ", error=" + error + "]";
     }
 }
