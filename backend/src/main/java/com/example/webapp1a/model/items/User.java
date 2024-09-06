@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 //import org.hibernate.annotations.Type;
 
 import java.sql.Blob;
@@ -77,11 +79,11 @@ public class User {
         this.rol = rol;
     }
 
-    public void setConfirmationPassword(String passwordConfirmation){
-        this.passwordConfirmation=passwordConfirmation;
+    public void setPasswordConfirmation(String passwordConfirmation){
+        this.passwordConfirmation = passwordConfirmation;
     }
 
-    public String getConfirmationPassword(){
+    public String getPasswordConfirmation(){
         return passwordConfirmation;
     }
 

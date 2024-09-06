@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webapp1a.model.items.User;
@@ -49,27 +50,26 @@ public class Home {
 
     @GetMapping("/signup")
     public String signup(Model model){
-        model.addAttribute("state","");
+        model.addAttribute("state_reg","");
+        model.addAttribute("state_log","");
         return "login";
     }
 
     @PostMapping("/new")
-    public String newUser(Model model, User user, MultipartFile imageField) throws IOException{
+    public String newUser(Model model, User user, MultipartFile imageField, @RequestParam String confirmation) throws IOException{
 
         if(imageField.isEmpty()){
             Optional<User> anonymous = userService.findById(39);
-            if(!anonymous.isPresent()) {
+            if(anonymous.isPresent()) {
                 user.setImageFile(anonymous.get().getImageFile());
             }
         }else{
             user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-        }
+        }    
 
-        user.setRol("USER");
-
-        User userSaved = userService.add(user);
-
-        if(userSaved != null){
+        if(user.getEmail() != null && user.getEncodedPassword() != null && user.getEncodedPassword().equals(confirmation)){
+            user.setRol("USER");
+            userService.add(user);
             model.addAttribute("state_reg", "user registered");
         }else{
             model.addAttribute("state_reg", "some mnadatory fields are empty or incorrect");

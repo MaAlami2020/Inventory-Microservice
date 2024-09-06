@@ -1,6 +1,7 @@
 package com.example.webapp1a.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,16 +14,14 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     public User add(User user){
-        User newUser = userRepo.save(user);
-        return newUser;
-        /*if(!user.getEmail().equals("") && !user.getEncodedPassword().equals("") && user.getConfirmationPassword().equals(user.getEncodedPassword())){
-            return newUser;
-        } else {
-            userRepo.delete(newUser);
-            return null;
-        }*/
+        user.setEncodedPassword(passwordEncoder.encode(user.getEncodedPassword()));
+
+        return userRepo.save(user);
     }
 
     public Optional<User> findById(Integer id){
