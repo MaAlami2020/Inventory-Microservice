@@ -17,7 +17,7 @@ public class Admin {
     private Integer id;
 
     @Column(name = "email")
-    private String username;
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -35,12 +35,12 @@ public class Admin {
         this.id = id;
     }
 
-    public String getUsername(){
-        return username;
+    public String getEmail(){
+        return email;
     }
 
-    public void setUsername(String email){
-        this.username = email;
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getEncodedPassword(){

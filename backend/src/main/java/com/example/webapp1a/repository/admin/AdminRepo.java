@@ -8,5 +8,5 @@ import com.example.webapp1a.model.admin.Admin;
 
 public interface AdminRepo extends JpaRepository<Admin, Integer>{
     
-    Optional<Admin> findByUsername(String email);
+    Optional<Admin> findByEmail(String email);
 }

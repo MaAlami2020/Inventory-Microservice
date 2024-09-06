@@ -25,7 +25,7 @@ public class User {
     //private String name;
 
     @Column(name = "email")
-    private String username;
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -58,12 +58,12 @@ public class User {
         return name;
     }*/
 
-    public void setUsername(String email){
-        this.username = email;
+    public void setEmail(String email){
+        this.email = email;
     }
 
-    public String getUsername(){
-        return username;
+    public String getEmail(){
+        return email;
     }
 
     public void setEncodedPassword(String password){

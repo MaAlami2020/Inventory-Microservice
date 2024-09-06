@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepo;
     
     public User add(User user){
-        if(!user.getUsername().equals("") && !user.getEncodedPassword().equals("") && user.getConfirmationPassword().equals(user.getEncodedPassword())){
+        if(!user.getEmail().equals("") && !user.getEncodedPassword().equals("") && user.getConfirmationPassword().equals(user.getEncodedPassword())){
             return userRepo.save(user);
         } else {
             return null;
