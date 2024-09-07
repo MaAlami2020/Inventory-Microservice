@@ -10,7 +10,7 @@
 
 ## **1. Entities**
 - user: attribute -> name, email, password, image
-- producto: attribute -> name, price
+- item: attribute -> name, price
 - shopping cart: attribute -> item
 - order: attribute -> paying (accepted/denied, debit/credit)
 
@@ -108,13 +108,16 @@ Administrator user permissions
 ![registered_administrator_user](/backend/src/main/resources/static/img/prototype.jpg)
 
 ## **2.1 Compilation**
-mvn spring-boot:run
-6. Como compilar, empaquetar, …
+codes to stand up the application
+-     mvn spring-boot:run
+-     java -jar target/webappa1a-0.0.1-SNAPSHOT.jar
 
-Ahora mismo, sin haber escrito ni una línea ya podemos hacer todas las tareas habituales (esto con Ant no sería tan fácil ;):
 
-    $ mvn compile – compila el proyecto y deja el resultado en target/classes
-    $ mvn test – compila los test y los ejecuta
-    $ mvn package – empaqueta el proyecto y lo dejará en taget/autentiaNegocio-1.0-SNAPSHOT.jar
-    $ mvn install – guarda el proyecto en el repositorio
-    $ mvn clean – borra el directorio de salida (target)
+6. How to compile, pack the project and so on …
+
+
+    $ mvn compile – compile the project and set the result in target/classes folder
+    $ mvn test – compile tests and execute them
+    $ mvn package – pack the project and set it in taget/autentiaNegocio-1.0-SNAPSHOT.jar file
+    $ mvn install – save the project in the repository
+    $ mvn clean – delete the outgoing directory (target)

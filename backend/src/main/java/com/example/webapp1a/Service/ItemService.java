@@ -1,4 +1,4 @@
-package com.example.webapp1a.Service;
+package com.example.webapp1a.service;
 
 import java.sql.Blob;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.Model.Item;
-import com.example.webapp1a.Repository.ItemRepo;
+import com.example.webapp1a.model.items.Item;
+import com.example.webapp1a.repository.items.ItemRepo;
 
 @Service
 public class ItemService {
@@ -40,6 +40,7 @@ public class ItemService {
     public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
 
+        //do not change
         Blob image = item.get().getImageFile();
         newItem.setImageFile(image);
         

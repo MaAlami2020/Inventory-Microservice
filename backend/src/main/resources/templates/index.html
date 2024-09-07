@@ -39,8 +39,18 @@
             <nav class="nav-menu" id="mySidenav">
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
+                    {{#logged}}
+                    <div class="user-img">
+                        <a href="/login"><img src=/databases/user/{{iD}}/image alt=""></img></a>
+                    </div>
+                    {{/logged}}
+                    {{^logged}}
+                    <div class="user-img">
+                        <img src="/databases/user/39/image" alt="" width="50" height="50"></img>
+                    </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
+                    {{/logged}}
                 </ul>
                 <form>
                     <div>
@@ -114,8 +124,7 @@
 
     <footer class="footer">     
         <div class="footer-bar-top">
-                <li class="footer-bar-top-links">2024 Avenue Fashion</li>
-
+            <li class="footer-bar-top-links">2024 Avenue Fashion</li>
         </div>
     </footer>
     <script src="/js/main.js"></script>
