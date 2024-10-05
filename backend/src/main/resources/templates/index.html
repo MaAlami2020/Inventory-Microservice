@@ -22,43 +22,16 @@
                 <li class="navbar-top-item">
                     <!--<a href="login.html" class="navbar-top-links">Iniciar sesión</a>-->
                 </li>
-                <li class="navbar-top-item">
-                    <a href="/shopping_cart" class="navbar-top-links">
-                        <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
-                        <!-- <i class="zmdi zmdi-chevron-down"></i> -->
-                    </a>
-                </li>
             </ul>
         </nav>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
-                    {{#logged}}
-                    {{#user}}
                     <div class="user-img">
-                        <a href="/login"><img src=/databases/{{username}}/image alt="" width="50" height="50"></img></a>
-                    </div>
-                    <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
-                    {{/user}}
-                    {{#admin}}
-                    <div class="user-img">
-                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
+                        <img src="//localhost:8443/databases/users/39/image" alt="" width="50" height="50"></img>
                     </div>
                     <li class="nav-menu-item"><a href="//localhost:8444/items/page" class="nav-menu-link">New item</a></li>
-                    {{/admin}}
-                    <form action="/logout" method="post">
-                        <button class="nav-menu-link" type="submit">Log out</button>						
-                    </form>
-
-                    {{/logged}}
-                    {{^logged}}
-                    <div class="user-img">
-                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
-                    </div>   
-                    <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
-                    <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
-                    {{/logged}}
                 </ul>
                 <form>
                     <div>
@@ -72,12 +45,6 @@
             </nav>
         </nav>
     </header>
-    <!-- Banner -->
-    <div class="banner banner-cover">
-        <div class="banner-container ">
-            <h1 class="title-cover">AVE</h1>
-        </div>
-    </div>
 
     <!-- Sección de fotografías -->
     <div class="container">
@@ -143,10 +110,10 @@
     
 </body>
 <script>
-    var tam=10;
+    var tam=12;
     var tam1;
 
-    let ruta='//localhost:8443/databases/items?size='+tam;
+    let ruta='//localhost:8444/databases/items?size='+tam;
 
     function loadInitItems(callback,tam){
         $.ajax({
@@ -161,7 +128,7 @@
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/databases/items/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
@@ -171,7 +138,7 @@
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/databases/items/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
@@ -193,7 +160,7 @@
         $('.pagination').click(function() {
             tam+=10;
 
-            let ruta='https://localhost:8443/databases/items?size='+tam;
+            let ruta='https://localhost:8444/databases/items?size='+tam;
 
             $('#spinner-div').show();
             $.ajax({
@@ -214,7 +181,7 @@
             $('#itemFoundedListing').empty();
             tam1=10;
             let value = $('#name').val();
-            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -234,7 +201,7 @@
         $('.items-founded-pagination').click(function() {
             tam1+=10;
             let value= $('#name').val();
-            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({

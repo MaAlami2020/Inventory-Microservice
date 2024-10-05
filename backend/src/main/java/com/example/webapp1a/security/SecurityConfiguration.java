@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -62,11 +63,7 @@ public class SecurityConfiguration{
 
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
-                registry.antMatchers("/login").permitAll();
-                registry.antMatchers("/loginerror").permitAll();
-                registry.antMatchers("/logout").permitAll();
-                registry.antMatchers("/signup").permitAll();
-                registry.antMatchers("/items/page").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/page").permitAll();
             })
 
             .logout(httpLogout -> {
@@ -75,5 +72,11 @@ public class SecurityConfiguration{
             })
             
             .build();
+    }
+
+    public void addCorsMapping(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins("https://localhost:8443")
+                .allowCredentials(true);
     }
 }

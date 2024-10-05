@@ -36,67 +36,59 @@
                         <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
                     </div>
                 </div>
-                <input type='file' name='imageField' accept=".jpg, .jpeg, .png"/>
+                <input type='file' name='imageField' accept=".jpg, .jpeg, .png" required/>
             </div>
             <div class="column">
                 <h3 class="is-size-4">New item</h3>
                 <div class="columns">
                     <div class="column">
-                        <input type="text" name="name" placeholder="name" class="form-control-field"></input>
+                        <input type="text" name="name" placeholder="name" class="form-control-field" required/>
                     </div>
                     <div class="column">
-                        <input type="text" name="price" placeholder="price" class="form-control-field"></input>
+                        <input type="number" name="price" placeholder="price" class="form-control-field" min="0" step="0.01" required/>
                     </div>
                 </div>
                  
-                <p class="has-text-grey"> <strong>Disponibilidad: </strong>{stock}</p>
-               <!--if(items.stock.length() > 5){
-                        model.addAttribute("stock","In stock");
-                    } else {
-                        model.addAttribute("stock","Only 5 items left");
-                    }-->
-                <form action="#" class="form-control">
+                <p class="has-text-grey"> <strong>Disponibilidad:   </strong>{{stock}}</p>
                     <div class="columns is-multiline">
                         <div class="column is-one-third">
                             <label for="color">Gender</label>
-                            <select class="form-control-field" id="gender">
-                                <option  id="gender1" name="gender">man</option>
-                                <option  id="gender2" name="gender">woman</option>
-                                <option  id="gender3" name="gender">unisex</option>
-                            </select>
+                            <div class="form-control-field" id="gender">
+                                <label><input type="radio" id="gender1" name="gender" value="man" required/> man</label>
+                                <label><input type="radio" id="gender2" name="gender" value="woman" required/> woman</label>
+                                <label><input type="radio" id="gender3" name="gender" value="unisex" required/> unisex</label>
+                            </div>
                         </div>
                         <div class="column is-one-third">
                             <label for="size">Size</label>
-                            <select class="form-control-field" id="size">
-                                <option  id="size1" name="size">S</option>
-                                <option  id="size2" name="size">M</option>
-                                <option  id="size3" name="size">L</option>
-                                <option  id="size4" name="size">XL</option>
-                            </select>
+                            <div class="form-control-field" id="size">
+                                <label><input type="radio" id="size1" name="size" value="S" required> S</label>
+                                <label><input type="radio" id="size2" name="size" value="M" required> M</label>
+                                <label><input type="radio" id="size3" name="size" value="L" required> L</label>
+                                <label><input type="radio" id="size4" name="size" value="XL" required> XL</label>
+                            </div>
                         </div>
                         <div class="column is-one-third">
                             <label for="size">Type</label>
-                            <select class="form-control-field" id="type">
-                                <option  id="type1" name="type">jeans</option>
-                                <option  id="type2" name="type">t_shirt</option>
-                                <option  id="type3" name="type">dress</option>
-                            </select>
+                            <div class="form-control-field" id="type">
+                                <label><input type="radio" id="type1" name="type" value="jeans" required> jeans</label>
+                                <label><input type="radio" id="type2" name="type" value="t-shirt" required> t_shirt</label>
+                                <label><input type="radio" id="type3" name="type" value="dress" required> dress</label>
+                            </div>
                         </div>
                     </div>
                     <div class="columns is-multiline">
-                        
                         <div class="column is-one-third">
                             <label for="quality">Stock:</label>
-                            <label for="quality">20</label>             
+                            <input type="number" name="stock" placeholder="stock" class="form-control-field" required>          
                         </div>
                     </div>
                     <div class="columns is-multiline">
                         <div class="column is-full is-marginless">
-                            <button class="btn btn-default btn-outline">
-                                create/edit item</button>
+                            <button class="btn btn-default btn-outline">create item</button>
                         </div>
+                        {{status}}
                     </div>
-                </form>
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@ public class ItemService {
         itemRepo.save(item);
     }
 
-    /*public Page<Item> findAll(Pageable page){
+    public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
     }
     
@@ -29,13 +29,15 @@ public class ItemService {
         return itemRepo.findById(id);
     }
 
-    public void deleteById(Integer id){
+    public Page<Item> findByName(String name, Pageable page){
+        return itemRepo.findByName(name, page);
+    }
+
+    /*public void deleteById(Integer id){
         itemRepo.deleteById(id);
     }
 
-    public Page<Item> getItemsByName(String name, Pageable page){
-        return itemRepo.findByName(name, page);
-    }
+    
 
     public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
