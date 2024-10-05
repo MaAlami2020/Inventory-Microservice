@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(entityManagerFactoryRef = "itemEntityManagerFactory", transactionManagerRef = "itemTransactionManager",
-basePackages = {"com.example.webapp1a.repository.items"})
+basePackages = {"com.example.webapp1a.repository"})
 public class MySQLConfig {
 
     @Autowired
@@ -40,7 +40,7 @@ public class MySQLConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(itemDataSource());
-        em.setPackagesToScan("com.example.webapp1a.model.items");
+        em.setPackagesToScan("com.example.webapp1a.model");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

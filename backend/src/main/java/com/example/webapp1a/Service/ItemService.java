@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.model.items.Item;
-import com.example.webapp1a.repository.items.ItemRepo;
+import com.example.webapp1a.model.Item;
+import com.example.webapp1a.repository.ItemRepo;
 
 @Service
 public class ItemService {
@@ -21,7 +21,7 @@ public class ItemService {
         itemRepo.save(item);
     }
 
-    public Page<Item> findAll(Pageable page){
+    /*public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
     }
     
@@ -62,5 +62,5 @@ public class ItemService {
 
         newItem.setId(id);
         itemRepo.save(newItem);
-    }
+    }*/
 }
