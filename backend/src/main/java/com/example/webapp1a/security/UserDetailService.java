@@ -12,9 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.model.admin.Admin;
 import com.example.webapp1a.model.items.User;
-import com.example.webapp1a.repository.admin.AdminRepo;
 import com.example.webapp1a.repository.items.UserRepository;
 
 @Service
@@ -22,9 +20,6 @@ public class UserDetailService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private AdminRepo adminRepo;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,23 +28,11 @@ public class UserDetailService implements UserDetailsService{
 
         Optional<User> user = userRepository.findByEmail(username); 
 
-        Optional<Admin> admin = adminRepo.findByEmail(username);
-
-        if(!user.isPresent() && !admin.isPresent()){
-            new UsernameNotFoundException("404.html");
-        }
-
         if(user.isPresent()){
             List<GrantedAuthority> roles = new ArrayList<>();
             roles.add(new SimpleGrantedAuthority("ROLE_" + user.get().getRol()));
 
             return new org.springframework.security.core.userdetails.User(user.get().getEmail(),
-                    user.get().getEncodedPassword(), roles);
-        } else if(admin.isPresent()){
-            List<GrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority("ROLE_" + admin.get().getRol()));
-
-            return new org.springframework.security.core.userdetails.User(admin.get().getEmail(),
                     user.get().getEncodedPassword(), roles);
         }
 
