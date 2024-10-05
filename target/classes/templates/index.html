@@ -31,22 +31,30 @@
             </ul>
         </nav>
         <nav class="navbar">
-            <!--<header class="nabvar-mobile is-size-5-mobile">
-                <a class="navbar-mobile-link has-text-white" href="#" id="btn-mobile"><i class="zmdi zmdi-menu"></i></a>
-                <a class="navbar-mobile-link has-text-white" href="index.html">Avenue Fashion</a>
-                <a class="navbar-mobile-link has-text-white" href="#"><i class="zmdi zmdi-shopping-cart"></i> Vacio</a>
-            </header>-->
             <nav class="nav-menu" id="mySidenav">
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     {{#logged}}
+                    {{#user}}
                     <div class="user-img">
-                        <a href="/login"><img src=/databases/user/{{iD}}/image alt=""></img></a>
+                        <a href="/login"><img src=/databases/{{username}}/image alt="" width="50" height="50"></img></a>
                     </div>
+                    <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
+                    {{/user}}
+                    {{#admin}}
+                    <div class="user-img">
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
+                    </div>
+                    <li class="nav-menu-item"><a href="//localhost:8444/items/page" class="nav-menu-link">New item</a></li>
+                    {{/admin}}
+                    <form action="/logout" method="post">
+                        <button class="nav-menu-link" type="submit">Log out</button>						
+                    </form>
+
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/databases/user/39/image" alt="" width="50" height="50"></img>
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
@@ -55,8 +63,9 @@
                 <form>
                     <div>
                         <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>
+                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>                       
                         <input class="submit" type="button" value="search"/>
+                        
                     </div>
                 </form>
                 <!--items listing-->     
@@ -122,6 +131,8 @@
         </div>
     </div>
 
+    <div id="plotlyChart" width="400" height="150"></div>
+
     <footer class="footer">     
         <div class="footer-bar-top">
             <li class="footer-bar-top-links">2024 Avenue Fashion</li>
@@ -129,39 +140,40 @@
     </footer>
     <script src="/js/main.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
+    
 </body>
 <script>
     var tam=10;
     var tam1;
 
-    let ruta='//localhost:8444/databases/items?size='+tam;
+    let ruta='//localhost:8443/databases/items?size='+tam;
 
     function loadInitItems(callback,tam){
         $.ajax({
             url:ruta
         }).done(function (items){
+            
             callback(items);
-        })
+        }) 
     }
 
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
-            '/image" alt=""></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
+            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
-            '/image" alt=""></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
+            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
@@ -181,7 +193,7 @@
         $('.pagination').click(function() {
             tam+=10;
 
-            let ruta='http://localhost:8444/databases/items?size='+tam;
+            let ruta='https://localhost:8443/databases/items?size='+tam;
 
             $('#spinner-div').show();
             $.ajax({
@@ -202,7 +214,7 @@
             $('#itemFoundedListing').empty();
             tam1=10;
             let value = $('#name').val();
-            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -222,7 +234,7 @@
         $('.items-founded-pagination').click(function() {
             tam1+=10;
             let value= $('#name').val();
-            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
