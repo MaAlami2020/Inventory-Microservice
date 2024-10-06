@@ -42,25 +42,25 @@ public class ItemsRestController {
     private ItemService itemService;
 
     
-    @PostMapping("/item")
+    @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
         itemService.add(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    /*@DeleteMapping("/item/{id}")
+    @DeleteMapping("/items/{id}")
     public ResponseEntity<Item> deleteItemById(@PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            itemService.deleteById(id);
+            //itemService.deleteById(id);
             return new ResponseEntity<>(item.get(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/item/{id}")
+    /*@PutMapping("/item/{id}")
     public ResponseEntity<Item> editItem(@RequestBody Item newItem, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
@@ -71,7 +71,7 @@ public class ItemsRestController {
         }
     }*/
 
-    @PostMapping("/item/{id}/image")
+    @PostMapping("/items/{id}/image")
     public ResponseEntity<Item> addItemImage(@PathVariable Integer id, @RequestParam MultipartFile itemImage) throws IOException{
         
         Optional<Item> item = itemService.findById(id);

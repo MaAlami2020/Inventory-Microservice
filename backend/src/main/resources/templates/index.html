@@ -26,7 +26,7 @@
         </nav>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
+                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="//localhost:8443/">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     <div class="user-img">
                         <img src="//localhost:8443/databases/users/39/image" alt="" width="50" height="50"></img>
@@ -127,8 +127,8 @@
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/databases/items/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '</span> <a href="/items/' + item.id + '"><img src="/databases/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a id="item-' + item.id + '" href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
@@ -137,8 +137,8 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/databases/items/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '</span> <a href="/items/' + item.id + '"><img src="/databases/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a id="item-' + item.id + '" href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
@@ -156,9 +156,19 @@
             }
         });
 
+        /*var info = $("#itemListing");
+
+        info.click(function() {
+            tam = 12;
+            var val = $(event.target).attr("id").split("-")[1];
+            alert(val);
+
+            let urlDeletion = 'https://localhost:8444/';
+        });*/
+
         //pagination
         $('.pagination').click(function() {
-            tam+=10;
+            tam+=12;
 
             let ruta='https://localhost:8444/databases/items?size='+tam;
 
@@ -179,7 +189,7 @@
         $('.submit').click(function() {
             $('#total-item-founded').empty();
             $('#itemFoundedListing').empty();
-            tam1=10;
+            tam1=12;
             let value = $('#name').val();
             let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
 
@@ -199,7 +209,7 @@
         })
 
         $('.items-founded-pagination').click(function() {
-            tam1+=10;
+            tam1+=12;
             let value= $('#name').val();
             let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
 

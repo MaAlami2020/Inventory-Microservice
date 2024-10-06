@@ -33,13 +33,13 @@ public class ItemService {
         return itemRepo.findByName(name, page);
     }
 
-    /*public void deleteById(Integer id){
+    public void deleteById(Integer id){
         itemRepo.deleteById(id);
     }
 
     
 
-    public void update(Integer id, Item newItem){
+    /*public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
 
         //do not change
