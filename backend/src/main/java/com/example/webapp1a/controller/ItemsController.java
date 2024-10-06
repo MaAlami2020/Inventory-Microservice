@@ -51,6 +51,19 @@ public class ItemsController {
         return "new_item";
     }
 
+    @PostMapping("/{id}/update")
+    public String itemUpdating(Model model, Item itemUpdated, @PathVariable Integer id){
+        Optional<Item> item = itemService.findById(id);
+
+        if(item.isPresent()){
+            itemService.update(item.get().getId(), itemUpdated);
+
+            return "edition";
+        } else {
+            return "error";
+        }
+    }
+
     @GetMapping("/{id}/delete")
     public String removeReview(Model model, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
@@ -65,6 +78,8 @@ public class ItemsController {
 
     @GetMapping("/{id}")
     public String itemPage(Model model, @PathVariable Integer id){
+        model.addAttribute("stock","");
+        model.addAttribute("status","");
         return "edition";
     }
 }

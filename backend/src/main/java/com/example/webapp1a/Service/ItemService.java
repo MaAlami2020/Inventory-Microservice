@@ -35,34 +35,10 @@ public class ItemService {
 
     public void deleteById(Integer id){
         itemRepo.deleteById(id);
-    }
+    }  
 
-    
-
-    /*public void update(Integer id, Item newItem){
-        Optional<Item> item = itemRepo.findById(id);
-
-        //do not change
-        Blob image = item.get().getImageFile();
-        newItem.setImageFile(image);
-        
-        if(newItem.getName() == null){
-            newItem.setName(item.get().getName());
-        }if(newItem.getCategory() == null){
-            newItem.setCategory(item.get().getCategory());
-        }if(newItem.getDescription() == null){
-            newItem.setDescription(item.get().getDescription());
-        }if(newItem.getPrice() == null){
-            newItem.setPrice(item.get().getPrice());
-        }if(newItem.getSex() == null){
-            newItem.setSex(item.get().getSex());
-        }if(newItem.getSize() == null){
-            newItem.setSize(item.get().getSize());
-        }if(newItem.getQuantity() == null){
-            newItem.setQuantity(item.get().getQuantity());
-        }
-
+    public void update(Integer id, Item newItem){
         newItem.setId(id);
         itemRepo.save(newItem);
-    }*/
+    }
 }
