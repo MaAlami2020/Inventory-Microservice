@@ -78,8 +78,20 @@ public class ItemsController {
 
     @GetMapping("/{id}")
     public String itemPage(Model model, @PathVariable Integer id){
-        model.addAttribute("stock","");
+        model.addAttribute("new_stock","");
         model.addAttribute("status","");
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()) {
+            model.addAttribute("name",item.get().getName());
+            model.addAttribute("price",item.get().getPrice());
+            model.addAttribute("gender",item.get().getGender());
+            model.addAttribute("size",item.get().getSize());
+            model.addAttribute("type",item.get().getType());
+            model.addAttribute("stock",item.get().getStock());
+            model.addAttribute("description",item.get().getDescription());
+        } else {
+            return "error";
+        }
         return "edition";
     }
 }

@@ -14,19 +14,43 @@
 <body>
     <header>
         <nav class="navbar">
-            <nav class="nav-menu --nav-dark-light" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
+            <nav class="nav-menu --nav-dark" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" href="/">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
     </header>
     <!-- Banner -->
     <div class="banner banner-second">
-        <div class="banner-container ">
+        <div class="banner-container">
+            <h1>Current item</h1>
+            <div class="columns">
+                <div class="column">
+                    <img src="/databases/items/{{id}}/image" alt="" width="450" height="450"></img>
+                </div>
+                <div class="column">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Size: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
+                </div>
+                <div class="column">
+                    <p>{{name}}</p>
+                    <p>{{price}} €</p> 
+                    <p>{{gender}}</p>
+                    <p>{{size}}</p>
+                    <p>{{type}}</p>
+                    <p>{{stock}}</p>
+                    <p>{{description}}</p>   
+                </div>
+            </div>
         </div>
     </div>
 
-<div>
+
 <form action="/items/update" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
@@ -49,7 +73,7 @@
                     </div>
                 </div>
                  
-                <p class="has-text-grey"> <strong>Disponibilidad:   </strong>{{stock}}</p>
+                <p class="has-text-grey"> <strong>Disponibilidad:   </strong>{{new_stock}}</p>
                     <div class="columns is-multiline">
                         <div class="column is-one-third">
                             <label for="color">Gender</label>
