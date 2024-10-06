@@ -114,4 +114,10 @@ public class ItemsRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/items/{id}/delete")
+    public Page<Item> deleteItemById(@PathVariable Integer id, Pageable page){
+        itemService.deleteById(id);
+        return itemService.findAll(page);
+    }
 }

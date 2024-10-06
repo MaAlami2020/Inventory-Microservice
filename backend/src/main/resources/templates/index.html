@@ -128,9 +128,9 @@
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span> <a href="/items/' + item.id + '"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a id="item-' + item.id + '" href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'//<button id="item-' + item.id +'"></button>'
         )
     }
 
@@ -138,7 +138,7 @@
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span> <a href="/items/' + item.id + '"><img src="/databases/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a id="item-' + item.id + '" href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div></a><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
@@ -156,15 +156,27 @@
             }
         });
 
-        /*var info = $("#itemListing");
+        var info = $("#itemListing");
 
-        info.click(function() {
+        info.click(function(event) {
             tam = 12;
             var val = $(event.target).attr("id").split("-")[1];
-            alert(val);
+            //alert(val);
 
-            let urlDeletion = 'https://localhost:8444/';
-        });*/
+            let urlDeletion = 'https://localhost:8444/databases/items/' + val + '/delete?size=12';
+            $("#spinner-div").show();
+            $.ajax({
+                url: urlDeletion
+            }).done(function (items) {
+                if(items.content.length != 0){
+                    for(var i=0; i<items.content.length; i++){
+                        showItemLoaded(items.content[i]);
+                    }
+                }
+            })
+            $("#spinner-div").hide();
+            window.location.reload();
+        });
 
         //pagination
         $('.pagination').click(function() {
@@ -177,8 +189,8 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam-10 < item.content.length){
-                    for(var i=tam-10; i<item.content.length; i++){
+                if(item.size != 0 && tam-12 < item.content.length){
+                    for(var i=tam-12; i<item.content.length; i++){
                         showItemLoaded(item.content[i]);
                     }
                 }
@@ -218,8 +230,8 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam1-10 < item.numberOfElements){
-                    for(var i=tam1-10; i<item.numberOfElements; i++){
+                if(item.size != 0 && tam1-12 < item.numberOfElements){
+                    for(var i=tam1-12; i<item.numberOfElements; i++){
                         showItemFoundedLoaded(item.content[i]);
                     }
                 }
