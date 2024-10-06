@@ -52,12 +52,24 @@ public class ItemsController {
     }
 
     @PostMapping("/{id}/update")
-    public String itemUpdating(Model model, Item itemUpdated, @PathVariable Integer id){
+    public String itemUpdating(Model model, Item itemUpdated, @PathVariable Integer id, MultipartFile imageField) throws IOException{
+
         Optional<Item> item = itemService.findById(id);
-
+        model.addAttribute("new_stock","");
         if(item.isPresent()){
+            if(!imageField.isEmpty()){
+                itemUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+            }
             itemService.update(item.get().getId(), itemUpdated);
+            model.addAttribute("status","item updated");
 
+            model.addAttribute("name",item.get().getName());
+            model.addAttribute("price",item.get().getPrice());
+            model.addAttribute("gender",item.get().getGender());
+            model.addAttribute("size",item.get().getSize());
+            model.addAttribute("type",item.get().getType());
+            model.addAttribute("stock",item.get().getStock());
+            model.addAttribute("description",item.get().getDescription());
             return "edition";
         } else {
             return "error";

@@ -38,6 +38,31 @@ public class ItemService {
     }  
 
     public void update(Integer id, Item newItem){
+        Optional<Item> item = itemRepo.findById(id);
+        if(newItem.getImageFile() == null){
+            newItem.setImageFile(item.get().getImageFile());
+        }
+        if(newItem.getName().equals("")){
+            newItem.setName(item.get().getName());
+        }
+        if(newItem.getPrice() == null){
+            newItem.setPrice(item.get().getPrice());
+        }
+        if(newItem.getGender() == null){
+            newItem.setGender(item.get().getGender());
+        }
+        if(newItem.getSize() == null){
+            newItem.setSize(item.get().getSize());
+        }
+        if(newItem.getType() == null){
+            newItem.setType(item.get().getType());
+        }
+        if(newItem.getStock() == null){
+            newItem.setStock(item.get().getStock());
+        }
+        if(newItem.getDescription().equals("")){
+            newItem.setDescription(item.get().getDescription());
+        }
         newItem.setId(id);
         itemRepo.save(newItem);
     }

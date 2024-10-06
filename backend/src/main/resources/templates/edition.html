@@ -51,7 +51,7 @@
     </div>
 
 
-<form action="/items/update" method="post" class="form-control" enctype="multipart/form-data">
+<form action="/items/{{id}}/update" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
             <div class="column is-two-fifths-desktop">
@@ -60,16 +60,16 @@
                         <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
                     </div>
                 </div>
-                <input type='file' name='imageField' accept=".jpg, .jpeg, .png" required/>
+                <input type='file' name='imageField' accept=".jpg, .jpeg, .png"/>
             </div>
             <div class="column">
                 <h3 class="is-size-4">New item</h3>
                 <div class="columns">
                     <div class="column">
-                        <input type="text" name="name" placeholder="name" class="form-control-field" required/>
+                        <input type="text" name="name" placeholder="name" class="form-control-field"/>
                     </div>
                     <div class="column">
-                        <input type="number" name="price" placeholder="price" class="form-control-field" min="0" step="0.01" required/>
+                        <input type="number" name="price" placeholder="price" class="form-control-field" min="0" step="0.01"/>
                     </div>
                 </div>
                  
@@ -78,38 +78,38 @@
                         <div class="column is-one-third">
                             <label for="color">Gender</label>
                             <div class="form-control-field" id="gender">
-                                <label><input type="radio" id="gender1" name="gender" value="man" required/> man</label>
-                                <label><input type="radio" id="gender2" name="gender" value="woman" required/> woman</label>
-                                <label><input type="radio" id="gender3" name="gender" value="unisex" required/> unisex</label>
+                                <label><input type="radio" id="gender1" name="gender" value="man"/> man</label>
+                                <label><input type="radio" id="gender2" name="gender" value="woman"/> woman</label>
+                                <label><input type="radio" id="gender3" name="gender" value="unisex"/> unisex</label>
                             </div>
                         </div>
                         <div class="column is-one-third">
                             <label for="size">Size</label>
                             <div class="form-control-field" id="size">
-                                <label><input type="radio" id="size1" name="size" value="S" required> S</label>
-                                <label><input type="radio" id="size2" name="size" value="M" required> M</label>
-                                <label><input type="radio" id="size3" name="size" value="L" required> L</label>
-                                <label><input type="radio" id="size4" name="size" value="XL" required> XL</label>
+                                <label><input type="radio" id="size1" name="size" value="S"/> S</label>
+                                <label><input type="radio" id="size2" name="size" value="M"/> M</label>
+                                <label><input type="radio" id="size3" name="size" value="L"/> L</label>
+                                <label><input type="radio" id="size4" name="size" value="XL"/> XL</label>
                             </div>
                         </div>
                         <div class="column is-one-third">
                             <label for="size">Type</label>
                             <div class="form-control-field" id="type">
-                                <label><input type="radio" id="type1" name="type" value="jeans" required> jeans</label>
-                                <label><input type="radio" id="type2" name="type" value="t-shirt" required> t_shirt</label>
-                                <label><input type="radio" id="type3" name="type" value="dress" required> dress</label>
+                                <label><input type="radio" id="type1" name="type" value="jeans"/> jeans</label>
+                                <label><input type="radio" id="type2" name="type" value="t-shirt"/> t_shirt</label>
+                                <label><input type="radio" id="type3" name="type" value="dress"/> dress</label>
                             </div>
                         </div>
                     </div>
                     <div class="columns is-multiline">
                         <div class="column is-one-third">
                             <label for="quality">Stock:</label>
-                            <input type="number" name="stock" placeholder="stock" class="form-control-field" required>          
+                            <input type="number" name="stock" placeholder="stock" class="form-control-field"/>          
                         </div>
                     </div>
                     <div class="columns is-multiline">
                         <div class="column is-full is-marginless">
-                            <button class="btn btn-default btn-outline">create item</button>
+                            <button class="btn btn-default btn-outline">update item</button>
                         </div>
                         {{status}}
                     </div>
