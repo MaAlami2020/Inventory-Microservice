@@ -48,8 +48,25 @@
                         <input type="number" name="price" placeholder="price" class="form-control-field" min="0" step="0.01" required/>
                     </div>
                 </div>
-                 
-                <p class="has-text-grey"> <strong>Disponibilidad:   </strong>{{stock}}</p>
+
+                    <div class="columns is-multiline">
+                        <div class="column is-one-third">
+                            <label for="size">Size</label>
+                            <div class="form-control-field" id="size">
+                                <label><input type="checkbox" id="size1" name="sizes[0]" value="S"> S</label>
+                                <label><input type="checkbox" id="size2" name="sizes[1]" value="M"> M</label>
+                                <label><input type="checkbox" id="size3" name="sizes[2]" value="L"> L</label>
+                                <label><input type="checkbox" id="size4" name="sizes[3]" value="XL"> XL</label>
+                            </div>
+                        </div>
+                        <div class="column is-one-third">
+                            <label for="quality">Stock:</label>
+                            <input type="number" name="stocks[0]" placeholder="stock for size S" class="form-control-field">  
+                            <input type="number" name="stocks[1]" placeholder="stock for size M" class="form-control-field"> 
+                            <input type="number" name="stocks[2]" placeholder="stock for size L" class="form-control-field"> 
+                            <input type="number" name="stocks[3]" placeholder="stock for size XL" class="form-control-field">         
+                        </div>
+                    </div>
                     <div class="columns is-multiline">
                         <div class="column is-one-third">
                             <label for="color">Gender</label>
@@ -60,27 +77,12 @@
                             </div>
                         </div>
                         <div class="column is-one-third">
-                            <label for="size">Size</label>
-                            <div class="form-control-field" id="size">
-                                <label><input type="radio" id="size1" name="size" value="S" required> S</label>
-                                <label><input type="radio" id="size2" name="size" value="M" required> M</label>
-                                <label><input type="radio" id="size3" name="size" value="L" required> L</label>
-                                <label><input type="radio" id="size4" name="size" value="XL" required> XL</label>
-                            </div>
-                        </div>
-                        <div class="column is-one-third">
                             <label for="size">Type</label>
                             <div class="form-control-field" id="type">
                                 <label><input type="radio" id="type1" name="type" value="jeans" required> jeans</label>
                                 <label><input type="radio" id="type2" name="type" value="t-shirt" required> t_shirt</label>
                                 <label><input type="radio" id="type3" name="type" value="dress" required> dress</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="columns is-multiline">
-                        <div class="column is-one-third">
-                            <label for="quality">Stock:</label>
-                            <input type="number" name="stock" placeholder="stock" class="form-control-field" required>          
                         </div>
                     </div>
                     <div class="columns is-multiline">

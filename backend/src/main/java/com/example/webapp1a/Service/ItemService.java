@@ -51,14 +51,29 @@ public class ItemService {
         if(newItem.getGender() == null){
             newItem.setGender(item.get().getGender());
         }
-        if(newItem.getSize() == null){
-            newItem.setSize(item.get().getSize());
+        if(item.get().getSizes() != null){
+            int count = 0;
+            for(String size: item.get().getSizes()){
+                if(newItem.getSizes()[count] == null){
+                    newItem.getSizes()[count] = size;
+                }
+                count++;
+            }
+        }
+        if(item.get().getSizes() != null){
+            int count1 = 0;
+            for(Integer stock: item.get().getStocks()){
+                if(newItem.getStocks()[count1] == null){
+                    newItem.getStocks()[count1] = stock;
+                }
+                count1++;
+            }
         }
         if(newItem.getType() == null){
             newItem.setType(item.get().getType());
         }
-        if(newItem.getStock() == null){
-            newItem.setStock(item.get().getStock());
+        if(newItem.getStocks() == null){
+            newItem.setStocks(item.get().getStocks());
         }
         if(newItem.getDescription().equals("")){
             newItem.setDescription(item.get().getDescription());
