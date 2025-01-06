@@ -1,6 +1,6 @@
 package com.example.webapp1a.service;
 
-import java.sql.Blob;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.User;
+import com.example.webapp1a.model.ItemToBuy;
 import com.example.webapp1a.repository.ItemRepo;
 
 @Service
@@ -24,6 +26,10 @@ public class ItemService {
     public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
     }
+
+    public List<Item> findAll(){
+        return itemRepo.findAll();
+    }
     
     public Optional<Item> findById(Integer id){
         return itemRepo.findById(id);
@@ -35,9 +41,9 @@ public class ItemService {
 
     public void deleteById(Integer id){
         itemRepo.deleteById(id);
-    }  
+    } 
 
-    public void update(Integer id, Item newItem){
+    /*public void update(Integer id, Item newItem){
         Optional<Item> item = itemRepo.findById(id);
         if(newItem.getImageFile() == null){
             newItem.setImageFile(item.get().getImageFile());
@@ -60,7 +66,7 @@ public class ItemService {
                 count++;
             }
         }
-        if(item.get().getSizes() != null){
+        if(item.get().getStocks() != null){
             int count1 = 0;
             for(Integer stock: item.get().getStocks()){
                 if(newItem.getStocks()[count1] == null){
@@ -78,7 +84,14 @@ public class ItemService {
         if(newItem.getDescription().equals("")){
             newItem.setDescription(item.get().getDescription());
         }
+
+        for(User user: item.get().getFavourites()){
+            newItem.getFavourites().add(user);
+        }
+        for(ItemToBuy itemToBuy: item.get().getItemsToBuy()){
+            newItem.getItemsToBuy().add(itemToBuy);
+        }
         newItem.setId(id);
         itemRepo.save(newItem);
-    }
+    }*/
 }

@@ -3,6 +3,7 @@ package com.example.webapp1a.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.Shoe;
 import com.example.webapp1a.service.ItemService;
+import com.example.webapp1a.service.StockService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +38,15 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 
 @RestController
-@RequestMapping("/databases")
+@RequestMapping("/api/inventory")
 public class ItemsRestController {
 
     //admin add items
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private StockService stockService;
 
     
     @PostMapping("/items")
@@ -49,27 +56,70 @@ public class ItemsRestController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @PostMapping("/items/clothes/stock")
+    public ResponseEntity<Clothes> addClothesStock(@RequestBody Clothes clothes) {
+        Optional<Clothes> existingClothes = stockService.findByCodeC(clothes.getCode());
+        if(!existingClothes.isPresent()) {
+            stockService.addClothes(clothes);
+            return new ResponseEntity<>(clothes, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @PostMapping("/items/shoes/stock")
+    public ResponseEntity<Shoe> addShoeStock(@RequestBody Shoe shoe) {
+        Optional<Shoe> existingShoe = stockService.findByCodeS(shoe.getCode());
+        if(!existingShoe.isPresent()) {
+            stockService.addShoe(shoe);
+            return new ResponseEntity<>(shoe, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/clothes/stock")
+    public ResponseEntity<Page<Clothes>> getClothesStock(Pageable page){
+        Page<Clothes> clothes = stockService.findAllClothes(page);
+        return new ResponseEntity<>(clothes, HttpStatus.OK);
+    }
+
+    @GetMapping("/shoes/stock")
+    public ResponseEntity<Page<Shoe>> getShoesStock(Pageable page){
+        Page<Shoe> shoes = stockService.findAllShoe(page);
+        return new ResponseEntity<>(shoes, HttpStatus.OK);
+    }
+
+    @PutMapping("/items/{id}/update")
+    public ResponseEntity<Item> itemUpdating(@RequestBody Item itemUpdated, @PathVariable Integer id, MultipartFile imageField) throws  IOException{
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            if(!imageField.isEmpty()){
+                itemUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+            }
+            //itemService.update(item.get().getId(), itemUpdated);
+            return new ResponseEntity<>(itemUpdated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/items/{id}")
     public ResponseEntity<Item> deleteItemById(@PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            //itemService.deleteById(id);
+            itemService.deleteById(id);
             return new ResponseEntity<>(item.get(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    /*@PutMapping("/item/{id}")
-    public ResponseEntity<Item> editItem(@RequestBody Item newItem, @PathVariable Integer id){
-        Optional<Item> item = itemService.findById(id);
-        if(item.isPresent()){
-            itemService.update(id,newItem);
-            return new ResponseEntity<>(newItem, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }*/
+    @DeleteMapping("/items/{id}/delete")
+    public ResponseEntity<Page<Item>> deleteItemById(@PathVariable Integer id, Pageable page){
+        itemService.deleteById(id);
+        return new ResponseEntity<>(itemService.findAll(page), HttpStatus.OK);
+    }
 
     @PostMapping("/items/{id}/image")
     public ResponseEntity<Item> addItemImage(@PathVariable Integer id, @RequestParam MultipartFile itemImage) throws IOException{
@@ -89,35 +139,33 @@ public class ItemsRestController {
         }
     }
 
-    @GetMapping("/items")
-    public Page<Item> getItems(Pageable page){
-        return itemService.findAll(page);
-    }
-
-    @GetMapping("/items/{name}")
-    public Page<Item> getItemsByName(@PathVariable String name, Pageable page){
-        return itemService.findByName(name, page);
-    }
-
-    @GetMapping("/items/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable Integer id) throws SQLException {
-
+    /*@PutMapping("/item/{id}")
+    public ResponseEntity<Item> editItem(@RequestBody Item newItem, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
-
-        if(item.isPresent() && item.get().getImageFile() != null){
-            Resource file = new InputStreamResource(item.get().getImageFile().getBinaryStream());
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .contentLength(item.get().getImageFile().length())
-                .body(file);
+        if(item.isPresent()){
+            itemService.update(id,newItem);
+            return new ResponseEntity<>(newItem, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/items/{id}/delete")
-    public Page<Item> deleteItemById(@PathVariable Integer id, Pageable page){
-        itemService.deleteById(id);
+    
+
+    @GetMapping("/items")
+    public Page<Item> getItems(Pageable page){
         return itemService.findAll(page);
+    }*/
+
+    @GetMapping("/items/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable Integer id){
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            return new ResponseEntity<>(item.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
+     
 }

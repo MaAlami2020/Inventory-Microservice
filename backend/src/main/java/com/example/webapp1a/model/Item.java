@@ -3,8 +3,10 @@ package com.example.webapp1a.model;
 import java.sql.Blob;
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,12 +19,12 @@ import javax.persistence.Table;
 @Table(name = "tbl_item")   
 public class Item {
 
-    private static final Integer NUM = 4; 
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id; 
+
+    private String code;
 
     @Column(name = "name")
     private String name;
@@ -43,57 +45,36 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "sizes")
-    private String[] sizes = new String[NUM];
+    @OneToMany(mappedBy = "item", cascade=CascadeType.ALL, orphanRemoval=true)
+    private List<Stock<?>> itemStocks;
 
-    private String size;
-
-    @Column(name = "stocks")
-    private Integer[] stocks = new Integer[NUM];
-
-    private Integer stock;
-
-    @ManyToMany
-    private List<User> favourites;
-
-    @OneToMany(mappedBy="item")
+    @OneToMany(mappedBy="item", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<ItemToBuy> itemsToBuy;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
 
     public Item(){
-        Arrays.fill(stocks, 0);
     }
 
-    public void setSize(String size){
-        this.size = size;
+
+    public void setStock(Stock<?> stock){
+        itemStocks.add(stock);
+        stock.setItem(this);
+    }
+
+    public void removeStock(Stock<?> stock){
+        itemStocks.remove(stock);
+        stock.setItem(null);
+    }
+
+    public List<Stock<?>> getstocks(){
+        return itemStocks;
     }
     
-    public String getSize(){
-        return size;
-    }
-
-    public void setSizes(String [] size){
-        this.sizes = size;
-    }
-    
-    public String [] getSizes(){
-        return sizes;
-    }
-
-    public void setStock(Integer stock){
-        this.stock = stock;
-    }
-    
-    public Integer getStock(){
-        return stock;
-    }
-
-    public void setStocks(Integer [] stock){
-        this.stocks = stock;
-    }
-
-    public Integer [] getStocks(){
-        return stocks;
+    public List<Stock<?>> getItemStocks(){
+        return itemStocks;
     }
 
     public void addItemToBuy(ItemToBuy itemToBuy){
@@ -106,20 +87,24 @@ public class Item {
         itemToBuy.setItem(null);
     }
 
-    public List<User> getFavourites(){
-        return favourites;
+    public List<ItemToBuy> getITeItemsToBuy(){
+        return itemsToBuy;
     }
 
-    public void setFavouritesUsers(List<User> favourites){
-        this.favourites = favourites;
+    public void setUsers(List<User> favourites){
+        this.users=favourites;
     }
 
-    public void addUser(User favouriteUser){
-        this.favourites.add(favouriteUser);
+    public List<User> getUsers(){
+        return users;
     }
 
-    public void removeUser(User favouriteUser){
-        this.favourites.remove(favouriteUser);
+    public void setCode(String code){
+        this.code=code;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     public void setName(String name){

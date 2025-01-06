@@ -29,9 +29,10 @@
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="//localhost:8443/">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     <div class="user-img">
-                        <img src="//localhost:8443/databases/users/39/image" alt="" width="50" height="50"></img>
+                        <img src="//localhost:8443/api/users/59/image" alt="" width="50" height="50"></img>
                     </div>
-                    <li class="nav-menu-item"><a href="//localhost:8444/items/page" class="nav-menu-link">New item</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8444/items/clothes/page" class="nav-menu-link">New Clothes</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8444/items/shoes/page" class="nav-menu-link">New Shoes</a></li>
                 </ul>
                 <form>
                     <div>
@@ -113,7 +114,7 @@
     var tam=12;
     var tam1;
 
-    let ruta='//localhost:8444/databases/items?size='+tam;
+    let ruta='//localhost:8443/api/items?size='+tam;
 
     function loadInitItems(callback,tam){
         $.ajax({
@@ -126,7 +127,7 @@
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span><img src="/databases/items/' + item.id + 
+            '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' +
             item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -137,7 +138,7 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span><img src="/databases/items/' + item.id + 
+            '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' +
             item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -165,7 +166,7 @@
             var val = $(event.target).attr("id").split("-")[1];
             //alert(val);
 
-            let urlDeletion = 'https://localhost:8444/databases/items/' + val + '/delete?size=12';
+            let urlDeletion = 'https://localhost:8444/api/inventory/items/' + val + '/delete?size=12';
             $("#spinner-div").show();
             $.ajax({
                 url: urlDeletion
@@ -184,7 +185,7 @@
         $('.pagination').click(function() {
             tam+=12;
 
-            let ruta='https://localhost:8444/databases/items?size='+tam;
+            let ruta='https://localhost:8443/api/items?size='+tam;
 
             $('#spinner-div').show();
             $.ajax({
@@ -205,7 +206,7 @@
             $('#itemFoundedListing').empty();
             tam1=12;
             let value = $('#name').val();
-            let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -225,7 +226,7 @@
         $('.items-founded-pagination').click(function() {
             tam1+=12;
             let value= $('#name').val();
-            let ruta='https://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({

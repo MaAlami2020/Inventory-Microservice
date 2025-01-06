@@ -1,6 +1,8 @@
 package com.example.webapp1a.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigData.Option;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
 import com.example.webapp1a.service.ItemService;
+import com.example.webapp1a.service.StockService;
 
 @Controller
 @RequestMapping("/items")
@@ -29,52 +35,51 @@ public class ItemsController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private StockService stockService;
+
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
-        model.addAttribute("sizeS",false);
-        model.addAttribute("sizeM",false);
-        model.addAttribute("sizeL",false);
-        model.addAttribute("sizeXL",false);
+        model.addAttribute("addStock",false);
     }
     
     @GetMapping("/")
     public String home(Model model){
+        model.addAttribute("addStock",false);
         return "index";
     }    
   
-    @GetMapping("/page")
-    public String newItemPage(Model model){
-        model.addAttribute("status","");
-        return "new_item";
+    @GetMapping("/clothes/page")
+    public String newClothesPage(Model model){
+        model.addAttribute("addStock",false); 
+        return "new_clothes";
     }
 
-    @PostMapping("/new")
-    public String newItem(Model model, Item item, MultipartFile imageField) throws IOException{
-        /*if(item.getSize().equals("S")){
-            item.setSizes(0, "S");
-        }
-        if(item.getSize().equals("M")){
-            item.setSizes(1, "M");
-        }
-        if(item.getSize().equals("L")){
-            item.setSizes(2, "L");
-        }
-        if(item.getSize().equals("XL")){
-            item.setSizes(3, "XL");
-        }
-
-        if(item.getStock() > 5){
-            model.addAttribute("stock","In stock");
-        } else {
-            model.addAttribute("stock","Only 5 items left");
-        }*/
+    @PostMapping("/clothes/new")
+    public String newClothes(Model model, Item item, MultipartFile imageField) throws IOException{
+  
         item.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
         itemService.add(item);
-        model.addAttribute("status","item created"); 
-        return "new_item";
+        model.addAttribute("addStock",true); 
+        return "new_clothes";
     }
 
-    private void showSizes(Model model, Optional<Item> item){
+
+    @PostMapping("/clothes/stock/new")
+    public String newClothesStock(Model model, Clothes clothes) throws IOException{
+        List<Item> item = itemService.findAll();
+        clothes.setItem(item.get(0));
+        stockService.addClothes(clothes);
+        model.addAttribute("addStock",true); 
+        return "new_clothes";
+    }
+
+    @GetMapping("/shoes/page")
+    public String newShoesPage(Model model){
+        return "new_shoes";
+    }
+
+    /*private void showSizes(Model model, Optional<Item> item){
         if(item.get().getSizes() != null && item.get().getSizes()[0] != null){
             model.addAttribute("sizeS",true);
             model.addAttribute("size1",item.get().getSizes()[0]);   
@@ -125,7 +130,7 @@ public class ItemsController {
         } else {
             model.addAttribute("stock4",0); 
         }
-    }
+    }*/
 
     @PostMapping("/{id}/update")
     public String itemUpdating(Model model, Item itemUpdated, @PathVariable Integer id, MultipartFile imageField) throws IOException{
@@ -136,14 +141,14 @@ public class ItemsController {
                 itemUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
             }
             
-            itemService.update(item.get().getId(), itemUpdated);
+            //itemService.update(item.get().getId(), itemUpdated);
             model.addAttribute("status","item updated");
             
             model.addAttribute("name",item.get().getName());
             model.addAttribute("price",item.get().getPrice());
             model.addAttribute("gender",item.get().getGender());
-            showSizes(model, item);
-            showStocks(model, item);
+            //showSizes(model, item);
+            //showStocks(model, item);
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
             return "edition";
@@ -155,7 +160,7 @@ public class ItemsController {
     @GetMapping("/{id}/delete")
     public String removeReview(Model model, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
-
+ 
         if(item.isPresent()) {
             itemService.deleteById(item.get().getId());
             return "index";
@@ -173,8 +178,8 @@ public class ItemsController {
             model.addAttribute("price",item.get().getPrice());
             model.addAttribute("gender",item.get().getGender());
             
-            showSizes(model,item);
-            showStocks(model, item);
+            //showSizes(model,item);
+            //showStocks(model, item);
   
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
