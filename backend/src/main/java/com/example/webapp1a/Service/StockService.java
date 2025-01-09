@@ -8,9 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.webapp1a.model.Clothes;
+import com.example.webapp1a.model.Item;
 import com.example.webapp1a.model.Shoe;
+import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.repository.ClothesRepo;
 import com.example.webapp1a.repository.ShoeRepo;
+import com.example.webapp1a.repository.StockRepo;
 
 @Service
 public class StockService {
@@ -20,6 +23,9 @@ public class StockService {
 
     @Autowired
     private ShoeRepo shoeRepo;
+
+    @Autowired
+    private StockRepo stockRepo;
 
     public Page<Clothes> findAllClothes(Pageable page){
         return clothesRepo.findClothes(page);
@@ -43,5 +49,9 @@ public class StockService {
 
     public Shoe addShoe(Shoe shoe){
         return shoeRepo.save(shoe);
+    }
+
+    public Page<Stock<?>> findByItem(Item item, Pageable page){
+        return stockRepo.findByItem(item, page);
     }
 }

@@ -16,7 +16,11 @@
         <nav class="navbar">
             <nav class="nav-menu --nav-dark-light" id="mySidenav">
                 <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
-                <ul class="nav-menu-ul"></ul>
+                <ul class="nav-menu-ul">
+                    {{#addStockS}}
+                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-dark">acept</a></li>
+                    {{/addStockS}}
+                </ul>
             </nav>
         </nav>
     </header>
@@ -27,7 +31,8 @@
     </div>
 
 <div>
-<form action="/items/new" method="post" class="form-control" enctype="multipart/form-data">
+{{^addStockS}}
+<form action="/items/shoes/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
             <div class="column is-two-fifths-desktop">
@@ -51,6 +56,10 @@
 
                 <div class="columns is-multiline">
                     <div class="column is-one-third">
+                        <label for="quality">Code</label>
+                        <input type="text" name="code" placeholder="item code" class="form-control-field" minlength="3" required>         
+                    </div>
+                    <div class="column is-one-third">
                         <label for="color">Gender</label>
                         <div class="form-control-field" id="gender">
                             <label><input type="radio" id="gender1" name="gender" value="man" required/> man</label>
@@ -69,6 +78,53 @@
                     </div>
                 </div>
 
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline">add stock</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns is-tablet">
+            <div class="column">
+                <div class="tabs-container">                
+                    <div class="tabs-panels">
+                        <div class="tab-panel active-panel">
+                            <div class="container">
+                                <div class="columns">
+                                    <div class="column">
+                                        <h2 class="is-size-4">Additional information</h2>
+                                        <textarea name="description" placeholder="description" class="form-control-field"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{{/addStockS}}
+</div>
+
+<div>
+{{#addStockS}}
+<form action="/items/shoes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-two-fifths-desktop">
+                <div class="slider" id="slider">
+                    <div class="slider-img-container">
+                        <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
                 <h2 class="is-size-3">Shoe</h2>
                 <div class="columns is-multiline">
                     <div class="column is-one-third">
@@ -98,36 +154,17 @@
                 
                 <div class="columns is-multiline">
                     <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">create item</button>
+                        <button class="btn btn-default btn-outline">add</button>
                     </div>
-                    {{status}}
                 </div>
+            </div>
 
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="columns is-tablet">
-            <div class="column">
-                <div class="tabs-container">                
-                    <div class="tabs-panels">
-                        <div class="tab-panel active-panel">
-                            <div class="container">
-                                <div class="columns">
-                                    <div class="column">
-                                        <h2 class="is-size-4">Additional information</h2>
-                                        <textarea name="description" placeholder="description" class="form-control-field"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                      
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </form>
+{{/addStockS}}
 </div>
+
     <!-- footer -->
     <footer class="footer">
         <div class="footer-bar-top">
@@ -156,18 +193,19 @@
 
     function showShoeLoaded(shoe){
         $('#sizeS').append(
-            '<label for="size">Size</label><div class="form-control-field" id="size"><label><input type="checkbox" id="size" name="size" value="' + shoe.size.substring(5) + '" required/> ' +
+            '<label for="size">Size</label><div class="form-control-field" id="size"><label><input type="checkbox" id="size" name="size" value="' + shoe.size + '" required/> ' +
             shoe.size.substring(5) + '</label></div>'
         )
         
         $('#stockS').append(
-            '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="stock 0/' + shoe.stock + '" class="form-control-field" required>'
+            '<label for="quality">Stock: 0/' + shoe.stock + ' for size ' +  shoe.size.substring(5) + '</label>'
         )
     }
 
     $(document).ready(function() {
 
         loadInitShoesStock(function(shoes) {
+            $('#stockS').append('<label for="quality">Stock:</label><input type="number" id="stock"name="stock" placeholder="enter stock" class="form-control-field">');
             for(var i=0; i<shoes.numberOfElements; i++){
                 showShoeLoaded(shoes.content[i]);
             }

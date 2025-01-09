@@ -11,7 +11,7 @@ public class Shoe extends Stock<Shoe.Shoe_Size> {
     public enum Shoe_Size{
         SIZE_36, SIZE_37, SIZE_38, SIZE_39, SIZE_40, SIZE_41, SIZE_42, SIZE_43, SIZE_44, SIZE_45, SIZE_46, SIZE_47;
 
-        public String getsize(Shoe_Size size) {
+        public static String getsize(Shoe_Size size) {
             return size.name().substring(5);
         } 
         

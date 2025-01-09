@@ -18,9 +18,9 @@
                 <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
                 
                 <ul class="nav-menu-ul">
-                    {{#addStock}}
-                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-dark">create item</a></li>
-                    {{/addStock}}
+                    {{#addStockC}}
+                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-dark">acept</a></li>
+                    {{/addStockC}}
                 </ul>
                 
             </nav>
@@ -33,7 +33,7 @@
     </div>
 
 <div>
-{{^addStock}}
+{{^addStockC}}
 <form action="/items/clothes/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
@@ -110,11 +110,11 @@
         </div>
     </div>
 </form>
-{{/addStock}}
+{{/addStockC}}
 </div>
 
 <div>
-{{#addStock}}
+{{#addStockC}}
 <form action="/items/clothes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
@@ -165,7 +165,7 @@
         </div>
     </div>
 </form>
-{{/addStock}}
+{{/addStockC}}
 </div>
 
     <!-- footer -->

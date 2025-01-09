@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
 import com.example.webapp1a.model.Shoe;
+import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
 import com.example.webapp1a.service.StockService;
 
@@ -55,6 +56,8 @@ public class ItemsRestController {
         itemService.add(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
+
+    /**post method for an item and its stock object */
 
     @PostMapping("/items/clothes/stock")
     public ResponseEntity<Clothes> addClothesStock(@RequestBody Clothes clothes) {
@@ -88,6 +91,23 @@ public class ItemsRestController {
     public ResponseEntity<Page<Shoe>> getShoesStock(Pageable page){
         Page<Shoe> shoes = stockService.findAllShoe(page);
         return new ResponseEntity<>(shoes, HttpStatus.OK);
+    }
+
+    /**
+     * stocks of an item
+     * @param page
+     * @param id
+     * @return
+     */
+    @GetMapping("/stocks/item/{id}")
+    public ResponseEntity<Page<Stock<?>>> getStockItem(Pageable page, @PathVariable Integer id){
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            Page<Stock<?>> stocks = stockService.findByItem(item.get(), page);
+            return new ResponseEntity<>(stocks, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/items/{id}/update")

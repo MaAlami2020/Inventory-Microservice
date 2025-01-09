@@ -26,31 +26,29 @@
             <h1>Current item</h1>
             <div class="columns">
                 <div class="column">
-                    <img src="/api/inventory/items/{{id}}/image" alt="" width="450" height="450"></img>
+                    <img src="//localhost:8443/api/items/{{id}}/image" alt="" width="450" height="450"></img>
                 </div>
                 <div class="column">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Code: </strong></p>
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Sizes: </strong></p>
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size S: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size M: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size L: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size XL: </strong></p>
+                    {{#sizes}}
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{.}}: </strong></p>
+                    {{/sizes}}
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
 
                 </div>
                 <div class="column">
+                    <p>{{code}}</p>
                     <p>{{name}}</p>
                     <p>{{price}} €</p> 
                     <p>{{gender}}</p>
-                    <p>{{size1}} {{size2}} {{size3}} {{size4}}</p>
                     <p>{{type}}</p>
-                    <p>{{stock1}}</p>
-                    <p>{{stock2}}</p>
-                    <p>{{stock3}}</p>
-                    <p>{{stock4}}</p>
+                    {{#stock}}
+                    <p>{{stock}}</p>
+                    {{/stock}}
                     <p>{{description}}</p>  
                 </div>
             </div>
@@ -82,6 +80,10 @@
                  
             
                     <div class="columns is-multiline">
+                        <div class="column is-one-third">
+                            <label for="quality">Code:</label>
+                            <input type="text" name="code" placeholder="shoe code" class="form-control-field" minlength="3" required>         
+                        </div>
                         <div class="column is-one-third">
                             <label for="size">Size</label>
                             <div class="form-control-field" id="size">
