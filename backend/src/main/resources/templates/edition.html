@@ -85,11 +85,11 @@
                             <input type="text" name="code" placeholder="shoe code" class="form-control-field" minlength="3" required>         
                         </div>
                         <div class="column is-one-third" id="size">
-                           
+                           <!--stock size-->
                         </div>
                         <div class="column is-one-third" id="stock">
-                            <label for="quality">Stock:</label>
-                            <input type="number" name="stock" placeholder="stock for size S" class="form-control-field"/>      
+                            <!--stock amount-->
+                               
                         </div>    
                     </div>
                     <div class="columns is-multiline">
@@ -168,7 +168,11 @@
     function showItemLoaded(item){
         $('#size').append(
             ' <label for="size">Size</label><div class="form-control-field"><label><input type="checkbox" id="size1" name="size" value="' 
-            + item.size + '"/> ' + item.size + '</label></div>'
+            + item.size + '"/> ' + item.size.substring(5) + '</label></div>'
+        )
+        $('#stock').append(
+            '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="stock for size ' 
+            + item.size.substring(5) + '" class="form-control-field"/>   '
         )
     }
 
@@ -180,6 +184,21 @@
                 showItemLoaded(item.content[i]);
             }
         })
+
+        /*$('.paginationS').click(function() {
+            var tam2=tamS;
+            tamS+=1;
+
+            let ruta='/api/inventory/stock?size='+tamS;
+
+            $.ajax({
+                url:ruta
+            }).done(function(shoes){
+                for(var i=tam2; i<shoes.numberOfElements; i++){
+                    showShoeLoaded(shoes.content[i]);
+                }
+            })
+        })*/
     })
 </script>
 </html>

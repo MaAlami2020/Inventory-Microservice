@@ -228,11 +228,13 @@ public class ItemsController {
             Page<Stock<?>> stock = stockService.findByItem(item.get(), page);
 
             List<String> sizes = new ArrayList<String>();
+            String size;
             for(Stock<?> stockAux : stock){
                 if(stockAux.getSize().toString().length()>=5){
-                    String size = stockAux.getSize().toString().substring(5);
+                    //numeric sizes will begin by SIZE_, the rest with its normal name
+                    size = stockAux.getSize().toString().substring(5);
                 } else {
-                    String size = stockAux.getSize().toString(); 
+                    size = stockAux.getSize().toString(); 
                 }
                 sizes.add(size);
             }
