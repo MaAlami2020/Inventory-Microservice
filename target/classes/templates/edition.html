@@ -84,29 +84,12 @@
                             <label for="quality">Code:</label>
                             <input type="text" name="code" placeholder="shoe code" class="form-control-field" minlength="3" required>         
                         </div>
-                        <div class="column is-one-third">
-                            <label for="size">Size</label>
-                            <div class="form-control-field" id="size">
-                                <label><input type="checkbox" id="size1" name="sizes[0]" value="S"/> S</label>
-                                <label><input type="checkbox" id="size2" name="sizes[1]" value="M"/> M</label>
-                                <label><input type="checkbox" id="size3" name="sizes[2]" value="L"/> L</label>
-                                <label><input type="checkbox" id="size4" name="sizes[3]" value="XL"/> XL</label>
-                            </div>
+                        <div class="column is-one-third" id="size">
+                           
                         </div>
-                        <div class="column is-one-third">
+                        <div class="column is-one-third" id="stock">
                             <label for="quality">Stock:</label>
-                            {{#sizeS}}
-                            <input type="number" name="stocks[0]" placeholder="stock for size S" class="form-control-field"/>
-                            {{/sizeS}}   
-                            {{#sizeM}}
-                            <input type="number" name="stocks[1]" placeholder="stock for size M" class="form-control-field"/>
-                            {{/sizeM}}   
-                            {{#sizeL}} 
-                            <input type="number" name="stocks[2]" placeholder="stock for size L" class="form-control-field"/> 
-                            {{/sizeL}}   
-                            {{#sizeXL}}
-                            <input type="number" name="stocks[3]" placeholder="stock for size XL" class="form-control-field"/> 
-                            {{/sizeXL}}       
+                            <input type="number" name="stock" placeholder="stock for size S" class="form-control-field"/>      
                         </div>    
                     </div>
                     <div class="columns is-multiline">
@@ -167,6 +150,36 @@
         </div>
     </footer>
     <script src="/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 </body>
+<script>
+
+    let ruta='/api/inventory/stocks/item/{{id}}';
+
+    function loadItem(callback){
+        $.ajax({
+            url:ruta
+        }).done(function(item){
+            callback(item);
+        })
+    }
+
+    function showItemLoaded(item){
+        $('#size').append(
+            ' <label for="size">Size</label><div class="form-control-field"><label><input type="checkbox" id="size1" name="size" value="' 
+            + item.size + '"/> ' + item.size + '</label></div>'
+        )
+    }
+
+    $(document).ready(function(){
+
+        loadItem(function(item){
+            console.log(item);
+            for(var i=0; i<item.numberOfElements; i++){
+                showItemLoaded(item.content[i]);
+            }
+        })
+    })
+</script>
 </html>

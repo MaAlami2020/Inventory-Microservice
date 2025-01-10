@@ -229,7 +229,11 @@ public class ItemsController {
 
             List<String> sizes = new ArrayList<String>();
             for(Stock<?> stockAux : stock){
-                String size = stockAux.getSize().toString().substring(5);
+                if(stockAux.getSize().toString().length()>=5){
+                    String size = stockAux.getSize().toString().substring(5);
+                } else {
+                    String size = stockAux.getSize().toString(); 
+                }
                 sizes.add(size);
             }
 
@@ -237,9 +241,6 @@ public class ItemsController {
             model.addAttribute("name",item.get().getName());
             model.addAttribute("price",item.get().getPrice());
             model.addAttribute("gender",item.get().getGender());
-            
-            //showSizes(model,item);
-            //showStocks(model, item);
   
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
