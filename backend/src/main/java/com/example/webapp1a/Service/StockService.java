@@ -31,6 +31,10 @@ public class StockService {
         return clothesRepo.findClothes(page);
     }
 
+    public Page<Stock<?>> findAllStocks(Pageable page){
+        return stockRepo.findAllStocks(page);
+    }
+
     public Optional<Clothes> findByCodeC(String code){
         return clothesRepo.findByCode(code);
     }    

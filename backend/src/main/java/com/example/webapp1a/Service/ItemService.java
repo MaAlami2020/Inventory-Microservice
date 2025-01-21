@@ -8,9 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.webapp1a.ItemUpdateManager;
 import com.example.webapp1a.model.Item;
-import com.example.webapp1a.model.User;
-import com.example.webapp1a.model.ItemToBuy;
 import com.example.webapp1a.repository.ItemRepo;
 
 @Service
@@ -21,6 +20,13 @@ public class ItemService {
 
     public void add(Item item){
         itemRepo.save(item);
+    }
+
+    public void save(Item oldItem, Item newItem){
+        ItemUpdateManager updateManager = new ItemUpdateManager();
+        updateManager.applyUpdates(oldItem, newItem);
+        
+        itemRepo.save(oldItem);
     }
 
     public Page<Item> findAll(Pageable page){

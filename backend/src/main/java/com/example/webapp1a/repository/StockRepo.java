@@ -12,5 +12,8 @@ public interface StockRepo extends JpaRepository<Stock<?>, Integer> {
 
     @Query("select s from Stock s where s.item=?1 ")
     Page<Stock<?>> findByItem(Item item, Pageable page);
+
+    @Query("select m from Stock m where m.item is null")
+    Page<Stock<?>> findAllStocks(Pageable page);
     
 }

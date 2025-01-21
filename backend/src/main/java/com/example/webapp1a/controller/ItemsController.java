@@ -2,7 +2,6 @@ package com.example.webapp1a.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigData.Option;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -19,9 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webapp1a.model.Clothes;
@@ -30,6 +26,8 @@ import com.example.webapp1a.model.Shoe;
 import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
 import com.example.webapp1a.service.StockService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/items")
@@ -45,12 +43,14 @@ public class ItemsController {
     public void addAttribute(Model model, HttpServletRequest request){
         model.addAttribute("addStockC",false);
         model.addAttribute("addStockS",false);
+        model.addAttribute("addStock",false);
     }
     
     @GetMapping("/")
     public String home(Model model){
         model.addAttribute("addStockC",false);
         model.addAttribute("addStockS",false);
+        model.addAttribute("addStock",false);
         return "index";
     }    
   
@@ -82,14 +82,22 @@ public class ItemsController {
                     clothes.setItem(item.get(0));
                     stockService.addClothes(clothes);
                     model.addAttribute("addStockC",true); 
+                    //new stock added successfully
                     return "new_clothes";
                 }
             }
         }
         //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
         model.addAttribute("addStockC",false); 
+        //error adding new stock
         return "index";       
     }
+
+    /*@PostMapping("/{id}/stock/update")
+    public String itemStockUpdating(Model model, Stock<?> stock, Pageable page) {
+        
+    }*/
+    
 
     @GetMapping("/shoes/page")
     public String newShoesPage(Model model){
@@ -114,7 +122,7 @@ public class ItemsController {
         for(Shoe s: shoeStock) {
             //check the size
             if(shoe.getSize().equals(s.getSize())){
-                //check the stock entered is under the avaialable, if so, save the new stock object into the db and reload the clothes page
+                //check the stock value entered is lower than the max avaialability, if so, save the new stock object into the db and reload the clothes page
                 if(shoe.getStock() <=  s.getStock()){
                     shoe.setItem(item.get(0));
                     stockService.addShoe(shoe);
@@ -128,76 +136,40 @@ public class ItemsController {
         return "index";     
     }
 
-    /*private void showSizes(Model model, Optional<Item> item){
-        if(item.get().getSizes() != null && item.get().getSizes()[0] != null){
-            model.addAttribute("sizeS",true);
-            model.addAttribute("size1",item.get().getSizes()[0]);   
-        } else {
-            model.addAttribute("size1",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[1] != null){
-            model.addAttribute("sizeM",true);
-            model.addAttribute("size2",item.get().getSizes()[1]);   
-        } else {
-            model.addAttribute("size2",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[2] != null){
-            model.addAttribute("sizeL",true);
-            model.addAttribute("size3",item.get().getSizes()[2]);   
-        } else {
-            model.addAttribute("size3",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[3] != null){
-            model.addAttribute("sizeXL",true);
-            model.addAttribute("size4",item.get().getSizes()[3]);   
-        } else {
-            model.addAttribute("size4",""); 
-        } 
-        if(item.get().getSizes() == null){
-            model.addAttribute("size1","null"); 
-        }
-    }
+    /** 
+     * se cumple el principio SOLID Abierto/Cerrado (OCP):
+     * Agregar una nueva propiedad implica crear una nueva clase de estrategia sin modificar las existentes.
 
-    private void showStocks(Model model, Optional<Item> item){
-        if(item.get().getStocks() != null && item.get().getStocks()[0] != null){
-            model.addAttribute("stock1",item.get().getStocks()[0]);   
-        } else {
-            model.addAttribute("stock1",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[1] != null){
-            model.addAttribute("stock2",item.get().getStocks()[1]);   
-        } else {
-            model.addAttribute("stock2",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[2] != null){
-            model.addAttribute("stock3",item.get().getStocks()[2]);   
-        } else {
-            model.addAttribute("stock3",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[3] != null){
-            model.addAttribute("stock4",item.get().getStocks()[3]);   
-        } else {
-            model.addAttribute("stock4",0); 
-        }
-    }*/
+    
+     * se cumple el principio SOLID de Responsabilidad Única (SRP):
+     * Cada clase de estrategia maneja exclusivamente la actualización de un atributo.
 
+     * se cumple la propiedad de escalabilidad:
+     * Fácil de extender cuando se añaden nuevos campos del objeto Item en el futuro.
+
+     * se cumple la propiedad de antenibilidad:
+     * La lógica de cada campo está separada y es independiente
+    */
     @PostMapping("/{id}/update")
     public String itemUpdating(Model model, Item itemUpdated, @PathVariable Integer id, MultipartFile imageField) throws IOException{
 
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            if(!imageField.isEmpty()){
+            if(imageField != null && !imageField.isEmpty()){
                 itemUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+                item.get().setImageFile(itemUpdated.getImageFile());
             }
             
-            //itemService.update(item.get().getId(), itemUpdated);
+            itemService.save(item.get(), itemUpdated);
+            
+            model.addAttribute("addStock",true); 
             model.addAttribute("status","item updated");
             
+            model.addAttribute("code",item.get().getCode());
             model.addAttribute("name",item.get().getName());
             model.addAttribute("price",item.get().getPrice());
             model.addAttribute("gender",item.get().getGender());
-            //showSizes(model, item);
-            //showStocks(model, item);
+       
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
             return "edition";
@@ -229,9 +201,11 @@ public class ItemsController {
 
             List<String> sizes = new ArrayList<String>();
             String size;
+            model.addAttribute("shoe",false);
             for(Stock<?> stockAux : stock){
                 if(stockAux.getSize().toString().length()>=5){
                     //numeric sizes will begin by SIZE_, the rest with its normal name
+                    model.addAttribute("shoe",true);
                     size = stockAux.getSize().toString().substring(5);
                 } else {
                     size = stockAux.getSize().toString(); 
@@ -239,6 +213,8 @@ public class ItemsController {
                 sizes.add(size);
             }
 
+            model.addAttribute("addStock",false);
+            
             model.addAttribute("code",item.get().getCode());
             model.addAttribute("name",item.get().getName());
             model.addAttribute("price",item.get().getPrice());

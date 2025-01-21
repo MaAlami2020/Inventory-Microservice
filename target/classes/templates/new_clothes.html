@@ -201,6 +201,7 @@
         )
         
         $('#stockC').append(
+            //availability for the stock in text format
             '<label for="quality">Stock: 0/' + clothes.stock + ' for size ' + clothes.size +'</label>'
         )
     }
@@ -208,6 +209,7 @@
     $(document).ready(function() {
         
         loadInitClothesStock(function(clothes) {
+            //entry to insert the stock
              $('#stockC').append('<label for="quality">Stock:</label><input type="number" id="stock"name="stock" placeholder="enter stock" class="form-control-field">');
             for(var i=0; i<clothes.numberOfElements; i++){
                 showClothesLoaded(clothes.content[i]);

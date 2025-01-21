@@ -1,18 +1,13 @@
 package com.example.webapp1a.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,6 +86,12 @@ public class ItemsRestController {
     public ResponseEntity<Page<Shoe>> getShoesStock(Pageable page){
         Page<Shoe> shoes = stockService.findAllShoe(page);
         return new ResponseEntity<>(shoes, HttpStatus.OK);
+    }
+
+    @GetMapping("/stocks")
+    public ResponseEntity<Page<Stock<?>>> getAllStocks(Pageable page){
+        Page<Stock<?>> stocks = stockService.findAllStocks(page);
+        return new ResponseEntity<>(stocks, HttpStatus.OK);
     }
 
     /**
