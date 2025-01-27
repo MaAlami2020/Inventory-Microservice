@@ -88,7 +88,7 @@
                         <input type="text" name="code" placeholder="item new code" class="form-control-field" minlength="3">         
                     </div>
                     <div class="column is-one-third">
-                        <label for="color">Gender</label>
+                        <label for="color">Gender:</label>
                         <div class="form-control-field" id="gender">
                             <label><input type="radio" id="gender1" name="gender" value="man"/> man</label>
                             <label><input type="radio" id="gender2" name="gender" value="woman"/> woman</label>
@@ -96,11 +96,12 @@
                         </div>
                     </div>
                     <div class="column is-one-third">
-                        <label for="size">Type</label>
+                        <label for="size">Type:</label>  
                         <div class="form-control-field" id="type">
-                            <label><input type="radio" id="type1" name="type" value="jeans"/> jeans</label>
-                            <label><input type="radio" id="type2" name="type" value="t-shirt"/> t_shirt</label>
-                            <label><input type="radio" id="type3" name="type" value="dress"/> dress</label>
+                            {{#factories}}
+                            <label><input type="radio" id="type1" name="type" value="{{.}}"/> {{.}}</label>
+                            {{/factories}}
+                            <!--aplicar factory method para crear instancias segun el tipo de producto-->
                         </div>
                     </div>
                 </div>
@@ -155,7 +156,7 @@
                 <div class="columns is-multiline">
                     <div class="column is-one-third">
                         <label for="quality">Code:</label>
-                        <input type="text" name="code" placeholder="item stock new code" class="form-control-field" minlength="3" required>         
+                        <input type="text" name="code" placeholder="item stock new code" class="form-control-field" minlength="3">         
                     </div>
                     <div class="column is-one-third" id="stock">
                         <!--stock amount-->
@@ -216,9 +217,9 @@
             '<div class="column is-one-third"><label for="size">Size</label><div class="form-control-field"><label><input type="radio" id="size1" name="size" value="' 
             + item.size + '"/>' + item.size + '</label></div></div>'
         )
-        $('#stock').append(
+        /*$('#stock').append(
             '<label for="quality">Stock: 0/' + item.stock + ' for size ' + item.size + '</label>'
-        )
+        )*/
     }
 
     $(document).ready(function(){

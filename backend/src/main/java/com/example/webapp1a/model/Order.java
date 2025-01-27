@@ -1,16 +1,13 @@
 package com.example.webapp1a.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,11 +19,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private String code;
 
-    @OneToMany(mappedBy="order")
-    private List<ItemToBuy> itemsToBuy;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 
     @Column(name="totalCost")
     private Double totalCost;
@@ -58,16 +55,6 @@ public class Order {
     public User getUser(){
         return user;
     }
-    
-    public void addItemToBuy(ItemToBuy itemToBuy){
-        itemsToBuy.add(itemToBuy);
-        itemToBuy.setOrder(this);
-    }
-
-    public void removeItemToBuy(ItemToBuy itemToBuy){
-        itemsToBuy.remove(itemToBuy);
-        itemToBuy.setOrder(null);
-    }
 
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
@@ -91,5 +78,13 @@ public class Order {
 
     public State getState(){
         return state;
+    }
+
+    public void setCode(String code){
+        this.code = code;
+    }
+
+    public String getCode(){
+        return code;
     }
 }

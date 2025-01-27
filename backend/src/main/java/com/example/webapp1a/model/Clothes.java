@@ -1,40 +1,23 @@
 package com.example.webapp1a.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 
+import com.example.webapp1a.sizeFactoryMethod.Size;
+
 @Entity
-public class Clothes extends Stock<Clothes.Size>{
+public class Clothes extends Stock<Size>{
 
-    public enum Size{
-        S, M, L, XL;
-
-        public static String getSize(Size size){
-            return size.name();
-        }
-
-        public static List<String> getSizes(){
-            List<String> pairs = new ArrayList<>();
-            for(Size clothes: Size.values()){
-                pairs.add(getSize(clothes));
-            }
-            return pairs;
-        }
-    }
-
-    private Size size;
+    private String size;
 
     public Clothes(){}
 
     @Override
     public void setSize(Size size){
-        this.size=size;
+        this.size=size.getLabel();
     }
 
     @Override
     public Size getSize(){
-        return size;
+        return new Size(size);
     }
 }

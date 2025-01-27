@@ -3,6 +3,7 @@ package com.example.webapp1a.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webapp1a.model.Clothes;
@@ -26,7 +28,10 @@ import com.example.webapp1a.model.Shoe;
 import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
 import com.example.webapp1a.service.StockService;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.webapp1a.sizeFactoryMethod.Size;
+import com.example.webapp1a.stockEditionFactoryMethod.StockFactory;
+import com.example.webapp1a.stockEditionFactoryMethod.StockFactoryManager;
+
 
 
 @Controller
@@ -72,31 +77,33 @@ public class ItemsController {
     @PostMapping("/clothes/stock/new")
     public String newClothesStock(Model model, Clothes clothes, Pageable page) throws IOException{
         List<Item> item = itemService.findAll();
+        if(!item.isEmpty()){
         //get those clothes stocks whose id_item is null
-        Page<Clothes> clothesStock = stockService.findAllClothes(page);
-        for(Clothes c: clothesStock) {
+        //Page<Clothes> clothesStock = stockService.findAllClothes(page);
+        //for(Clothes c: clothesStock) {
             //check the size
-            if(clothes.getSize().equals(c.getSize())){
+            //if(clothes.getSize().equals(c.getSize())){
                 //check the stock entered is under the avaialable, if so, save the new stock object into the db and reload the clothes page
-                if(clothes.getStock() <=  c.getStock()){
+                //if(clothes.getStock() <=  c.getStock()){
+
+                    //filtering of the last item keeped in the db
                     clothes.setItem(item.get(0));
                     stockService.addClothes(clothes);
                     model.addAttribute("addStockC",true); 
                     //new stock added successfully
                     return "new_clothes";
-                }
-            }
         }
+        
+                //}
+            //}
+        //}
         //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
         model.addAttribute("addStockC",false); 
         //error adding new stock
         return "index";       
     }
 
-    /*@PostMapping("/{id}/stock/update")
-    public String itemStockUpdating(Model model, Stock<?> stock, Pageable page) {
-        
-    }*/
+
     
 
     @GetMapping("/shoes/page")
@@ -117,19 +124,20 @@ public class ItemsController {
     @PostMapping("/shoes/stock/new")
     public String newShoesStock(Model model, Shoe shoe, Pageable page) throws IOException{
         List<Item> item = itemService.findAll();
+        if(!item.isEmpty()){
         //get those shoe stocks whose id_item is null
-        Page<Shoe> shoeStock = stockService.findAllShoe(page);
-        for(Shoe s: shoeStock) {
+        //Page<Shoe> shoeStock = stockService.findAllShoe(page);
+        //for(Shoe s: shoeStock) {
             //check the size
-            if(shoe.getSize().equals(s.getSize())){
+            //if(shoe.getSize().equals(s.getSize())){
                 //check the stock value entered is lower than the max avaialability, if so, save the new stock object into the db and reload the clothes page
-                if(shoe.getStock() <=  s.getStock()){
+                //if(shoe.getStock() <=  s.getStock()){
                     shoe.setItem(item.get(0));
                     stockService.addShoe(shoe);
                     model.addAttribute("addStockS",true); 
                     return "new_shoes";
-                }
-            }
+                //}
+            //}
         }
         //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
         model.addAttribute("addStockS",false); 
@@ -178,6 +186,53 @@ public class ItemsController {
         }
     }
 
+    @PostMapping("/{id}/stock/update")
+    public String itemStockUpdating(Model model, String code, Size size, Integer stock, @PathVariable Integer id, Pageable page) {
+
+        //looking for the item based on the id
+        //apply the stock object info to the item founded
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()) {
+
+            Page<Stock<?>> stocks = stockService.findByItem(item.get(), page);
+
+            List<String> sizes = new ArrayList<String>();
+            String auxSize="";
+            model.addAttribute("shoe",false);
+            for(Stock<?> stockAux : stocks){
+                /*if(stockAux.getSize().toString().length()>=5){
+                    //numeric sizes will begin by SIZE_, the rest with its normal name
+                    model.addAttribute("shoe",true);
+                    size = stockAux.getSize().toString().substring(5);
+                } else {
+                    size = stockAux.getSize().toString(); 
+                }
+                sizes.add(size);*/
+            }
+
+            model.addAttribute("addStock",false);
+            
+            model.addAttribute("code",item.get().getCode());
+            model.addAttribute("name",item.get().getName());
+            model.addAttribute("price",item.get().getPrice());
+            model.addAttribute("gender",item.get().getGender());
+  
+            model.addAttribute("type",item.get().getType());
+            model.addAttribute("description",item.get().getDescription());
+            model.addAttribute("sizes",sizes);
+            model.addAttribute("stock",stocks);
+
+            //create the particular stock object
+            Stock<?> concreteStock = StockFactoryManager.createStock(item.get().getType(), item.get(), code, size, stock);
+            //save stock object into the db
+            stockService.addStock(concreteStock);
+            model.addAttribute("addStock",true);
+            return "edition";
+        }
+        model.addAttribute("addStock",false);
+        return "index";
+    }
+
     @GetMapping("/{id}/delete")
     public String removeReview(Model model, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
@@ -200,17 +255,17 @@ public class ItemsController {
             Page<Stock<?>> stock = stockService.findByItem(item.get(), page);
 
             List<String> sizes = new ArrayList<String>();
-            String size;
+            String size="";
             model.addAttribute("shoe",false);
             for(Stock<?> stockAux : stock){
-                if(stockAux.getSize().toString().length()>=5){
+                /*if(stockAux.getSize().toString().length()>=5){
                     //numeric sizes will begin by SIZE_, the rest with its normal name
                     model.addAttribute("shoe",true);
                     size = stockAux.getSize().toString().substring(5);
                 } else {
                     size = stockAux.getSize().toString(); 
                 }
-                sizes.add(size);
+                sizes.add(size);*/
             }
 
             model.addAttribute("addStock",false);
@@ -224,6 +279,18 @@ public class ItemsController {
             model.addAttribute("description",item.get().getDescription());
             model.addAttribute("sizes",sizes);
             model.addAttribute("stock",stock);
+
+            StockFactoryManager stockFactoryManager = new StockFactoryManager();
+            //variable that contains the factories mapping
+            Map<String, StockFactory> factories = stockFactoryManager.getFactories();
+            //change from mapping to listing to show them in the html file
+            List<String> auxFactories = new ArrayList<String>();
+
+            for(String auxFactory: factories.keySet()){
+                auxFactories.add(auxFactory);
+            }
+            model.addAttribute("factories",auxFactories);
+            
         } else {
             return "error";
         }

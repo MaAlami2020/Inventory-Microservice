@@ -43,6 +43,10 @@ public class StockService {
         return clothesRepo.save(clothes);
     }
 
+    public Stock<?> addStock(Stock<?> stock){
+        return stockRepo.save(stock);
+    }
+
     public Page<Shoe> findAllShoe(Pageable page){
         return shoeRepo.findShoe(page);
     }

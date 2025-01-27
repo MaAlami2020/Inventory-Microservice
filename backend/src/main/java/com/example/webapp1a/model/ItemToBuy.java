@@ -20,16 +20,13 @@ public class ItemToBuy {
     @ManyToOne
     @JsonIgnore
     private Item item;
-
+    private String size;
     private Integer count;
 
     @ManyToOne
     @JsonIgnore
     private ShoppingCart shoppingCart;
 
-    @ManyToOne
-    @JsonIgnore
-    private  Order order;
 
     public ItemToBuy() {}
 
@@ -39,6 +36,14 @@ public class ItemToBuy {
 
     public Long getId(){
         return id;
+    }
+
+    public String getSize(){
+        return size;
+    }
+
+    public void setSize(String size){
+        this.size = size;
     }
 
     public void setItem(Item item){
@@ -64,12 +69,5 @@ public class ItemToBuy {
     public ShoppingCart getShoppingCart(){
         return shoppingCart;
     }
-
-    public void setOrder(Order order){
-        this.order=order;
-    }
-
-    public Order getOrder(){
-        return order;
-    }    
+ 
 }

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.webapp1a.ItemUpdateManager;
+import com.example.webapp1a.itemEditionScalability.ItemUpdateManager;
 import com.example.webapp1a.model.Item;
 import com.example.webapp1a.repository.ItemRepo;
 

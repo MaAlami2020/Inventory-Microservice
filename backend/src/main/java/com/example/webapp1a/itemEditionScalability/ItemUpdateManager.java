@@ -1,5 +1,4 @@
-package com.example.webapp1a;
-
+package com.example.webapp1a.itemEditionScalability;
 import java.util.ArrayList;
 import java.util.List;
 

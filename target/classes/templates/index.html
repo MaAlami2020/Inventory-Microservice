@@ -204,7 +204,7 @@
         $('.submit').click(function() {
             $('#total-item-founded').empty();
             $('#itemFoundedListing').empty();
-            tam1=12;
+            tam1=1;
             let value = $('#name').val();
             let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
 
@@ -224,7 +224,7 @@
         })
 
         $('.items-founded-pagination').click(function() {
-            tam1+=12;
+            tam1+=2;
             let value= $('#name').val();
             let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
 
@@ -233,8 +233,8 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam1-12 < item.numberOfElements){
-                    for(var i=tam1-12; i<item.numberOfElements; i++){
+                if(item.size != 0 && tam1-2 < item.numberOfElements){
+                    for(var i=tam1-2; i<item.numberOfElements; i++){
                         showItemFoundedLoaded(item.content[i]);
                     }
                 }

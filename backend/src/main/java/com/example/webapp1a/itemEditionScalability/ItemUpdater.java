@@ -1,4 +1,4 @@
-package com.example.webapp1a;
+package com.example.webapp1a.itemEditionScalability;
 
 import com.example.webapp1a.model.Item;
 

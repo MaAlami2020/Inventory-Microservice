@@ -75,7 +75,6 @@
                             <label><input type="radio" id="type1" name="type" value="jeans" required> jeans</label>
                             <label><input type="radio" id="type2" name="type" value="camisa" required> shirt</label>
                             <label><input type="radio" id="type3" name="type" value="camiseta" required> t-shirt</label>
-                            <label><input type="radio" id="type3" name="type" value="zapato" required> shoe</label>
                         </div>
                     </div>
                 </div>
@@ -128,28 +127,29 @@
             
             <div class="column">
                 <h2 class="is-size-3">Clothes</h2>
+                <div class="column is-multiline" id="sizeC">
+                    <!--clothes sizes-->
+                </div>
+
                 <div class="columns is-multiline">
                     <div class="column is-one-third">
                         <label for="quality">Code:</label>
                         <input type="text" name="code" placeholder="clothes code" class="form-control-field" minlength="3" required>         
                     </div>
-                    <div class="column is-one-third" id="sizeC">
-                        <!--clothes sizes-->
-                    </div>
+                    
                     <div class="column is-one-third" id="stockC">  
-                        <!--clothes stocks--> 
-                             
+                        <!--clothes stocks-->    
                     </div>
-                </div>
-                <!--pagination-->
-                <div class="page-single">
-                    <div class="container">
-                        <div class="column">
-                            <div class="row">
-                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                    <ul class="pagination">               
-                                        <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
-                                    </ul>
+                    <!--pagination-->
+                    <div class="page-single">
+                        <div class="container">
+                            <div class="column">
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-12 col-xs-12">
+                                        <ul class="pagination">               
+                                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </form>
@@ -200,10 +199,10 @@
             clothes.size + '</label></div>'
         )
         
-        $('#stockC').append(
+        /*$('#stockC').append(
             //availability for the stock in text format
             '<label for="quality">Stock: 0/' + clothes.stock + ' for size ' + clothes.size +'</label>'
-        )
+        )*/
     }
 
     $(document).ready(function() {
