@@ -1,11 +1,16 @@
 package com.example.webapp1a.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,6 +36,9 @@ public abstract class Stock<T> {
     @JsonIgnore
     private Item item;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Size size;
+
     public Stock(){}
 
     public void setId(Integer id){
@@ -49,9 +57,9 @@ public abstract class Stock<T> {
         return code;
     }
 
-    public abstract void setSize(T size);
-
-    public abstract T getSize();
+    //public abstract void setSize(T size);
+//
+    //public abstract T getSize();
 
     public void setStock(Integer stock){
         this.stock = stock;
@@ -67,5 +75,13 @@ public abstract class Stock<T> {
 
     public Item getItem(){
         return item;
+    }
+
+    public void setSize(Size size){
+        this.size = size;
+    }
+    
+    public Size getSize(){
+        return size;
     }
 }

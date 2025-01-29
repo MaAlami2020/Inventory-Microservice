@@ -57,10 +57,10 @@
                 </div>
 
                 <div class="columns is-multiline">
-                    <div class="column is-one-third">
+                    <!--<div class="column is-one-third">
                         <label for="quality">Code</label>
                         <input type="text" name="code" placeholder="item code" class="form-control-field" minlength="3" required>         
-                    </div>
+                    </div>-->
                     <div class="column is-one-third">
                         <label for="color">Gender</label>
                         <div class="form-control-field" id="gender">
@@ -126,16 +126,16 @@
             </div>
             
             <div class="column">
-                <h2 class="is-size-3">Clothes</h2>
-                <div class="column is-multiline" id="sizeC">
+                <h2 class="is-size-3">clothes</h2>
+                <div class="columns is-multiline" id="sizeC">
                     <!--clothes sizes-->
                 </div>
 
                 <div class="columns is-multiline">
-                    <div class="column is-one-third">
+                    <!--<div class="column is-one-third">
                         <label for="quality">Code:</label>
                         <input type="text" name="code" placeholder="clothes code" class="form-control-field" minlength="3" required>         
-                    </div>
+                    </div>-->
                     
                     <div class="column is-one-third" id="stockC">  
                         <!--clothes stocks-->    
@@ -183,35 +183,31 @@
 
     var tam=2;
     
-    let ruta='/api/inventory/clothes/stock?size='+tam;
+    let ruta='/api/inventory/sizes?size='+tam;
 
-    function loadInitClothesStock(callback){
+    function loadInitSizesStock(callback){
         $.ajax({
             url:ruta
-        }).done(function(clothes){
-            callback(clothes);
+        }).done(function(sizes){
+            callback(sizes);
         })
     }
 
-    function showClothesLoaded(clothes){
+    function showSizesLoaded(size){
         $('#sizeC').append(
-            '<label for="size">Size</label><div class="form-control-field" id="size"><label><input type="radio" id="size" name="size" value="' + clothes.size + '" required/> ' +
-            clothes.size + '</label></div>'
+            '<div class="column is-one-third"><label for="size">Size</label><div class="form-control-field" id="size"><label><input type="radio" id="label" name="label" value="' + size.label + '" required/> ' +
+            size.label + '</label></div></div>'
         )
-        
-        /*$('#stockC').append(
-            //availability for the stock in text format
-            '<label for="quality">Stock: 0/' + clothes.stock + ' for size ' + clothes.size +'</label>'
-        )*/
     }
 
     $(document).ready(function() {
         
-        loadInitClothesStock(function(clothes) {
+        loadInitSizesStock(function(sizes) {
             //entry to insert the stock
-             $('#stockC').append('<label for="quality">Stock:</label><input type="number" id="stock"name="stock" placeholder="enter stock" class="form-control-field">');
-            for(var i=0; i<clothes.numberOfElements; i++){
-                showClothesLoaded(clothes.content[i]);
+            $('#stockC').append('<label for="quality">Stock:</label><input type="number" id="stock" name="stock" placeholder="enter stock" class="form-control-field">');
+    
+            for(var i=0; i<sizes.numberOfElements; i++){
+                showSizesLoaded(sizes.content[i]);
             }
         })
 
@@ -219,13 +215,13 @@
             var tam1=tam;
             tam+=1;
 
-            let ruta='/api/inventory/clothes/stock?size='+tam;
+            let ruta='/api/inventory/sizes?size='+tam;
 
             $.ajax({
                 url:ruta
-            }).done(function(clothes){
-                for(var i=tam1; i<clothes.numberOfElements; i++){
-                    showClothesLoaded(clothes.content[i]);
+            }).done(function(sizes){
+                for(var i=tam1; i<sizes.numberOfElements; i++){
+                    showSizesLoaded(sizes.content[i]);
                 }
             })
         })

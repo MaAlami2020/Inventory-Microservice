@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,16 +20,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
 import com.example.webapp1a.model.Shoe;
+import com.example.webapp1a.model.Size;
 import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
+import com.example.webapp1a.service.SizeService;
 import com.example.webapp1a.service.StockService;
-import com.example.webapp1a.sizeFactoryMethod.Size;
 import com.example.webapp1a.stockEditionFactoryMethod.StockFactory;
 import com.example.webapp1a.stockEditionFactoryMethod.StockFactoryManager;
 
@@ -43,6 +44,9 @@ public class ItemsController {
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private SizeService sizeService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -69,42 +73,12 @@ public class ItemsController {
     public String newClothes(Model model, Item item, MultipartFile imageField) throws IOException{
   
         item.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+        item.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         itemService.add(item);
+
         model.addAttribute("addStockC",true); 
         return "new_clothes";
-    }
-
-    @PostMapping("/clothes/stock/new")
-    public String newClothesStock(Model model, Clothes clothes, Pageable page) throws IOException{
-        List<Item> item = itemService.findAll();
-        if(!item.isEmpty()){
-        //get those clothes stocks whose id_item is null
-        //Page<Clothes> clothesStock = stockService.findAllClothes(page);
-        //for(Clothes c: clothesStock) {
-            //check the size
-            //if(clothes.getSize().equals(c.getSize())){
-                //check the stock entered is under the avaialable, if so, save the new stock object into the db and reload the clothes page
-                //if(clothes.getStock() <=  c.getStock()){
-
-                    //filtering of the last item keeped in the db
-                    clothes.setItem(item.get(0));
-                    stockService.addClothes(clothes);
-                    model.addAttribute("addStockC",true); 
-                    //new stock added successfully
-                    return "new_clothes";
-        }
-        
-                //}
-            //}
-        //}
-        //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
-        model.addAttribute("addStockC",false); 
-        //error adding new stock
-        return "index";       
-    }
-
-
-    
+    }  
 
     @GetMapping("/shoes/page")
     public String newShoesPage(Model model){
@@ -186,6 +160,32 @@ public class ItemsController {
         }
     }
 
+    /**!!!!!DONE!!!!!!!*/
+    @PostMapping("/clothes/stock/new")
+    public String newClothesStock(Model model, Clothes clothes, String label, Pageable page) throws IOException{
+        List<Item> item = itemService.findAll();
+        if(!item.isEmpty()){
+
+            clothes.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
+
+            Size size = new Size(label);
+            sizeService.add(size);  
+            //size.setStock(clothes);
+            size.setStock(clothes);
+            //filtering of the last item keeped in the db
+            clothes.setItem(item.get(0));
+            stockService.addClothes(clothes);
+            model.addAttribute("addStockC",true); 
+            //new stock added successfully
+            return "new_clothes";
+        }
+        
+        //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
+        model.addAttribute("addStockC",false); 
+        //error adding new stock
+        return "index";       
+    }
+
     @PostMapping("/{id}/stock/update")
     public String itemStockUpdating(Model model, String code, Size size, Integer stock, @PathVariable Integer id, Pageable page) {
 
@@ -254,19 +254,8 @@ public class ItemsController {
 
             Page<Stock<?>> stock = stockService.findByItem(item.get(), page);
 
-            List<String> sizes = new ArrayList<String>();
-            String size="";
-            model.addAttribute("shoe",false);
-            for(Stock<?> stockAux : stock){
-                /*if(stockAux.getSize().toString().length()>=5){
-                    //numeric sizes will begin by SIZE_, the rest with its normal name
-                    model.addAttribute("shoe",true);
-                    size = stockAux.getSize().toString().substring(5);
-                } else {
-                    size = stockAux.getSize().toString(); 
-                }
-                sizes.add(size);*/
-            }
+            //load sizes from sizeRepo
+            //Page<Size> sizes = sizeService.findByStock();
 
             model.addAttribute("addStock",false);
             
@@ -277,7 +266,7 @@ public class ItemsController {
   
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
-            model.addAttribute("sizes",sizes);
+            //model.addAttribute("sizes",sizes);
             model.addAttribute("stock",stock);
 
             StockFactoryManager stockFactoryManager = new StockFactoryManager();

@@ -19,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
 import com.example.webapp1a.model.Shoe;
+import com.example.webapp1a.model.Size;
 import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
+import com.example.webapp1a.service.SizeService;
 import com.example.webapp1a.service.StockService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +46,9 @@ public class ItemsRestController {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private SizeService sizeService;
+
     
     @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
@@ -51,6 +56,21 @@ public class ItemsRestController {
         itemService.add(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
+
+    @PostMapping("/sizes")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Size> addSize(@RequestBody Size size) {
+        sizeService.add(size);
+        return new ResponseEntity<>(size, HttpStatus.OK);
+    }
+
+    @GetMapping("/sizes")
+    public ResponseEntity<Page<Size>> getSizes(Pageable page){
+        Page<Size> sizes = sizeService.findAll(page);
+        return new ResponseEntity<>(sizes, HttpStatus.OK);
+    }
+
+    /**delete method to remove a size from the size table and to unliked of the stock table */
 
     /**post method for an item and its stock object */
 

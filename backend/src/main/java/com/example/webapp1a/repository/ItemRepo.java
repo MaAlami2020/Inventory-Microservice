@@ -1,6 +1,7 @@
 package com.example.webapp1a.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,6 @@ public interface ItemRepo extends JpaRepository<Item, Integer> {
 
     @Query("select m from Item m order by id desc")
     List<Item> findAll();
+
+    Optional<Item> findByCode(String code);
 }

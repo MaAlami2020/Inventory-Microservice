@@ -138,16 +138,44 @@
 {{/addStock}}
 
 {{#addStock}}
-<form action="/items/{{id}}/stock/update" method="post" class="form-control" enctype="multipart/form-data">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-two-fifths-desktop">
-                <div class="slider" id="slider">
-                    <div class="slider-img-container">
-                        <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+
+<div class="container">
+    <div class="columns">
+        <div class="column is-two-fifths-desktop">
+            <div class="slider" id="slider">
+                <div class="slider-img-container">
+                    <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                </div>
+            </div>
+        </div>
+        <form action="/items/{{id}}/sizes/delete" method="post" class="form-control" enctype="multipart/form-data">
+            <div class="column">
+                <div class="columns is-multiline" id="sizeR">
+                    <!--stock size-->
+                </div>
+
+                <div class="columns is-multiline">
+                    <!--pagination-->
+                    <div class="page-single">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-9 col-sm-12 col-xs-12">
+                                    <ul class="paginationR">               
+                                        <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline">remove</button>
                     </div>
                 </div>
             </div>
+        </form>
+        <form action="/items/{{id}}/stock/update" method="post" class="form-control" enctype="multipart/form-data">
             <div class="column">
                 <div class="columns is-multiline" id="size">
                     <!--stock size-->
@@ -180,9 +208,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
 {{/addStock}}
 
 </div>
@@ -201,21 +229,32 @@
 <script>
 
     var tam=3;
-    let ruta='/api/inventory/stocks?size='+tam;
+    let ruta='/api/inventory/sizes?size='+tam;
+    let ruta2='/api/inventory/items/{{id}}';
+
+    var itemSizes;
+
+    function loadSizes(callback){
+        $.ajax({
+            url:ruta
+        }).done(function(sizes){
+            callback(sizes);
+        })
+    }
 
     function loadItem(callback){
         $.ajax({
-            url:ruta
+            url:ruta2
         }).done(function(item){
-            console.log(item.content);
             callback(item);
         })
     }
 
     function showItemLoaded(item){
+        let isChecked = itemSizes.some(size => size.size.label === item.label);
         $('#size').append(
             '<div class="column is-one-third"><label for="size">Size</label><div class="form-control-field"><label><input type="radio" id="size1" name="size" value="' 
-            + item.size + '"/>' + item.size + '</label></div></div>'
+            + item.label + '"/>' + item.label + '</label></div></div>'
         )
         /*$('#stock').append(
             '<label for="quality">Stock: 0/' + item.stock + ' for size ' + item.size + '</label>'
@@ -225,11 +264,16 @@
     $(document).ready(function(){
 
         loadItem(function(item){
+            //console.log(item.itemStocks);
+            itemSizes = item.itemStocks;
+        })
+
+        loadSizes(function(sizes){
             //console.log(item);
             $('#stock').append(
             '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="enter stock" class="form-control-field"/>');
-            for(var i=0; i<item.numberOfElements; i++){
-                showItemLoaded(item.content[i]);
+            for(var i=0; i<sizes.numberOfElements; i++){
+                showItemLoaded(sizes.content[i]);
             }
         })
 
@@ -237,13 +281,13 @@
             var tam1=tam;
             tam+=1;
 
-            let ruta='/api/inventory/stocks?size='+tam;
+            let ruta='/api/inventory/sizes?size='+tam;
 
             $.ajax({
                 url:ruta
-            }).done(function(items){
-                for(var i=tam1; i<items.numberOfElements; i++){
-                    showItemLoaded(items.content[i]);
+            }).done(function(sizes){
+                for(var i=tam1; i<sizes.numberOfElements; i++){
+                    showItemLoaded(sizes.content[i]);
                 }
             })
         })

@@ -2,8 +2,8 @@ package com.example.webapp1a.stockEditionFactoryMethod;
 
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.Size;
 import com.example.webapp1a.model.Stock;
-import com.example.webapp1a.sizeFactoryMethod.Size;
 
 public class ClothesStockFactory implements StockFactory{
 

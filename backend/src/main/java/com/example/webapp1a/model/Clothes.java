@@ -1,11 +1,18 @@
 package com.example.webapp1a.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
-import com.example.webapp1a.sizeFactoryMethod.Size;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Clothes extends Stock<Size>{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
 
     private String size;
 

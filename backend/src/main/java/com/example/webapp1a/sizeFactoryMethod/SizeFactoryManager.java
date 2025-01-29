@@ -1,26 +1,38 @@
 package com.example.webapp1a.sizeFactoryMethod;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.webapp1a.model.Size;
+import com.example.webapp1a.service.SizeService;
 
 public class SizeFactoryManager {
 
-    private static final List<Size> sizes = new ArrayList<>();
+    @Autowired
+    private static SizeService sizeService;
 
-    static {
+    //private static List<Size> sizes = new ArrayList<>();
+
+    /*public SizeFactoryManager() {
         // Valores iniciales
         sizes.add(new Size("S"));
         sizes.add(new Size("M"));
         sizes.add(new Size("L"));
         sizes.add(new Size("XL"));
+        sizes.add(new Size("38"));
+        sizes.add(new Size("39"));
+        sizes.add(new Size("41"));
+        sizes.add(new Size("42"));
+        sizes.add(new Size("43"));
+        sizes.add(new Size("44"));
+        sizes.add(new Size("46"));
     }
 
-    public static List<Size> getSizes() {
-        return Collections.unmodifiableList(sizes);
-    }
+    public List<Size> getSizes() {
+        return sizes;
+    }*/
 
     public static void addSize(String newSize) {
-        sizes.add(new Size(newSize));
+        sizeService.add(new Size(newSize));
+        //sizes.add(new Size(newSize));
     }
 }
