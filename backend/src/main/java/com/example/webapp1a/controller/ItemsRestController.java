@@ -2,6 +2,7 @@ package com.example.webapp1a.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -145,21 +146,15 @@ public class ItemsRestController {
         }
     }
 
-    @DeleteMapping("/items/{id}")
-    public ResponseEntity<Item> deleteItemById(@PathVariable Integer id){
+    @DeleteMapping("/items/{id}/stocks/{index}/delete")
+    public ResponseEntity<Stock<?>> deleteItemStock(@PathVariable Integer id, @PathVariable Integer index){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            itemService.deleteById(id);
-            return new ResponseEntity<>(item.get(), HttpStatus.OK);
+            item.get().getItemStocks().remove(index);
+            return new ResponseEntity<>(item.get().getItemStocks().get(index),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-    @DeleteMapping("/items/{id}/delete")
-    public ResponseEntity<Page<Item>> deleteItemById(@PathVariable Integer id, Pageable page){
-        itemService.deleteById(id);
-        return new ResponseEntity<>(itemService.findAll(page), HttpStatus.OK);
     }
 
     @PostMapping("/items/{id}/image")
@@ -208,5 +203,13 @@ public class ItemsRestController {
         }
     }
 
+    @GetMapping("/items/last")
+    public ResponseEntity<Item> findLastItem(){
+        List<Item> items = itemService.findAll();
+        if(!items.isEmpty())
+            return new ResponseEntity<>(items.get(18),HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
      
 }

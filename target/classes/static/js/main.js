@@ -37,8 +37,7 @@ for (var i = 0; i < submenu.length; i++) {
 // script del slider de producto
 let activeImg = 0
 function slider(n) {
-    let images = document.getElementsByClassName("slider-item")
-
+    let images = document.getElementsByClassName("slider-img-container")
     for (i = 0; i < images.length; i++) {
 
         if (images[i].className.includes("active")) {
@@ -49,21 +48,22 @@ function slider(n) {
     }
 
     activeImg = n
-    images[n].className += " active"
+    images[n].className += " active"    
 }
 
-function next() {
+function next(n) {
     activeImg++
-    if (activeImg > 2) {
+    if (activeImg >= n) {
         activeImg = 0
     }
     slider(activeImg)
 }
 
-function previus() {
+function previous(n) {
+    console.log(n)
     activeImg--
     if (activeImg < 0) {
-        activeImg = 2
+        activeImg = n-1
     }
     slider(activeImg)
 }
@@ -83,5 +83,7 @@ document.getElementById('tabs').addEventListener('click', e => {
     }
 
 })
+
+
 
 

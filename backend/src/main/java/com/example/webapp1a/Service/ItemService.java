@@ -36,7 +36,7 @@ public class ItemService {
     public List<Item> findAll(){
         return itemRepo.findAll();
     }
-    
+
     public Optional<Item> findById(Integer id){
         return itemRepo.findById(id);
     }

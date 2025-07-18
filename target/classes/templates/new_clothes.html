@@ -14,15 +14,9 @@
 <body>
     <header>
         <nav class="navbar">
-            <nav class="nav-menu --nav-dark-light" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
-                
-                <ul class="nav-menu-ul">
-                    {{#addStockC}}
-                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-dark">acept</a></li>
-                    {{/addStockC}}
-                </ul>
-                
+            <nav class="nav-menu --nav-dark" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/">Avenue Fashion</a>
+                <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
     </header>
@@ -33,7 +27,6 @@
     </div>
 
 <div>
-{{^addStockC}}
 <form action="/items/clothes/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
@@ -57,27 +50,23 @@
                 </div>
 
                 <div class="columns is-multiline">
-                    <!--<div class="column is-one-third">
-                        <label for="quality">Code</label>
-                        <input type="text" name="code" placeholder="item code" class="form-control-field" minlength="3" required>         
-                    </div>-->
                     <div class="column is-one-third">
                         <label for="color">Gender</label>
                         <div class="form-control-field" id="gender">
-                            <label><input type="radio" id="gender1" name="gender" value="man" required/> man</label>
-                            <label><input type="radio" id="gender2" name="gender" value="woman" required/> woman</label>
-                            <label><input type="radio" id="gender3" name="gender" value="unisex" required/> unisex</label>
+                            {{#genders}}
+                            <label><input type="radio" name="gender" value="{{.}}" required/> {{.}}</label>
+                            {{/genders}}
                         </div>
                     </div>
                     <div class="column is-one-third">
                         <label for="size">Type</label>
                         <div class="form-control-field" id="type">
-                            <label><input type="radio" id="type1" name="type" value="jeans" required> jeans</label>
-                            <label><input type="radio" id="type2" name="type" value="camisa" required> shirt</label>
-                            <label><input type="radio" id="type3" name="type" value="camiseta" required> t-shirt</label>
+                            {{#types}}
+                            <label><input type="radio" name="type" value="{{.}}" required> {{.}}</label>
+                            {{/types}}
                         </div>
                     </div>
-                </div>
+                </div>  
                 
                 <div class="columns is-multiline">
                     <div class="column is-full is-marginless">
@@ -109,62 +98,6 @@
         </div>
     </div>
 </form>
-{{/addStockC}}
-</div>
-
-<div>
-{{#addStockC}}
-<form action="/items/clothes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-two-fifths-desktop">
-                <div class="slider" id="slider">
-                    <div class="slider-img-container">
-                        <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="column">
-                <h2 class="is-size-3">clothes</h2>
-                <div class="columns is-multiline" id="sizeC">
-                    <!--clothes sizes-->
-                </div>
-
-                <div class="columns is-multiline">
-                    <!--<div class="column is-one-third">
-                        <label for="quality">Code:</label>
-                        <input type="text" name="code" placeholder="clothes code" class="form-control-field" minlength="3" required>         
-                    </div>-->
-                    
-                    <div class="column is-one-third" id="stockC">  
-                        <!--clothes stocks-->    
-                    </div>
-                    <!--pagination-->
-                    <div class="page-single">
-                        <div class="container">
-                            <div class="column">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-12 col-xs-12">
-                                        <ul class="pagination">               
-                                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns is-multiline">
-                    <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">add</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-{{/addStockC}}
 </div>
 
     <!-- footer -->
@@ -179,54 +112,4 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 </body>
-<script>
-
-    var tam=2;
-    
-    let ruta='/api/inventory/sizes?size='+tam;
-
-    function loadInitSizesStock(callback){
-        $.ajax({
-            url:ruta
-        }).done(function(sizes){
-            callback(sizes);
-        })
-    }
-
-    function showSizesLoaded(size){
-        $('#sizeC').append(
-            '<div class="column is-one-third"><label for="size">Size</label><div class="form-control-field" id="size"><label><input type="radio" id="label" name="label" value="' + size.label + '" required/> ' +
-            size.label + '</label></div></div>'
-        )
-    }
-
-    $(document).ready(function() {
-        
-        loadInitSizesStock(function(sizes) {
-            //entry to insert the stock
-            $('#stockC').append('<label for="quality">Stock:</label><input type="number" id="stock" name="stock" placeholder="enter stock" class="form-control-field">');
-    
-            for(var i=0; i<sizes.numberOfElements; i++){
-                showSizesLoaded(sizes.content[i]);
-            }
-        })
-
-        $('.pagination').click(function() {
-            var tam1=tam;
-            tam+=1;
-
-            let ruta='/api/inventory/sizes?size='+tam;
-
-            $.ajax({
-                url:ruta
-            }).done(function(sizes){
-                for(var i=tam1; i<sizes.numberOfElements; i++){
-                    showSizesLoaded(sizes.content[i]);
-                }
-            })
-        })
-
-    });
-
-</script>
 </html>

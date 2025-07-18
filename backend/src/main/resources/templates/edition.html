@@ -270,7 +270,7 @@
 
         loadSizes(function(sizes){
             //console.log(item);
-            $('#stock').append(
+            $('#stock').append( 
             '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="enter stock" class="form-control-field"/>');
             for(var i=0; i<sizes.numberOfElements; i++){
                 showItemLoaded(sizes.content[i]);
