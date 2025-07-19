@@ -54,35 +54,21 @@
     <div class="banner banner-second">
         <div class="banner-container ">
 
-            <div class="container">
-                <div class="columns">
-                    <div class="slider" id="slider">
-                        <div class="button-left">
-                        </div>
-                        <div class="button-right">
-                        </div>
-                    </div>
-                </div>
+            <h1>Item updated</h1>
+            <div class="columns" id="itemUpdated">
             </div>
 
         </div>
     </div>
 
 <div>
-<form action="/items/clothes/new/stock" method="post" class="form-control" enctype="multipart/form-data">
+<form action="/items/{{id}}/clothes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
             <div class="column is-two-fifths-desktop">
                 <div>
-                    <div>
-                        <img src="/img/no_t-shirt.PNG" alt="camiseta" width="200" height="200">
-                    </div>
+                    <img src="//localhost:8443/api/items/{{id}}/image" alt="camiseta" width="200" height="200">
                 </div>
-            </div>
-            
-            <div class="column">
-                <h2 class="is-size-3">clothes</h2>
-                
 
                 <div class="columns is-multiline">
                     <div class="column is-one-third" id="size"></div>
@@ -95,6 +81,20 @@
                         <button class="btn btn-default btn-outline">add</button>
                     </div>
                 </div>
+            </div>
+            
+            <div class="column">
+                <h2 class="is-size-3">clothes</h2>
+
+                <div class="columns is-multiline">
+                    <div class="slider" id="slider">
+                        <div class="button-left">
+                        </div>
+                        <div class="button-right">
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -119,9 +119,9 @@
     let currentIndex = 0;
     let totalItems = 0;
 
-    function loadLastItem(callback){
+    function loadItem(callback){
         $.ajax({
-            url: '/api/inventory/items/last'
+            url: '/api/inventory/items/{{id}}'
         }).done(function(item){
             callback(item);
         });
@@ -196,14 +196,28 @@
         currentIndex = newIndex;
     }
 
+    function showItemUpdated(item){
+        $('#itemUpdated').append('<div class="column">' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Code: </strong>' + item.code + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Name: </strong>' + item.name + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Price: </strong>' + item.price + ' €</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Gender: </strong>' + item.gender + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Type: </strong>' + item.type + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Description: </strong>' + item.description + '</p>' +
+                '</div>'
+        );
+    }
+
     $(document).ready(function() {
-        loadLastItem(function(item) {
+        loadItem(function(item) {
+            showFields();
+            showItemUpdated(item);
             showAllStocks(item, item.itemStocks);
             if (item.itemStocks.length >= 1) {
                 showPreviousButton();
                 showNextButton();
             }
-            showFields();
+            
         });
     });
 </script>

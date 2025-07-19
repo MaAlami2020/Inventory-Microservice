@@ -202,14 +202,5 @@ public class ItemsRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @GetMapping("/items/last")
-    public ResponseEntity<Item> findLastItem(){
-        List<Item> items = itemService.findAll();
-        if(!items.isEmpty())
-            return new ResponseEntity<>(items.get(18),HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
      
 }

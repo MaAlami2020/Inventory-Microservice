@@ -17,9 +17,7 @@
             <nav class="nav-menu --nav-dark" id="mySidenav">
                 <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" href="/">Avenue Fashion</a>
                 <ul class="nav-menu-ul">
-                    {{#addStock}}
-                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-dark">acept</a></li>
-                    {{/addStock}}
+                    <li class="nav-menu-item has-text-white"><a href="/items/{{id}}/{{category}}/stock" class="nav-menu-link">Edit {{category}}</a></li>
                 </ul>
             </nav>
         </nav>
@@ -30,36 +28,15 @@
             <h1>Current item</h1>
             <div class="columns">
                 <div class="column">
-                    <img src="//localhost:8443/api/items/{{id}}/image" alt="" width="450" height="450"></img>
+                    <img src="//localhost:8443/api/items/{{id}}/image" alt="" width="200" height="200"></img>
                 </div>
-                <div class="column">
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Code: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
-                    {{#sizes}}
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{.}}: </strong></p>
-                    {{/sizes}}
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
-
-                </div>
-                <div class="column">
-                    <p>{{code}}</p>
-                    <p>{{name}}</p>
-                    <p>{{price}} €</p> 
-                    <p>{{gender}}</p>
-                    <p>{{type}}</p>
-                    {{#stock}}
-                    <p>{{stock}}</p>
-                    {{/stock}}
-                    <p>{{description}}</p>  
+                <div class="column" id="item">
                 </div>
             </div>
         </div>
     </div>
 
-{{^addStock}}
+
 <form action="/items/{{id}}/update" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
@@ -70,7 +47,7 @@
                     </div>
                 </div>
                 <input type='file' name='imageField' accept=".jpg, .jpeg, .png"/>
-            </div>
+            </div>  
             <div class="column">
                 <h3 class="is-size-4">New item</h3>
                 <div class="columns">
@@ -90,16 +67,16 @@
                     <div class="column is-one-third">
                         <label for="color">Gender:</label>
                         <div class="form-control-field" id="gender">
-                            <label><input type="radio" id="gender1" name="gender" value="man"/> man</label>
-                            <label><input type="radio" id="gender2" name="gender" value="woman"/> woman</label>
-                            <label><input type="radio" id="gender3" name="gender" value="unisex"/> unisex</label>
+                            {{#genders}}
+                            <label><input type="radio" name="gender" value="{{.}}"/> {{.}}</label>
+                            {{/genders}}
                         </div>
                     </div>
                     <div class="column is-one-third">
                         <label for="size">Type:</label>  
                         <div class="form-control-field" id="type">
                             {{#factories}}
-                            <label><input type="radio" id="type1" name="type" value="{{.}}"/> {{.}}</label>
+                            <label><input type="radio" name="type" value="{{.}}"/> {{.}}</label>
                             {{/factories}}
                             <!--aplicar factory method para crear instancias segun el tipo de producto-->
                         </div>
@@ -108,7 +85,7 @@
 
                 <div class="columns is-multiline">
                     <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">add stock</button>
+                        <button class="btn btn-default btn-outline">save</button>
                     </div>
                 </div>
             </div>
@@ -135,83 +112,7 @@
         </div>
     </div>
 </form>
-{{/addStock}}
 
-{{#addStock}}
-
-<div class="container">
-    <div class="columns">
-        <div class="column is-two-fifths-desktop">
-            <div class="slider" id="slider">
-                <div class="slider-img-container">
-                    <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
-                </div>
-            </div>
-        </div>
-        <form action="/items/{{id}}/sizes/delete" method="post" class="form-control" enctype="multipart/form-data">
-            <div class="column">
-                <div class="columns is-multiline" id="sizeR">
-                    <!--stock size-->
-                </div>
-
-                <div class="columns is-multiline">
-                    <!--pagination-->
-                    <div class="page-single">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                    <ul class="paginationR">               
-                                        <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns is-multiline">
-                    <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">remove</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <form action="/items/{{id}}/stock/update" method="post" class="form-control" enctype="multipart/form-data">
-            <div class="column">
-                <div class="columns is-multiline" id="size">
-                    <!--stock size-->
-                </div>
-
-                <div class="columns is-multiline">
-                    <div class="column is-one-third">
-                        <label for="quality">Code:</label>
-                        <input type="text" name="code" placeholder="item stock new code" class="form-control-field" minlength="3">         
-                    </div>
-                    <div class="column is-one-third" id="stock">
-                        <!--stock amount-->
-                    </div> 
-                    <!--pagination-->
-                    <div class="page-single">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                    <ul class="pagination">               
-                                        <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">load more</button></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns is-multiline">
-                    <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">add</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{{/addStock}}
 
 </div>
     <!-- footer -->
@@ -228,69 +129,33 @@
 </body>
 <script>
 
-    var tam=3;
-    let ruta='/api/inventory/sizes?size='+tam;
-    let ruta2='/api/inventory/items/{{id}}';
-
-    var itemSizes;
-
-    function loadSizes(callback){
-        $.ajax({
-            url:ruta
-        }).done(function(sizes){
-            callback(sizes);
-        })
-    }
+    let ruta='/api/inventory/items/{{id}}';
 
     function loadItem(callback){
         $.ajax({
-            url:ruta2
+            url:ruta
         }).done(function(item){
             callback(item);
         })
     }
 
     function showItemLoaded(item){
-        let isChecked = itemSizes.some(size => size.size.label === item.label);
-        $('#size').append(
-            '<div class="column is-one-third"><label for="size">Size</label><div class="form-control-field"><label><input type="radio" id="size1" name="size" value="' 
-            + item.label + '"/>' + item.label + '</label></div></div>'
+        $('#item').append('<p class="has-text-white"><strong class="has-text-grey-light">Code: </strong>' + item.code + '</p>' +
+                    '<p class="has-text-white"><strong class="has-text-grey-light">Name: </strong>' + item.name + '</p>' +
+                    '<p class="has-text-white"><strong class="has-text-grey-light">Price: </strong>' + item.price + ' €</p>' +
+                    '<p class="has-text-white"><strong class="has-text-grey-light">Gender: </strong>' + item.gender + '</p>' +
+                    '<p class="has-text-white"><strong class="has-text-grey-light">Type: </strong>' + item.type + '</p>' +
+                    '<p class="has-text-white"><strong class="has-text-grey-light">Description: </strong>' + item.description + '</p>'
         )
-        /*$('#stock').append(
-            '<label for="quality">Stock: 0/' + item.stock + ' for size ' + item.size + '</label>'
-        )*/
     }
 
     $(document).ready(function(){
 
         loadItem(function(item){
-            //console.log(item.itemStocks);
-            itemSizes = item.itemStocks;
+            console.log(item);
+            showItemLoaded(item);
         })
 
-        loadSizes(function(sizes){
-            //console.log(item);
-            $('#stock').append( 
-            '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="enter stock" class="form-control-field"/>');
-            for(var i=0; i<sizes.numberOfElements; i++){
-                showItemLoaded(sizes.content[i]);
-            }
-        })
-
-        $('.pagination').click(function() {
-            var tam1=tam;
-            tam+=1;
-
-            let ruta='/api/inventory/sizes?size='+tam;
-
-            $.ajax({
-                url:ruta
-            }).done(function(sizes){
-                for(var i=tam1; i<sizes.numberOfElements; i++){
-                    showItemLoaded(sizes.content[i]);
-                }
-            })
-        })
     })
 </script>
 </html>
