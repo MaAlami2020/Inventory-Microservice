@@ -1,5 +1,7 @@
 package com.example.webapp1a.model;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,8 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "tbl_cart")
 public class ShoppingCart {
 
     @Id
@@ -18,14 +24,18 @@ public class ShoppingCart {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy="shoppingCart")
+    @JsonIgnore
     private User user;
     
     @Column(name = "totalCost")
-    private Double totalCost;
+    private Double totalCost = 0.0;
+
+     @Column(name="time")
+    private LocalTime buyTime;
 
     @OneToMany(mappedBy="shoppingCart")
-    private List<ItemToBuy> items; 
+    private List<ItemToBuy> items = new ArrayList<>(); 
 
     public ShoppingCart() {}
 
@@ -60,6 +70,18 @@ public class ShoppingCart {
     }
 
     public Double getTotalCost(){
-        return totalCost;
+        return ((double)Math.round(totalCost * 100d) / 100d);
+    }
+
+    public List<ItemToBuy> getItems() {
+        return items;
+    }
+
+    public void setBuyTime(LocalTime time){
+        this.buyTime = time;
+    }
+
+    public LocalTime getBuyTime(){
+        return buyTime;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.webapp1a.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,44 +10,63 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+
+
 @Entity
+@Table(name = "tbl_order")
 public class Order {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     private String code;
 
-    @ManyToOne
+    @ManyToOne 
     @JsonIgnore
     private User user;
+
+    @OneToMany(mappedBy = "order")
+    private List<ItemToBuy> itemToBuy = new ArrayList<>();
+
 
     @Column(name="totalCost")
     private Double totalCost;
 
     @Column(name="date")
-    private Date creationDate;
+    private LocalDate creationDate;//AAAA-MM-DD
 
     @Column(name="state")
     private State state;
 
-    public enum State{
-        PENDING, IN_PROGRESS, CONFIRMED, CANCELLED
-    }
+    //private String auxState;
 
     public Order(){}
 
-    public void setId(Long id){
+    public enum State {
+        PENDING, CONFIRMED, DELIVERED, CANCELLED
+    }
+
+    public void setId(Integer id){
         this.id = id;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
+    }
+
+    public void setCode(String code){
+        this.code = code;
+    }
+
+    public String getCode(){
+        return code;
     }
 
     public void setUser(User user){
@@ -56,6 +77,20 @@ public class Order {
         return user;
     }
 
+    public void addItemToBuy(ItemToBuy item){
+        itemToBuy.add(item);
+        item.setOrder(this);
+    }
+
+    public void removeItemToBuy(ItemToBuy item){
+        itemToBuy.remove(item);
+        item.setOrder(null);
+    }
+
+    public List<ItemToBuy> getItemToBuys(){
+        return itemToBuy;
+    }
+
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
     }
@@ -64,11 +99,11 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(Date creationDate){
+    public void setCreationDate(LocalDate creationDate){
         this.creationDate = creationDate;
     }
 
-    public Date getCreationDate(){
+    public LocalDate getCreationDate(){
         return creationDate;
     }
 
@@ -78,13 +113,5 @@ public class Order {
 
     public State getState(){
         return state;
-    }
-
-    public void setCode(String code){
-        this.code = code;
-    }
-
-    public String getCode(){
-        return code;
     }
 }

@@ -2,6 +2,7 @@ package com.example.webapp1a.model;
 
 import java.sql.Blob;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,10 +23,13 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer identifier;
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "email")
     private String email;
@@ -38,25 +42,41 @@ public class User {
 
     private String passwordConfirmation;
 
+
     @Lob
-    //@Type(type = "org.hibernate.type.ImageType")
     @Column(name = "image")
-    private Blob avatar;
+    private Blob imageField;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JsonIgnore
+    @OneToOne(cascade=CascadeType.ALL)
     private Direction direction;
-
-    @ManyToMany
-    private List<Item> favouritesItems;
 
     @OneToOne
     private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy="users")
+    private List<Item> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    public User(){}
+    public User(){
+    }
+
+    public User(String name, String username, String email, String password){
+        super();
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void setId(Integer id){
+        this.identifier = id;
+    }
+
+    public Integer getId(){
+        return identifier;
+    }
 
     public Direction getDirection(){
         return direction;
@@ -84,30 +104,16 @@ public class User {
         order.setUser(null);
     }
 
-    public void setFavouritesItems (List<Item> favourites){
-        this.favouritesItems = favourites;
+    public List<Order> getOrders(){
+        return orders;
     }
 
-    public List<Item> getFavouritesItems(){
-        return favouritesItems;
+    public void setItems (List<Item> favourites){
+        this.items = favourites;
     }
 
-    /*public void addFavouriteItem(Item favouriteItem){
-        favouritesItems.add(favouriteItem);
-        favouriteItem.addUser(this);
-    }
-
-    public void removeFavouritesItems(Item favouriteItem){
-        favouritesItems.remove(favouriteItem);
-        favouriteItem.removeUser(null);
-    }*/
-
-    public void setId(Integer id){
-        this.id = id;
-    }
-
-    public Integer getId(){
-        return id;
+    public List<Item> getItems(){
+        return items;
     }
 
     public void setUsername(String username){
@@ -116,6 +122,14 @@ public class User {
 
     public String getUsername(){
         return username;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void setEmail(String email){
@@ -151,10 +165,10 @@ public class User {
     }
 
     public void setImageFile(Blob image){
-        this.avatar = image;
+        this.imageField = image;
     }
 
     public Blob getImageFile(){
-        return avatar;
+        return imageField;
     }
 }

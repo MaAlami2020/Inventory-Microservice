@@ -138,7 +138,6 @@
     }
 
     function showAllStocks(item, itemStocks){
-        totalItems = itemStocks.length;
 
         itemStocks.forEach((stock, index) => {
             $('.slider').append(`
@@ -212,8 +211,8 @@
         loadItem(function(item) {
             showFields();
             showItemUpdated(item);
-            showAllStocks(item, item.itemStocks);
-            if (item.itemStocks.length >= 1) {
+            if (item.stocks.length >= 1) {
+                showAllStocks(item, item.stocks);
                 showPreviousButton();
                 showNextButton();
             }
