@@ -50,39 +50,88 @@ public class ItemsController {
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
-        model.addAttribute("addStockC",false);
-        model.addAttribute("addStockS",false);
-        model.addAttribute("addStock",false);
     }
     
     @GetMapping("/")
-    public String home(Model model){
-        model.addAttribute("addStockC",false);
-        model.addAttribute("addStockS",false);
-        model.addAttribute("addStock",false);
-        return "index";
+    public String home(){
+        return "new_clothes_stock";//return "index";   
     }    
   
     @GetMapping("/clothes/page")
-    public String newClothesPage(Model model){
-        model.addAttribute("addStockC",false); 
+    public String clothesPage(Model model){
+        StockFactoryManager stockFactoryManager = new StockFactoryManager();
+        model.addAttribute("genders", stockFactoryManager.getGenders());
+        model.addAttribute("types", stockFactoryManager.getFactories().keySet());
         return "new_clothes";
     }
 
-    @PostMapping("/clothes/new")
-    public String newClothes(Model model, Item item, MultipartFile imageField) throws IOException{
-  
+    public void addNewItem(Item item, MultipartFile imageField) throws IOException{
         item.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
         item.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
-        itemService.add(item);
+        itemService.add(item); 
+    }
 
-        model.addAttribute("addStockC",true); 
-        return "new_clothes";
+    @PostMapping("/clothes/new")
+    public String newClothesPage(Item item, MultipartFile imageField) throws IOException{
+        addNewItem(item, imageField);
+        return "new_clothes_stock";
     }  
+
+    public Stock<?> addNewStock(Item item, Stock<?> stock, String label, Integer amount) throws IOException{
+        Size size = new Size();
+            size.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 5));
+            size.setLabel(label);
+            sizeService.add(size);  
+
+            stock.setSize(size);
+
+            stock.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
+            stock.setStock(amount);
+            
+            //filtering of the last item keeped in the db
+            stock.setItem(item);
+            return stock;
+    }
+
+    @PostMapping("/clothes/new/stock")
+    public String newClothesStockPage(Clothes item, String label, Integer stock) throws IOException{
+        List<Item> items = itemService.findAll();
+        if(!items.isEmpty()){
+
+            Stock<?> clothes = addNewStock(items.get(0), item, label, stock);
+            stockService.addStock((Clothes)clothes);
+            //new stock added successfully
+            return "new_clothes_stock";
+        }
+        
+        //error adding new stock
+        return "error";       
+    }
+
+    public void deleteItemStock(Integer id, Integer index){
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            Optional<Stock<?>> stock = stockService.findById(index);
+            if(stock.isPresent()){
+                stockService.deleteById(index);
+            }
+        }
+    }
+
+    @GetMapping("/{id}/stocks/{index}/delete")
+    public String deleteItemStockPage(@PathVariable Integer id, @PathVariable Integer index){
+        deleteItemStock(id, index);
+        return "new_clothes_stock";
+    }
+
+   
+
+
+
+
 
     @GetMapping("/shoes/page")
     public String newShoesPage(Model model){
-        model.addAttribute("addStockS",false); 
         return "new_shoes";
     }
 
@@ -160,32 +209,11 @@ public class ItemsController {
         }
     }
 
-    /**!!!!!DONE!!!!!!!*/
-    @PostMapping("/clothes/stock/new")
-    public String newClothesStock(Model model, Clothes clothes, String label, Pageable page) throws IOException{
-        List<Item> item = itemService.findAll();
-        if(!item.isEmpty()){
 
-            clothes.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
-
-            Size size = new Size(label);
-            sizeService.add(size);  
-            //size.setStock(clothes);
-            size.setStock(clothes);
-            //filtering of the last item keeped in the db
-            clothes.setItem(item.get(0));
-            stockService.addClothes(clothes);
-            model.addAttribute("addStockC",true); 
-            //new stock added successfully
-            return "new_clothes";
-        }
-        
-        //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
-        model.addAttribute("addStockC",false); 
-        //error adding new stock
-        return "index";       
-    }
-
+    /**
+     * 
+     * find out the item by the identifier on the stock table
+     */
     @PostMapping("/{id}/stock/update")
     public String itemStockUpdating(Model model, String code, Size size, Integer stock, @PathVariable Integer id, Pageable page) {
 
@@ -224,6 +252,7 @@ public class ItemsController {
 
             //create the particular stock object
             Stock<?> concreteStock = StockFactoryManager.createStock(item.get().getType(), item.get(), code, size, stock);
+            
             //save stock object into the db
             stockService.addStock(concreteStock);
             model.addAttribute("addStock",true);
@@ -234,7 +263,7 @@ public class ItemsController {
     }
 
     @GetMapping("/{id}/delete")
-    public String removeReview(Model model, @PathVariable Integer id){
+    public String removeItem(Model model, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
  
         if(item.isPresent()) {

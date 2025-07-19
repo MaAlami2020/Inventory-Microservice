@@ -62,4 +62,12 @@ public class StockService {
     public Page<Stock<?>> findByItem(Item item, Pageable page){
         return stockRepo.findByItem(item, page);
     }
+
+    public Optional<Stock<?>> findById(Integer id){
+        return stockRepo.findById(id);
+    }
+
+    public void deleteById(Integer id){
+        stockRepo.deleteById(id);
+    }
 }
