@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <title>Avenue Fashion</title>
+
+<style>
+.slider-buttons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    cursor: pointer;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    padding: 10px;
+    user-select: none;
+}
+
+.slider-button-left {
+    left: 10px;
+}
+
+.slider-button-right {
+    right: 10px;
+}
+
+/* Required for the slider to have relative positioning */
+.slider {
+    position: relative;
+}
+</style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <nav class="nav-menu --nav-dark" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/">Avenue Fashion</a>
+                <ul class="nav-menu-ul">
+                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-white">confirm</a></li>
+                </ul>
+            </nav>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-second">
+        <div class="banner-container ">
+
+            <h1>Item updated</h1>
+            <div class="columns" id="itemUpdated">
+            </div>
+
+        </div>
+    </div>
+
+<div>
+<form action="/items/{{id}}/shoes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-two-fifths-desktop">
+                <div>
+                    <img src="//localhost:8443/api/items/{{id}}/image" alt="camiseta" width="200" height="200">
+                </div>
+
+                <div class="columns is-multiline">
+                    <div class="column is-one-third" id="size"></div>
+                    <div class="column is-one-third" id="stock"></div>
+                </div>
+
+
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline">add</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <h2 class="is-size-3">Shoes</h2>
+
+                <div class="columns is-multiline">
+                    <div class="slider" id="slider">
+                        <div class="button-left">
+                        </div>
+                        <div class="button-right">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-bar-top">
+            <div class="container">
+                <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+            </div>
+        </div>
+    </footer>
+    
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+
+</body>
+<script>
+    let currentIndex = 0;
+    let totalItems = 0;
+
+    function loadItem(callback){
+        $.ajax({
+            url: '/api/inventory/items/{{id}}'
+        }).done(function(item){
+            callback(item);
+        });
+    }
+
+    function showFields(){
+        $('#size').append(
+            '<label for="quality">Size:</label><input type="text" name="label" placeholder="size" class="form-control-field">'
+        );
+    
+        $('#stock').append(
+            '<label for="quality">Stock:</label><input type="number" name="stock" placeholder="enter stock" class="form-control-field">'
+        );
+    }
+
+    function showAllStocks(item, itemStocks){
+        totalItems = itemStocks.length;
+
+        itemStocks.forEach((stock, index) => {
+            $('.slider').append(`
+                <div class="slider-img-container ${index === 0 ? 'active' : 'is-hidden'}" data-index="${index}" style="align: center">
+                    <div class="column is-half-mobile is-two-third-desktop">
+                        <div class="card">
+                            <div class="card-simple-options">
+                                <a href="/items/${item.id}/stocks/${stock.id}/delete" class="btn btn--mini-rounded">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">DELETE</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <p class="has-text-dark"><strong class="has-text-dark">Code:</strong> ${stock.code}</p>
+                            <p class="has-text-dark"><strong class="has-text-dark">Size:</strong> ${stock.size.label}</p>
+                            <p class="has-text-dark"><strong class="has-text-dark">Stock:</strong> ${stock.stock}</p>
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    function showPreviousButton(){
+        $('.button-left').append(`
+            <div class="slider-button-left slider-buttons" onclick="previousItem()">
+                <i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i>
+            </div>
+        `);
+    }
+
+    function showNextButton(){
+        $('.button-right').append(`
+            <div class="slider-button-right slider-buttons" onclick="nextItem()">
+                <i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i>
+            </div>
+        `);
+    }
+
+    function previousItem(){
+        if (currentIndex > 0) {
+            updateCarousel(currentIndex - 1);
+        }
+    }
+
+    function nextItem(){
+        if (currentIndex < totalItems - 1) {
+            updateCarousel(currentIndex + 1);
+        }
+    }
+
+    function updateCarousel(newIndex){
+        $('.slider-img-container').addClass('is-hidden').removeClass('active');
+        $(`.slider-img-container[data-index="${newIndex}"]`).removeClass('is-hidden').addClass('active');
+        currentIndex = newIndex;
+    }
+
+    function showItemUpdated(item){
+        $('#itemUpdated').append('<div class="column">' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Code: </strong>' + item.code + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Name: </strong>' + item.name + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Price: </strong>' + item.price + ' €</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Gender: </strong>' + item.gender + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Type: </strong>' + item.type + '</p>' +
+                '<p class="has-text-white"><strong class="has-text-grey-light">Description: </strong>' + item.description + '</p>' +
+                '</div>'
+        );
+    }
+
+    $(document).ready(function() {
+        loadItem(function(item) {
+            showFields();
+            showItemUpdated(item);
+            showAllStocks(item, item.itemStocks);
+            if (item.itemStocks.length >= 1) {
+                showPreviousButton();
+                showNextButton();
+            }
+            
+        });
+    });
+</script>
+</html>
