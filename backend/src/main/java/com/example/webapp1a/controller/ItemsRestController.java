@@ -2,7 +2,6 @@ package com.example.webapp1a.controller;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -150,8 +149,8 @@ public class ItemsRestController {
     public ResponseEntity<Stock<?>> deleteItemStock(@PathVariable Integer id, @PathVariable Integer index){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            item.get().getItemStocks().remove(index);
-            return new ResponseEntity<>(item.get().getItemStocks().get(index),HttpStatus.OK);
+            item.get().getStocks().remove(index);
+            return new ResponseEntity<>(item.get().getStocks().get(index),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

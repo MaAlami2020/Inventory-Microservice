@@ -22,11 +22,11 @@ public class StockFactoryManager {
         genders.add("unisex");
     }
 
-    public static Map<String, String> getFactories(){
+    public Map<String, String> getFactories(){
         return factories;
     }
 
-    public static Set<String> getGenders(){
+    public Set<String> getGenders(){
         return genders;
     }
 }
