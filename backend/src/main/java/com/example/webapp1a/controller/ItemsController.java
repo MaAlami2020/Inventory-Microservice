@@ -1,7 +1,6 @@
 package com.example.webapp1a.controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,8 +47,7 @@ public class ItemsController {
     
     @GetMapping("/")
     public String home(Model model){
-        model.addAttribute("id", 37);
-        return "new_clothes_stock";//return "index";   
+        return "index";   
     }   
     
     public void addNewItem(Item item, MultipartFile imageField) throws IOException{
@@ -92,7 +90,7 @@ public class ItemsController {
             model.addAttribute("category", stockFactoryManager.getFactories().get(item.get().getType()));
             return "edition";
         } else {
-            return "error";
+            return "//localhost:8443/error";
         }
     }
 
@@ -110,10 +108,12 @@ public class ItemsController {
                 oldItem.get().setImageFile(item.getImageFile());
             }
             itemService.save(oldItem.get(), item);
+            model.addAttribute("genders", stockFactoryManager.getGenders());
+            model.addAttribute("types", stockFactoryManager.getFactories().keySet());
             model.addAttribute("category", stockFactoryManager.getFactories().get(oldItem.get().getType()));
             return "edition";
         } else {
-            return "error";
+            return "//localhost:8443/error";
         }
     }
 
@@ -149,7 +149,7 @@ public class ItemsController {
             return "new_clothes_stock";
         }
         //error adding new stock
-        return "error";       
+        return "//localhost:8443/error";       
     }
 
     //SHOES SECTION!!!
@@ -184,7 +184,7 @@ public class ItemsController {
             return "new_shoes_stock";
         }
         //error adding new stock
-        return "error";       
+        return "//localhost:8443/error";       
     }
 
     public void deleteItemStock(Integer id, Integer index){
@@ -217,7 +217,7 @@ public class ItemsController {
             itemService.deleteById(item.get().getId());
             return "index";
         } else {
-            return "error";
+            return "//localhost:8443/error";
         }
     }
 }

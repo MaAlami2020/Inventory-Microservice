@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
@@ -45,14 +47,16 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "item", orphanRemoval=true)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Stock<?>> itemStocks;
 
-    @OneToMany(mappedBy="item", orphanRemoval=true)
-    private List<ItemToBuy> itemsToBuy;
+    @ManyToMany
+    @JsonIgnore
+    private List<ItemToBuy> itemsToBuy = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<User> users;
+    @ManyToMany
+    @JsonIgnore
+    private List<User> users = new ArrayList<>();
 
 
     public Item(){
@@ -68,12 +72,13 @@ public class Item {
         itemStocks.remove(stock);
         stock.setItem(null);
     }
-    
-    public List<Stock<?>> getItemStocks(){
+
+    public List<Stock<?>> getStocks(){
         return itemStocks;
     }
+    
 
-    public void addItemToBuy(ItemToBuy itemToBuy){
+    /*public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
         itemToBuy.setItem(this);
     }
@@ -81,9 +86,9 @@ public class Item {
     public void removeItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.remove(itemToBuy);
         itemToBuy.setItem(null);
-    }
+    }*/
 
-    public List<ItemToBuy> getITeItemsToBuy(){
+    public List<ItemToBuy> getItemsToBuy(){
         return itemsToBuy;
     }
 
@@ -159,3 +164,4 @@ public class Item {
         return type;
     }
 }
+
