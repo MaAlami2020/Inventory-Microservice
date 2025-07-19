@@ -28,10 +28,6 @@ import com.example.webapp1a.service.ItemService;
 import com.example.webapp1a.service.SizeService;
 import com.example.webapp1a.service.StockService;
 import com.example.webapp1a.stockEditionFactoryMethod.StockFactoryManager;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
-
 
 @Controller
 @RequestMapping("/items")
@@ -78,6 +74,13 @@ public class ItemsController {
         return stock;
     }
 
+    /**
+     * 
+     * @param model
+     * @param id
+     * @param page
+     * @return screen to update an item
+     */
     @GetMapping("/{id}")
     public String itemPage(Model model, @PathVariable Integer id, Pageable page){
         Optional<Item> item = itemService.findById(id);
@@ -93,6 +96,9 @@ public class ItemsController {
         }
     }
 
+    /*
+     * updating operation
+     */
     @PostMapping("/{id}/update")
     public String itemUpdating(Model model, Item item, @PathVariable Integer id, MultipartFile imageField) throws IOException{
         Optional<Item> oldItem = itemService.findById(id);
@@ -111,6 +117,8 @@ public class ItemsController {
         }
     }
 
+    //CLOTHES SECTION!!!
+
     @GetMapping("{id}/clothes/stock")
     public String clothesStockPage(Model model, @PathVariable Integer id) {
         return "new_clothes_stock";
@@ -127,6 +135,7 @@ public class ItemsController {
     @PostMapping("/clothes/new")
     public String newClothesPage(Model model, Item item, MultipartFile imageField) throws IOException{
         addNewItem(item, imageField);
+        model.addAttribute("id", item.getId());
         return "new_clothes_stock";
     }  
 
@@ -143,6 +152,41 @@ public class ItemsController {
         return "error";       
     }
 
+    //SHOES SECTION!!!
+
+    @GetMapping("{id}/shoes/stock")
+    public String shoesStockPage(Model model, @PathVariable Integer id) {
+        return "new_shoes_stock";
+    }
+
+    @GetMapping("/shoes/page")
+    public String shoesPage(Model model){
+        StockFactoryManager stockFactoryManager = new StockFactoryManager();
+        model.addAttribute("genders", stockFactoryManager.getGenders());
+        model.addAttribute("types", stockFactoryManager.getFactories().keySet());
+        return "new_shoes";
+    }
+
+    @PostMapping("/shoes/new")
+    public String newShoesPage(Model model, Item item, MultipartFile imageField) throws IOException{
+        addNewItem(item, imageField);
+        model.addAttribute("id", item.getId());
+        return "new_shoes_stock";
+    }
+
+    @PostMapping("{id}/shoes/stock/new")
+    public String newShoesStock(Model model, @PathVariable Integer id, Shoe shoes, String label, Integer stock) throws IOException{
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()){
+            Stock<?> product = addNewStock(item.get(), shoes, label, stock);
+            stockService.addStock((Shoe)product);
+            //new stock added successfully
+            return "new_shoes_stock";
+        }
+        //error adding new stock
+        return "error";       
+    }
+
     public void deleteItemStock(Integer id, Integer index){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
@@ -153,58 +197,18 @@ public class ItemsController {
         }
     }
 
+    /*
+     * stock erasing operation
+     */
     @GetMapping("/{id}/stocks/{index}/delete")
     public String deleteItemStockPage(@PathVariable Integer id, @PathVariable Integer index){
         deleteItemStock(id, index);
         return "new_clothes_stock";
     }
 
-   
-
-
-
-
-
-    @GetMapping("/shoes/page")
-    public String newShoesPage(Model model){
-        return "new_shoes";
-    }
-
-    @PostMapping("/shoes/new")
-    public String newShoe(Model model, Item item, MultipartFile imageField) throws IOException{
-  
-        item.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-        itemService.add(item);
-        model.addAttribute("addStockS",true); 
-        return "new_shoes";
-    }
-
-    @PostMapping("/shoes/stock/new")
-    public String newShoesStock(Model model, Shoe shoe, Pageable page) throws IOException{
-        List<Item> item = itemService.findAll();
-        if(!item.isEmpty()){
-        //get those shoe stocks whose id_item is null
-        //Page<Shoe> shoeStock = stockService.findAllShoe(page);
-        //for(Shoe s: shoeStock) {
-            //check the size
-            //if(shoe.getSize().equals(s.getSize())){
-                //check the stock value entered is lower than the max avaialability, if so, save the new stock object into the db and reload the clothes page
-                //if(shoe.getStock() <=  s.getStock()){
-                    shoe.setItem(item.get(0));
-                    stockService.addShoe(shoe);
-                    model.addAttribute("addStockS",true); 
-                    return "new_shoes";
-                //}
-            //}
-        }
-        //check the stock entered is under the avaialable, if not, do not save the new stock object into the db and return to the main page 
-        model.addAttribute("addStockS",false); 
-        return "index";     
-    }
-
-
-    
-
+    /*
+     * erasing operation of an item category
+     */
     @GetMapping("/{id}/delete")
     public String removeItem(Model model, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);

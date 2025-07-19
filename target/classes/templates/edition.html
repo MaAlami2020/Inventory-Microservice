@@ -75,9 +75,9 @@
                     <div class="column is-one-third">
                         <label for="size">Type:</label>  
                         <div class="form-control-field" id="type">
-                            {{#factories}}
+                            {{#types}}
                             <label><input type="radio" name="type" value="{{.}}"/> {{.}}</label>
-                            {{/factories}}
+                            {{/types}}
                             <!--aplicar factory method para crear instancias segun el tipo de producto-->
                         </div>
                     </div>
@@ -152,7 +152,6 @@
     $(document).ready(function(){
 
         loadItem(function(item){
-            console.log(item);
             showItemLoaded(item);
         })
 

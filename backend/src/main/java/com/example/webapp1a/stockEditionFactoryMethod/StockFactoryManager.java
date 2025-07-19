@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class StockFactoryManager {
     //variable which manages diferent types of products according to the facotry which made it
-    private static final Map<String, String> factories = new HashMap<>();
+    private static Map<String, String> factories = new HashMap<>();
 
     private static Set<String> genders = new HashSet<>();
         
