@@ -1,6 +1,7 @@
 package com.example.webapp1a.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,9 @@ public class Order {
     }
 
     public void setCreationDate(LocalDate creationDate){
-        this.creationDate = creationDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(creationDate.toString(), formatter);
+        this.creationDate = date;
     }
 
     public LocalDate getCreationDate(){
