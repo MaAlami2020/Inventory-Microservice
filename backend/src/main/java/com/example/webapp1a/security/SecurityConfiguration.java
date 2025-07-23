@@ -50,22 +50,22 @@ public class SecurityConfiguration{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-            .formLogin(httpForm -> {
-                httpForm.loginPage("/login").permitAll();
-                httpForm.defaultSuccessUrl("/");
-                httpForm.usernameParameter("username");
-                httpForm.passwordParameter("password"); 
-                httpForm.failureUrl("/error");
-            })
 
             .authorizeHttpRequests(registry -> {
-                registry.antMatchers("/").permitAll();
-                registry.antMatchers("/items/page").permitAll();
-            })
-
-            .logout(httpLogout -> {
-                httpLogout.logoutUrl("/logout").permitAll();
-                httpLogout.logoutSuccessUrl("/");
+                registry.antMatchers("/items/").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/update").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/clothes/stock").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/clothes/page").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/clothes/new").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/clothes/stock/new").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/shoes/stock").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/shoes/page").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/shoes/new").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/shoes/stock/new").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/clothes/{index}/delete").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/shoes/{index}/delete").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/{id}/delete").hasAnyRole("ADMIN");
             });
             
         http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
