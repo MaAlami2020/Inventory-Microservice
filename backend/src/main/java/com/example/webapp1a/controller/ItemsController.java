@@ -198,12 +198,18 @@ public class ItemsController {
     }
 
     /*
-     * stock erasing operation
+     * clothes erasing operation
      */
-    @GetMapping("/{id}/stocks/{index}/delete")
-    public String deleteItemStockPage(@PathVariable Integer id, @PathVariable Integer index){
+    @GetMapping("/{id}/clothes/{index}/delete")
+    public String deleteClothesStockPage(@PathVariable Integer id, @PathVariable Integer index){
         deleteItemStock(id, index);
         return "new_clothes_stock";
+    }
+
+    @GetMapping("/{id}/shoes/{index}/delete")
+    public String deleteShoesStockPage(@PathVariable Integer id, @PathVariable Integer index){
+        deleteItemStock(id, index);
+        return "new_shoes_stock";
     }
 
     /*
