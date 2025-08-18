@@ -48,6 +48,7 @@ public class Item {
     private String type;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+    
     private List<Stock<?>> itemStocks;
 
     @ManyToMany

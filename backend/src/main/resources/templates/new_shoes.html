@@ -15,7 +15,7 @@
     <header>
         <nav class="navbar">
             <nav class="nav-menu --nav-dark" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/inventory/items/">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -27,16 +27,16 @@
     </div>
 
 <div>
-<form action="/items/shoes/new" method="post" class="form-control" enctype="multipart/form-data">
+<form action="/inventory/items/shoes/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
             <div class="column is-two-fifths-desktop">
                 <div class="slider" id="slider">
-                    <div class="slider-img-container">
-                        <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                    <div>
+                        <img src="/img/no-t-shirt.jpg"  alt="camiseta" width="400" height="400">
+                        <input type='file' name='imageField' accept=".jpg, .jpeg, .png" required/>
                     </div>
                 </div>
-                <input type='file' name='imageField' accept=".jpg, .jpeg, .png" required/>
             </div>
             <div class="column">
                 <h3 class="is-size-3">New item</h3>

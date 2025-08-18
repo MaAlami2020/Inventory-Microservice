@@ -90,7 +90,7 @@ public class ItemsController {
             model.addAttribute("category", stockFactoryManager.getFactories().get(item.get().getType()));
             return "edition";
         } else {
-            return "//localhost:8443/error";
+            return "//localhost:8442/store/loginerror";
         }
     }
 
@@ -113,7 +113,7 @@ public class ItemsController {
             model.addAttribute("category", stockFactoryManager.getFactories().get(oldItem.get().getType()));
             return "edition";
         } else {
-            return "//localhost:8443/error";
+            return "//localhost:8442/store/loginerror";
         }
     }
 
@@ -149,7 +149,7 @@ public class ItemsController {
             return "new_clothes_stock";
         }
         //error adding new stock
-        return "//localhost:8443/error";       
+        return "//localhost:8442/store/loginerror";       
     }
 
     //SHOES SECTION!!!
@@ -184,7 +184,7 @@ public class ItemsController {
             return "new_shoes_stock";
         }
         //error adding new stock
-        return "//localhost:8443/error";       
+        return "//localhost:8442/store/error";       
     }
 
     public void deleteItemStock(Integer id, Integer index){
@@ -223,7 +223,7 @@ public class ItemsController {
             itemService.deleteById(item.get().getId());
             return "index";
         } else {
-            return "//localhost:8443/error";
+            return "//localhost:8442/store/error";
         }
     }
 }

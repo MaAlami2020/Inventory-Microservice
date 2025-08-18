@@ -1,5 +1,7 @@
 package com.example.webapp1a.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,5 +22,13 @@ public class SizeService {
 
     public Page<Size> findAll(Pageable page){
         return sizeRepo.findAll(page);
+    }
+
+    public Optional<Size> findById(Integer id){
+        return sizeRepo.findById(id);
+    }
+
+    public void deleteById(Integer id){
+        sizeRepo.deleteById(id);
     }
 }

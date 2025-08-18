@@ -1,5 +1,6 @@
 package com.example.webapp1a.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public abstract class Stock<T> {
     @JsonIgnore
     private Item item;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private Size size;
     
     public Stock(){}

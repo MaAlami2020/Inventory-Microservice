@@ -26,13 +26,13 @@
         </nav>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="//localhost:8443/">Avenue Fashion</li>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul">
                     <div class="user-img">
                         <img src="//localhost:8443/api/users/6/image" alt="" width="50" height="50"></img>
                     </div>
-                    <li class="nav-menu-item"><a href="//localhost:8444/items/clothes/page" class="nav-menu-link">New Clothes</a></li>
-                    <li class="nav-menu-item"><a href="//localhost:8444/items/shoes/page" class="nav-menu-link">New Shoes</a></li>
+                    <li class="nav-menu-item"><a href="/inventory/items/clothes/page" class="nav-menu-link">New Clothes</a></li>
+                    <li class="nav-menu-item"><a href="/inventory/items/shoes/page" class="nav-menu-link">New Shoes</a></li>
                 </ul>
                 <form>
                     <div>
@@ -127,8 +127,8 @@
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price + '</span><img src="//localhost:8443/api/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + 
-            '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/inventory/items/' + item.id + 
+            '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/inventory/items/' + item.id + 
             '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'//<button id="item-' + item.id +'"></button>'
@@ -138,8 +138,8 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price + '</span><img src="//localhost:8443/api/items/' + item.id + 
-            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + 
-            '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/inventory/items/' + item.id + 
+            '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/inventory/items/' + item.id + 
             '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
@@ -147,7 +147,7 @@
     }
 
     $(document).ready(function() {
-        //first 10 items
+        //first 12 items
         loadInitItems(function(items, tam) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')

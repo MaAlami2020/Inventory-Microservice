@@ -67,7 +67,12 @@ public class StockService {
         return stockRepo.findById(id);
     }
 
+     public Optional<Stock<?>> findByCode(String code){
+        return stockRepo.findByCode(code);
+    } 
+
     public void deleteById(Integer id){
         stockRepo.deleteById(id);
     }
+
 }

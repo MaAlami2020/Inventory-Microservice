@@ -1,5 +1,6 @@
 package com.example.webapp1a.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,55 +45,25 @@ public class ItemService {
         itemRepo.deleteById(id);
     } 
 
-    /*public void update(Integer id, Item newItem){
-        Optional<Item> item = itemRepo.findById(id);
-        if(newItem.getImageFile() == null){
-            newItem.setImageFile(item.get().getImageFile());
+    public void update(Item oldItem, Item newItem) throws IOException{
+        if(newItem != null && newItem.getCode() != null){
+            oldItem.setCode(newItem.getCode());
         }
-        if(newItem.getName().equals("")){
-            newItem.setName(item.get().getName());
+        if(newItem != null && newItem.getName() != null){
+            oldItem.setName(newItem.getName());
         }
-        if(newItem.getPrice() == null){
-            newItem.setPrice(item.get().getPrice());
+        if(newItem != null && newItem.getDescription() != null){
+            oldItem.setDescription(newItem.getDescription());
         }
-        if(newItem.getGender() == null){
-            newItem.setGender(item.get().getGender());
+        if(newItem != null && newItem.getPrice() != null){
+            oldItem.setPrice(newItem.getPrice());
         }
-        if(item.get().getSizes() != null){
-            int count = 0;
-            for(String size: item.get().getSizes()){
-                if(newItem.getSizes()[count] == null){
-                    newItem.getSizes()[count] = size;
-                }
-                count++;
-            }
+        if(newItem != null && newItem.getGender() != null){
+            oldItem.setGender(newItem.getGender());
         }
-        if(item.get().getStocks() != null){
-            int count1 = 0;
-            for(Integer stock: item.get().getStocks()){
-                if(newItem.getStocks()[count1] == null){
-                    newItem.getStocks()[count1] = stock;
-                }
-                count1++;
-            }
+        if(newItem != null && newItem.getType() != null){
+            oldItem.setType(newItem.getType());
         }
-        if(newItem.getType() == null){
-            newItem.setType(item.get().getType());
-        }
-        if(newItem.getStocks() == null){
-            newItem.setStocks(item.get().getStocks());
-        }
-        if(newItem.getDescription().equals("")){
-            newItem.setDescription(item.get().getDescription());
-        }
-
-        for(User user: item.get().getFavourites()){
-            newItem.getFavourites().add(user);
-        }
-        for(ItemToBuy itemToBuy: item.get().getItemsToBuy()){
-            newItem.getItemsToBuy().add(itemToBuy);
-        }
-        newItem.setId(id);
-        itemRepo.save(newItem);
-    }*/
+        itemRepo.save(oldItem);
+    }
 }

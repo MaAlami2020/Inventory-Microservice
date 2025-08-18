@@ -43,9 +43,9 @@
     <header>
         <nav class="navbar">
             <nav class="nav-menu --nav-dark" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/inventory/items/">Avenue Fashion</a>
                 <ul class="nav-menu-ul">
-                    <li class="nav-menu-item"><a href="/" class="has-text-weight-bold has-text-white">confirm</a></li>
+                    <li class="nav-menu-item"><a href="/inventory/items/{{id}}" class="has-text-weight-bold has-text-white">confirm</a></li>
                 </ul>
             </nav>
         </nav>
@@ -62,7 +62,7 @@
     </div>
 
 <div>
-<form action="/items/{{id}}/shoes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
+<form action="/inventory/items/{{id}}/shoes/stock/new" method="post" class="form-control" enctype="multipart/form-data">
     <div class="container">
         <div class="columns">
             <div class="column is-two-fifths-desktop">
@@ -121,7 +121,7 @@
 
     function loadItem(callback){
         $.ajax({
-            url: '/api/inventory/items/{{id}}'
+            url: '/inventory/redis/items/{{id}}'
         }).done(function(item){
             callback(item);
         });
@@ -145,7 +145,7 @@
                     <div class="column is-half-mobile is-two-third-desktop">
                         <div class="card">
                             <div class="card-simple-options">
-                                <a href="/items/${item.id}/shoes/${stock.id}/delete" class="btn btn--mini-rounded">
+                                <a href="/inventory/items/${item.id}/shoes/${stock.id}/delete" class="btn btn--mini-rounded">
                                     <div class="columns is-multiline">
                                         <div class="column is-full is-marginless">DELETE</div>
                                     </div>
