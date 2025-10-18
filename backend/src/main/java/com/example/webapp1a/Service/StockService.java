@@ -1,6 +1,7 @@
 package com.example.webapp1a.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,10 +41,12 @@ public class StockService {
     }    
     
     public Clothes addClothes(Clothes clothes){
+        clothes.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         return clothesRepo.save(clothes);
     }
 
     public Stock<?> addStock(Stock<?> stock){
+        stock.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         return stockRepo.save(stock);
     }
 
@@ -56,6 +59,7 @@ public class StockService {
     }
 
     public Shoe addShoe(Shoe shoe){
+        shoe.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         return shoeRepo.save(shoe);
     }
 

@@ -324,7 +324,9 @@ public class ItemsRestController {
 
         URI location = fromCurrentRequest().build().toUri();
         
-        item.get().setImageFile(BlobProxy.generateProxy(itemImage.getInputStream(), itemImage.getSize()));
+        if(itemImage != null){
+            item.get().setImageFile(BlobProxy.generateProxy(itemImage.getInputStream(), itemImage.getSize()));
+        }
         
         itemService.add(item.get());
 

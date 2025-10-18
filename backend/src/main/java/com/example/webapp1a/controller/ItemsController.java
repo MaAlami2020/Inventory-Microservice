@@ -52,19 +52,16 @@ public class ItemsController {
     
     public void addNewItem(Item item, MultipartFile imageField) throws IOException{
         item.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-        item.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         itemService.add(item); 
     }
 
     public Stock<?> addNewStock(Item item, Stock<?> stock, String label, Integer amount) throws IOException{
         Size size = new Size();
-        size.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 5));
         size.setLabel(label);
         sizeService.add(size);  
 
         stock.setSize(size);
 
-        stock.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         stock.setStock(amount);
         
         //filtering of the last item keeped in the db
@@ -184,7 +181,7 @@ public class ItemsController {
             return "new_shoes_stock";
         }
         //error adding new stock
-        return "//localhost:8442/store/error";       
+        return "//localhost:8442/store/loginerror";       
     }
 
     public void deleteItemStock(Integer id, Integer index){

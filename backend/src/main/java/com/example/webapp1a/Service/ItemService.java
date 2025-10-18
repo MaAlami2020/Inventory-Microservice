@@ -2,6 +2,7 @@ package com.example.webapp1a.service;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ public class ItemService {
     private ItemRepo itemRepo;
 
     public void add(Item item){
+        item.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         itemRepo.save(item);
     }
 

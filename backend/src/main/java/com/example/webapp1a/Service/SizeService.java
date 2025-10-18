@@ -1,6 +1,7 @@
 package com.example.webapp1a.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ public class SizeService {
     private SizeRepo sizeRepo;
     
     public void add(Size size){
+        size.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 5));
         sizeRepo.save(size);
     }
 

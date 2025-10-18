@@ -43,7 +43,7 @@ public class RestSecurityConfiguration{
 
     public void addCorsMapping(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("https://localhost:8443")
+                .allowedOrigins("http://localhost:8443")
                 .allowCredentials(true);
     }     
 }

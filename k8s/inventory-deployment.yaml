@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-container
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inventory-container
+  template:
+    metadata:
+      labels:
+        app: inventory-container
+    spec:
+      containers:
+      - name: inventory-container
+        image: maalami/springbootinventory
+        ports:
+        - containerPort: 8444
+      nodeSelector:
+        role: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service
+spec:
+  selector:
+    app: inventory-container
+  ports:
+    - port: 8444
+      targetPort: 8444
+  type: ClusterIP
