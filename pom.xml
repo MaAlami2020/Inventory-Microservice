@@ -110,7 +110,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>es.webapp.webapp.WebappApplication</mainClass>
+					<mainClass>com.example.webapp1a.Webapp1aApplication</mainClass>
 				</configuration>
 			</plugin>
 			<!--<plugin>
