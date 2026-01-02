@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
@@ -22,30 +23,8 @@ public class SecurityConfiguration{
     @Autowired
     UserDetailService userDetailsService; 
 
-
-    @Bean
-    public UserDetailService userDetailsService(){
-        return userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-    
-    @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration) throws Exception{
-            return authenticationConfiguration.getAuthenticationManager();
-    }
+    @Autowired
+    JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -68,7 +47,17 @@ public class SecurityConfiguration{
                 registry.antMatchers("/items/{id}/clothes/{index}/delete").hasAnyRole("ADMIN");
                 registry.antMatchers("/items/{id}/shoes/{index}/delete").hasAnyRole("ADMIN");
                 registry.antMatchers("/items/{id}/delete").hasAnyRole("ADMIN");
-            });
+            })
+
+            .formLogin().disable()
+            .logout(logout -> {
+                logout.logoutUrl("/logout");
+                logout.invalidateHttpSession(true);
+                logout.clearAuthentication(true);
+                logout.deleteCookies("SESSIONID");
+            })
+            
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
             
         http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
             
@@ -77,7 +66,7 @@ public class SecurityConfiguration{
 
     public void addCorsMapping(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8443")
+                .allowedOrigins("http://store-service:8443")
                 .allowCredentials(true);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.webapp1a.itemEditionScalability.ItemUpdateManager;
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.ItemDTO;
 import com.example.webapp1a.repository.ItemRepo;
 
 @Service
@@ -47,23 +48,20 @@ public class ItemService {
         itemRepo.deleteById(id);
     } 
 
-    public void update(Item oldItem, Item newItem) throws IOException{
-        if(newItem != null && newItem.getCode() != null){
-            oldItem.setCode(newItem.getCode());
-        }
-        if(newItem != null && newItem.getName() != null){
+    public void update(Item oldItem, ItemDTO newItem) throws IOException{
+        if(newItem != null && newItem.getName() != ""){
             oldItem.setName(newItem.getName());
         }
-        if(newItem != null && newItem.getDescription() != null){
+        if(newItem != null && newItem.getDescription() != ""){
             oldItem.setDescription(newItem.getDescription());
         }
-        if(newItem != null && newItem.getPrice() != null){
+        if(newItem != null && newItem.getPrice() != 0){
             oldItem.setPrice(newItem.getPrice());
         }
-        if(newItem != null && newItem.getGender() != null){
+        if(newItem != null && newItem.getGender() != ""){
             oldItem.setGender(newItem.getGender());
         }
-        if(newItem != null && newItem.getType() != null){
+        if(newItem != null && newItem.getType() != ""){
             oldItem.setType(newItem.getType());
         }
         itemRepo.save(oldItem);

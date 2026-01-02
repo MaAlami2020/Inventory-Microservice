@@ -1,7 +1,5 @@
 package com.example.webapp1a.model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class Order {
     private Double totalCost;
 
     @Column(name="date")
-    private LocalDate creationDate;//AAAA-MM-DD
+    private String creationDate;//AAAA-MM-DD
 
     @Column(name="state")
     private State state;
@@ -100,13 +98,11 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(LocalDate creationDate){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate date = LocalDate.parse(creationDate.toString(), formatter);
+    public void setCreationDate(String date){
         this.creationDate = date;
     }
 
-    public LocalDate getCreationDate(){
+    public String getCreationDate(){
         return creationDate;
     }
 

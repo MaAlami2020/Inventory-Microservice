@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.ItemDTO;
 import com.example.webapp1a.model.Shoe;
 import com.example.webapp1a.model.Size;
 import com.example.webapp1a.model.Stock;
@@ -243,12 +244,9 @@ public class ItemsRestController {
         @ApiResponse(responseCode = "404", description = "No item updated", content = @Content)
     })
     @PutMapping("/api/inventory/items/{id}/update")
-    public ResponseEntity<Item> itemUpdating(@RequestBody Item itemUpdated, @PathVariable Integer id, MultipartFile imageField) throws  IOException{
+    public ResponseEntity<Item> itemUpdating(@RequestBody ItemDTO itemUpdated, @PathVariable Integer id) throws  IOException{
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
-            if(imageField != null){
-                item.get().setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-            }
             itemService.update(item.get(), itemUpdated);
             return new ResponseEntity<>(item.get(), HttpStatus.OK);
         } else {
@@ -264,13 +262,13 @@ public class ItemsRestController {
         @ApiResponse(responseCode = "404", description = "No stock deleted", content = @Content)
     })
     @DeleteMapping("/api/inventory/stocks/{id}")
-    public ResponseEntity<String> deleteRelationshipItemStock(@PathVariable Integer id){
+    public ResponseEntity<Stock<?>> deleteRelationshipItemStock(@PathVariable Integer id){
         Optional<Stock<?>> stock = stockService.findById(id);
         if(stock.isPresent()){
             stock.get().setItem(null);
             stock.get().setSize(null);
             stockService.addStock(stock.get());
-            return new ResponseEntity<>("done",HttpStatus.OK);
+            return new ResponseEntity<>(stock.get(),HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -283,11 +281,11 @@ public class ItemsRestController {
         @ApiResponse(responseCode = "404", description = "No stock deleted", content = @Content)
     })
     @DeleteMapping("/api/inventory/stocks/{id}/delete")
-    public ResponseEntity<String> deleteItemStock(@PathVariable Integer id){
+    public ResponseEntity<Stock<?>> deleteItemStock(@PathVariable Integer id){
         Optional<Stock<?>> stock = stockService.findById(id);
         if(stock.isPresent()){
             stockService.deleteById(id);
-            return new ResponseEntity<>("done",HttpStatus.OK);
+            return new ResponseEntity<>(stock.get(),HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -301,11 +299,11 @@ public class ItemsRestController {
         @ApiResponse(responseCode = "404", description = "No item deleted", content = @Content)
     })
     @DeleteMapping("/api/inventory/items/{id}/delete")
-    public ResponseEntity<String> deleteItem(@PathVariable Integer id){
+    public ResponseEntity<Page<Item>> deleteItem(Pageable page, @PathVariable Integer id){
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
             itemService.deleteById(item.get().getId());
-            return new ResponseEntity<>("done",HttpStatus.OK);
+            return new ResponseEntity<>(itemService.findAll(page),HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
