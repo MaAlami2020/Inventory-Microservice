@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -188,6 +189,7 @@ public class ItemsController {
         Optional<Item> item = itemService.findById(id);
         if(item.isPresent()){
             Optional<Stock<?>> stock = stockService.findById(index);
+            
             if(stock.isPresent()){
                 stockService.deleteById(index);
             }
@@ -197,16 +199,30 @@ public class ItemsController {
     /*
      * clothes erasing operation
      */
-    @GetMapping("/{id}/clothes/{index}/delete")
-    public String deleteClothesStockPage(@PathVariable Integer id, @PathVariable Integer index){
-        deleteItemStock(id, index);
-        return "new_clothes_stock";
+    @GetMapping("/clothes/{id}/delete")
+    public String deleteClothesStockPage(Model model, @PathVariable Integer id){
+        Optional<Stock<?>> stock = stockService.findById(id);
+        if(stock.isPresent()){
+            stock.get().setItem(null);
+            stock.get().setSize(null);
+            stockService.addStock(stock.get());
+            stockService.deleteById(id);
+        
+            //model.addAttribute("id", stock.get().getItem().getId());
+        return "index";
+        } else {
+            return "//localhost:8442/store/error";
+        }
     }
 
-    @GetMapping("/{id}/shoes/{index}/delete")
-    public String deleteShoesStockPage(@PathVariable Integer id, @PathVariable Integer index){
-        deleteItemStock(id, index);
-        return "new_shoes_stock";
+    @GetMapping("/shoes/{index}/delete")
+    public String deleteShoesStockPage(Model model,@PathVariable Integer index){
+        Optional<Stock<?>> stock = stockService.findById(index);
+        stock.get().setItem(null);
+        stock.get().setSize(null);
+        stockService.addStock(stock.get());
+        stockService.deleteById(index);
+        return "index";
     }
 
     /*

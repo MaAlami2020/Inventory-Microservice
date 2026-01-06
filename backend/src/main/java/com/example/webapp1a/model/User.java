@@ -47,8 +47,6 @@ public class User {
 
 
     @Lob
-    @Transient
-    @JsonIgnore
     @Column(name = "image")
     private Blob imageField;
 

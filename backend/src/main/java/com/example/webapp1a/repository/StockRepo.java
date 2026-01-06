@@ -20,4 +20,6 @@ public interface StockRepo extends JpaRepository<Stock<?>, Integer> {
     Page<Stock<?>> findAllStocks(Pageable page);
     
     Optional<Stock<?>> findByCode(String code);
+
+    void deleteById(Integer id);
 }

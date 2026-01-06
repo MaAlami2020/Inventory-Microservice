@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
@@ -75,8 +76,13 @@ public class StockService {
         return stockRepo.findByCode(code);
     } 
 
+    public void deleteByStock(Stock<?> stock){
+            stockRepo.delete(stock);
+    }
+
+    @Transactional
     public void deleteById(Integer id){
-        stockRepo.deleteById(id);
+        clothesRepo.deleteById(id);
     }
 
 }
