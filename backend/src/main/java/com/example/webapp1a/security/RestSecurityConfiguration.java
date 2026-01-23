@@ -1,10 +1,17 @@
 package com.example.webapp1a.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
@@ -21,14 +28,42 @@ public class RestSecurityConfiguration{
         return new JWTAuthenticationFilter();
     }
 
+    @Autowired
+    UserDetailService userDetailsService; 
+
+    @Bean
+    public UserDetailService userDetailsService(){
+        return userDetailsService;
+    }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+    
+    @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration) throws Exception{
+            return authenticationConfiguration.getAuthenticationManager();
+    }
+
     @Bean
     public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception{
         http
             .authorizeHttpRequests(registry -> {
-                registry.antMatchers(HttpMethod.GET,"/api/inventory/**").hasRole("ADMIN"); 
-                registry.antMatchers(HttpMethod.POST,"/api/inventory/**").hasRole("ADMIN");
-                registry.antMatchers(HttpMethod.PUT,"/api/inventory/**").hasRole("ADMIN");
-                registry.antMatchers(HttpMethod.DELETE,"/api/inventory/**").hasRole("ADMIN");
+                registry.antMatchers(HttpMethod.GET,"/inventory/api/inventory/**").hasRole("ADMIN"); 
+                registry.antMatchers(HttpMethod.POST,"/inventory/api/inventory/**").hasRole("ADMIN");
+                registry.antMatchers(HttpMethod.PUT,"/inventory/api/inventory/**").hasRole("ADMIN");
+                registry.antMatchers(HttpMethod.DELETE,"/inventory/api/inventory/**").hasRole("ADMIN");
                 registry.anyRequest().permitAll();
             })
             .csrf().disable()

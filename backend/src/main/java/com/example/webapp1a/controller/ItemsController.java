@@ -1,15 +1,14 @@
 package com.example.webapp1a.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +17,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.webapp1a.model.Clothes;
 import com.example.webapp1a.model.Item;
+import com.example.webapp1a.model.ItemToBuy;
 import com.example.webapp1a.model.Shoe;
 import com.example.webapp1a.model.Size;
 import com.example.webapp1a.model.Stock;
 import com.example.webapp1a.service.ItemService;
+import com.example.webapp1a.service.ItemToBuyService;
 import com.example.webapp1a.service.SizeService;
 import com.example.webapp1a.service.StockService;
 import com.example.webapp1a.stockEditionFactoryMethod.StockFactoryManager;
@@ -41,6 +43,9 @@ public class ItemsController {
 
     @Autowired
     private SizeService sizeService;
+
+    @Autowired
+    private ItemToBuyService itemToBuyService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -88,7 +93,7 @@ public class ItemsController {
             model.addAttribute("category", stockFactoryManager.getFactories().get(item.get().getType()));
             return "edition";
         } else {
-            return "//localhost:8442/store/loginerror";
+            return "https://localhost:8442/error";
         }
     }
 
@@ -111,7 +116,7 @@ public class ItemsController {
             model.addAttribute("category", stockFactoryManager.getFactories().get(oldItem.get().getType()));
             return "edition";
         } else {
-            return "//localhost:8442/store/loginerror";
+            return "https://localhost:8442/error";
         }
     }
 
@@ -147,7 +152,7 @@ public class ItemsController {
             return "new_clothes_stock";
         }
         //error adding new stock
-        return "//localhost:8442/store/loginerror";       
+        return "https://localhost:8442/error";       
     }
 
     //SHOES SECTION!!!
@@ -182,7 +187,7 @@ public class ItemsController {
             return "new_shoes_stock";
         }
         //error adding new stock
-        return "//localhost:8442/store/loginerror";       
+        return "https://localhost:8442/error";       
     }
 
     public void deleteItemStock(Integer id, Integer index){
@@ -211,7 +216,7 @@ public class ItemsController {
             //model.addAttribute("id", stock.get().getItem().getId());
         return "index";
         } else {
-            return "//localhost:8442/store/error";
+            return "https://localhost:8442/error";
         }
     }
 
@@ -229,14 +234,23 @@ public class ItemsController {
      * erasing operation of an item category
      */
     @GetMapping("/{id}/delete")
-    public String removeItem(Model model, @PathVariable Integer id){
+    public String removeItem(Model model, @PathVariable Integer id, Throwable ex){
         Optional<Item> item = itemService.findById(id);
- 
+        List<ItemToBuy> itemsToBuy = itemToBuyService.findAll();
+        (itemsToBuy).forEach(itb -> {
+            if(itb.getItems().contains(item.get())) {
+                throw new ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE,
+                    "unable to delete item with existing purchases",
+                    ex
+                );
+            }
+        });
         if(item.isPresent()) {
             itemService.deleteById(item.get().getId());
             return "index";
         } else {
-            return "//localhost:8442/store/error";
+            return "https://localhost:8442/error";
         }
     }
 }

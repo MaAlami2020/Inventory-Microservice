@@ -125,6 +125,7 @@
     }
 
     function showItemLoaded(item){
+        console.log(item);
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price + '</span><img src="/store/api/items/' + item.id + 
             '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/inventory/items/' + item.id + 

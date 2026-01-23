@@ -24,15 +24,17 @@ public class ShoppingCart {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(mappedBy="shoppingCart")
+    private String code;
+
     @JsonIgnore
+    @OneToOne(mappedBy="shoppingCart")
     private User user;
     
     @Column(name = "totalCost")
     private Double totalCost = 0.0;
 
-     @Column(name="time")
-    private LocalTime buyTime;
+    @Column(name="time")
+    private String buyTime;
 
     @OneToMany(mappedBy="shoppingCart")
     private List<ItemToBuy> items = new ArrayList<>(); 
@@ -45,6 +47,14 @@ public class ShoppingCart {
 
     public Long getId(){
         return id;
+    }
+
+    public void setCode(String code){
+        this.code=code;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     public void setUser(User user){
@@ -77,11 +87,11 @@ public class ShoppingCart {
         return items;
     }
 
-    public void setBuyTime(LocalTime time){
+    public void setBuyTime(String time){
         this.buyTime = time;
     }
 
-    public LocalTime getBuyTime(){
+    public String getBuyTime(){
         return buyTime;
     }
 }

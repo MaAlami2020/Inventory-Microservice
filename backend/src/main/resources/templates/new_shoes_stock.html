@@ -161,9 +161,9 @@
         });
     }
 
-    function showPreviousButton(){
+    /*function showPreviousButton(){
         $('.button-left').append(`
-            <div class="slider-button-left slider-buttons" onclick="previousItem()">
+            <div class="slider-button-left slider-buttons" previousItem()">
                 <i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i>
             </div>
         `);
@@ -193,6 +193,18 @@
         $('.slider-img-container').addClass('is-hidden').removeClass('active');
         $(`.slider-img-container[data-index="${newIndex}"]`).removeClass('is-hidden').addClass('active');
         currentIndex = newIndex;
+    }*/
+
+    function showPreviousButton(n){
+        $('.button-left').append(
+            '<div class="slider-button-left slider-buttons" onclick="previous(' + n + ')"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
+        )
+    }
+
+    function showNextButton(n){
+        $('.button-right').append(
+            '<div class="slider-button-right slider-buttons" onclick="next(' + n + ')"><i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i></div>'
+        )
     }
 
     function showItemUpdated(item){
@@ -213,8 +225,8 @@
             showItemUpdated(item);
             if (item.stocks.length >= 1) {
                 showAllStocks(item, item.stocks);
-                showPreviousButton();
-                showNextButton();
+                showPreviousButton(item.stocks.length);
+                showNextButton(item.stocks.length);
             }
             
         });

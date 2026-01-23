@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -51,12 +53,17 @@ public class Item {
     
     private List<Stock<?>> itemStocks;
 
-    @ManyToMany
     @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "tbl_item_itemtobuy",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "itemtobuy_id")
+    )
     private List<ItemToBuy> itemsToBuy = new ArrayList<>();
 
-    @ManyToMany
     @JsonIgnore
+    @ManyToMany
     private List<User> users = new ArrayList<>();
 
 

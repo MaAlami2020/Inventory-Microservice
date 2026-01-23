@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +44,7 @@ public class Order {
     private String creationDate;//AAAA-MM-DD
 
     @Column(name="state")
-    private State state;
+    private String state;
 
     //private String auxState;
 
@@ -98,19 +100,19 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(String date){
-        this.creationDate = date;
+    public void setCreationDate(String creationDate){
+        this.creationDate = creationDate;
     }
 
     public String getCreationDate(){
         return creationDate;
     }
 
-    public void setState(State state){
+    public void setState(String state){
         this.state = state;
     }
 
-    public State getState(){
+    public String getState(){
         return state;
     }
 }
